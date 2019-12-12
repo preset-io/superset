@@ -15,10 +15,12 @@
 # specific language governing permissions and limitations
 # under the License.
 import re
+import json
 
 from flask import current_app, g, request
 from flask_appbuilder import ModelRestApi
 from flask_appbuilder.api import expose, protect, safe
+from flask_appbuilder.models.decorators import renders
 from flask_appbuilder.models.sqla.interface import SQLAInterface
 from marshmallow import fields, post_load, pre_load, ValidationError
 from marshmallow.validate import Length
@@ -160,6 +162,17 @@ class DashboardRestApi(DashboardMixin, ModelRestApi):
         "published",
         "table_names",
         "charts",
+    ]
+    order_columns = ["dashboard_title", "changed_on", "published", "changed_by_fk"]
+    list_columns = [
+        "dashboard_title",
+        "url",
+        "published",
+        "owners_json",
+        "json",
+        "changed_by_name",
+        "changed_by_url",
+        "changed_on",
     ]
 
     add_model_schema = DashboardPostSchema()
