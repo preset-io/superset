@@ -165,6 +165,7 @@ class DashboardRestApi(DashboardMixin, ModelRestApi):
     ]
     order_columns = ["dashboard_title", "changed_on", "published", "changed_by_fk"]
     list_columns = [
+        "id",
         "dashboard_title",
         "url",
         "published",
