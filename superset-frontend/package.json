@@ -131,7 +131,7 @@
     "interweave": "^11.2.0",
     "jquery": "^3.4.1",
     "json-bigint": "^0.3.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.16",
     "lodash-es": "^4.17.14",
     "mathjs": "^3.20.2",
     "moment": "^2.20.1",
