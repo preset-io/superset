@@ -25,7 +25,9 @@
     "check-translation": "prettier --check ../superset/translations/**/LC_MESSAGES/*.json",
     "clean-translation": "prettier --write ../superset/translations/**/LC_MESSAGES/*.json",
     "storybook": "NODE_ENV=development BABEL_ENV=development start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "repository": {
     "type": "git",
@@ -192,7 +194,8 @@
     "rison": "^0.1.1",
     "shortid": "^2.2.6",
     "urijs": "^1.18.10",
-    "use-query-params": "^0.4.5"
+    "use-query-params": "^0.4.5",
+    "snyk": "^1.369.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
@@ -310,5 +313,6 @@
         }
       ]
     }
-  }
+  },
+  "snyk": true
 }
