@@ -34,6 +34,12 @@ const CardContainer = styled.div`
   justify-content: center;
   padding: ${({ theme }) => theme.gridUnit * 2}px
     ${({ theme }) => theme.gridUnit * 4}px;
+
+  .card-selected {
+    .ant-card-bordered {
+      border: 2px solid ${({ theme }) => theme.colors.primary.base};
+    }
+  }
 `;
 
 export default function CardCollection({
@@ -48,7 +54,13 @@ export default function CardCollection({
         if (!renderCard) return null;
         prepareRow(row);
         return (
-          <div key={row.id}>{renderCard({ ...row.original, loading })}</div>
+          <div
+            className={row.isSelected ? 'card-selected' : ''}
+            key={row.id}
+            onClick={() => row.toggleRowSelected()}
+          >
+            {renderCard({ ...row.original, loading })}
+          </div>
         );
       })}
     </CardContainer>
