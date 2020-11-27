@@ -374,7 +374,7 @@ class Header extends React.PureComponent {
     const refreshWarning =
       dashboardInfo.common.conf
         .SUPERSET_DASHBOARD_PERIODICAL_REFRESH_WARNING_MESSAGE;
-    alert(123);
+
     return (
       <StyledDashboardHeader
         className="dashboard-header"
