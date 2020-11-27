@@ -75,9 +75,9 @@ const CopyButton = styled(Button)`
   && {
     margin-left: ${({ theme }) => theme.gridUnit * 2}px;
   }
-  
+
   i {
-    padding: 0
+    padding: 0;
   }
 `;
 
