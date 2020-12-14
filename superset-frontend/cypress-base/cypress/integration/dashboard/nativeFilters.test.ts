@@ -30,8 +30,6 @@ describe('Nativefilters', () => {
     cy.get('[data-test="create-filter"]').click();
     cy.get('.ant-modal').should('be.visible');
 
-    cy.get('.ant-form-horizontal').find('.ant-tabs-nav-add').first().click();
-
     cy.get('.ant-modal')
       .find('[data-test="name-input"]')
       .click()
