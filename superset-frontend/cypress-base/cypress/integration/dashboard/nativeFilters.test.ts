@@ -41,16 +41,15 @@ describe('Nativefilters', () => {
       .contains('wb_health_population')
       .click();
 
-    // possible bug with cypress where it is having issue discovering the field input
-    // after it is enable it is enabled
-
-    /* cy.get('.ant-modal')
+    // hack for unclickable country_name
+     cy.get('.ant-modal')
       .find('[data-test="field-input"]')
-      .click()
-      .contains('country_name')
-      .click();
-      */
+      .type('country_name')
 
+      cy.get('.ant-modal')
+      .find('[data-test="field-input"]')
+      .type('{downarrow}{enter}')
+      
     cy.get('.ant-modal-footer').find('.ant-btn-primary').should('be.visible');
   });
 });
