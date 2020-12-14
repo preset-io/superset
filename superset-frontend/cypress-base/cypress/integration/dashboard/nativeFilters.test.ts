@@ -42,14 +42,12 @@ describe('Nativefilters', () => {
       .click();
 
     // hack for unclickable country_name
-     cy.get('.ant-modal')
-      .find('[data-test="field-input"]')
-      .type('country_name')
+    cy.get('.ant-modal').find('[data-test="field-input"]').type('country_name');
 
-      cy.get('.ant-modal')
+    cy.get('.ant-modal')
       .find('[data-test="field-input"]')
-      .type('{downarrow}{enter}')
-      
+      .type('{downarrow}{enter}');
+
     cy.get('.ant-modal-footer').find('.ant-btn-primary').should('be.visible');
   });
 });
