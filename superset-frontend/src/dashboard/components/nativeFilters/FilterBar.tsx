@@ -280,7 +280,9 @@ export const FilterControl: React.FC<FilterProps> = ({
   return (
     <StyledFilterControlContainer>
       <StyledFilterControlTitleBox>
-        <StyledFilterControlTitle data-test="filter-control-name">{name}</StyledFilterControlTitle>
+        <StyledFilterControlTitle data-test="filter-control-name">
+          {name}
+        </StyledFilterControlTitle>
         <div>{icon}</div>
       </StyledFilterControlTitleBox>
       <FilterValue

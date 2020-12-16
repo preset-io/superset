@@ -22,7 +22,6 @@ describe('Nativefilters', () => {
   let filterId: number;
   let aliases: string[];
 
-
   beforeEach(() => {
     cy.login();
     cy.server();
@@ -81,9 +80,9 @@ describe('Nativefilters', () => {
       .find('.ant-btn-primary')
       .should('be.visible')
       .click();
-      cy.get('.treemap').within(() => {
-        cy.contains('CHN').should('be.visible');
-        cy.contains('USA').should('be.visible');
-      });
+    cy.get('.treemap').within(() => {
+      cy.contains('CHN').should('be.visible');
+      cy.contains('USA').should('be.visible');
+    });
   });
 });
