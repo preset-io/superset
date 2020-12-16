@@ -19,9 +19,6 @@
 import { TABBED_DASHBOARD } from './dashboard.helper';
 
 describe('Nativefilters', () => {
-  let filterId: number;
-  let aliases: string[];
-
   beforeEach(() => {
     cy.login();
     cy.server();
