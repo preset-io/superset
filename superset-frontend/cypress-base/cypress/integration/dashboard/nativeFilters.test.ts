@@ -19,6 +19,10 @@
 import { TABBED_DASHBOARD } from './dashboard.helper';
 
 describe('Nativefilters', () => {
+  let filterId: number;
+  let aliases: string[];
+
+
   beforeEach(() => {
     cy.login();
     cy.server();
@@ -30,12 +34,10 @@ describe('Nativefilters', () => {
     cy.get('[data-test="create-filter"]').click();
     cy.get('.ant-modal').should('be.visible');
 
-    cy.get('.ant-form-horizontal').find('.ant-tabs-nav-add').first().click();
-
     cy.get('.ant-modal')
       .find('[data-test="name-input"]')
       .click()
-      .type('TEST_Filter');
+      .type('Country name');
 
     cy.get('.ant-modal').find('[data-test="datasource-input"]').click();
 
@@ -43,16 +45,45 @@ describe('Nativefilters', () => {
       .contains('wb_health_population')
       .click();
 
-    // possible bug with cypress where it is having issue discovering the field input
-    // after it is enable it is enabled
-
-    /* cy.get('.ant-modal')
+    // hack for unclickable country_name
+    cy.get('.ant-modal').find('[data-test="field-input"]').type('country_name');
+    cy.get('.ant-modal')
       .find('[data-test="field-input"]')
-      .click()
-      .contains('country_name')
-      .click();
-      */
+      .type('{downarrow}{downarrow}{enter}');
 
-    cy.get('.ant-modal-footer').find('.ant-btn-primary').should('be.visible');
+    cy.get('.ant-modal-footer')
+      .find('.ant-btn-primary')
+      .should('be.visible')
+      .click();
+  });
+
+  it('should show newly added filter in filter bar menu', () => {
+    cy.get('[data-test="filter-bar"]').should('be.visible');
+    cy.get('[data-test="filter-control-name"]').should('be.visible');
+    cy.get('[data-test="form-item-value"]').should('be.visible');
+  });
+  it('should filter dashboard with selected filter value', () => {
+    cy.get('[data-test="form-item-value"]').should('be.visible').click();
+    cy.get('.ant-select-selection-search').type('Hong Kong{enter}');
+    cy.get('[data-test="filter-apply-button"]').click();
+    cy.get('.treemap').within(() => {
+      cy.contains('CHN').should('be.visible');
+      cy.contains('USA').should('not.exist');
+    });
+  });
+  it('should stop filtering when filter is removed', () => {
+    cy.get('[data-test="create-filter"]').click();
+    cy.get('.ant-modal').should('be.visible');
+    cy.get('.ant-tabs-nav-list').within(() => {
+      cy.get('.ant-tabs-tab-remove').click();
+    });
+    cy.get('.ant-modal-footer')
+      .find('.ant-btn-primary')
+      .should('be.visible')
+      .click();
+      cy.get('.treemap').within(() => {
+        cy.contains('CHN').should('be.visible');
+        cy.contains('USA').should('be.visible');
+      });
   });
 });

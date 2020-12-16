@@ -257,7 +257,7 @@ const FilterValue: React.FC<FilterProps> = ({
         setExtraFormData(values.value);
       }}
     >
-      <Form.Item name="value">
+      <Form.Item data-test="form-item-value" name="value">
         <SuperChart
           height={20}
           width={220}
@@ -280,7 +280,7 @@ export const FilterControl: React.FC<FilterProps> = ({
   return (
     <StyledFilterControlContainer>
       <StyledFilterControlTitleBox>
-        <StyledFilterControlTitle>{name}</StyledFilterControlTitle>
+        <StyledFilterControlTitle data-test="filter-control-name">{name}</StyledFilterControlTitle>
         <div>{icon}</div>
       </StyledFilterControlTitleBox>
       <FilterValue
@@ -425,6 +425,7 @@ const FilterBar: React.FC<FiltersBarProps> = ({
             type="submit"
             buttonSize="sm"
             onClick={handleApply}
+            data-test="filter-apply-button"
           >
             {t('Apply')}
           </Button>
