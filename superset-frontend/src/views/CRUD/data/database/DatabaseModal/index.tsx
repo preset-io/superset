@@ -35,7 +35,6 @@ import {
   useAvailableDatabases,
   useDatabaseValidation,
 } from 'src/views/CRUD/hooks';
-import { useCommonConf } from 'src/views/CRUD/data/database/state';
 import {
   DatabaseObject,
   DatabaseForm,
@@ -195,7 +194,6 @@ const DatabaseModal: FunctionComponent<DatabaseModalProps> = ({
   const [validationErrors, getValidation] = useDatabaseValidation();
   const [hasConnectedDb, setHasConnectedDb] = useState<boolean>(false);
   const [dbName, setDbName] = useState('');
-  const conf = useCommonConf();
 
   const isEditMode = !!databaseId;
   const useSqlAlchemyForm =
@@ -404,7 +402,6 @@ const DatabaseModal: FunctionComponent<DatabaseModalProps> = ({
                   value: target.value,
                 })
               }
-              conf={conf}
               testConnection={testConnection}
             />
           ) : (
