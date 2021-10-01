@@ -53,7 +53,6 @@ export default function newEntitiesFromDrop({ dropResult, layout }) {
     newEntities[rowWrapper.id] = rowWrapper;
     newDropChild.parents = rowWrapper.parents.concat(rowWrapper.id);
     newDropChild = rowWrapper;
-    newDropChild.parents = rowWrapper.parents.concat(rowWrapper.id);
   } else if (dragType === TABS_TYPE) {
     // create a new tab component
     const tabChild = newComponentFactory(TAB_TYPE);
