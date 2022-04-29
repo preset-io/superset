@@ -40,6 +40,7 @@
     "@storybook/addon-links": "^6.3.12",
     "@storybook/addons": "^6.3.12",
     "@storybook/react": "^6.3.12",
+    "@superset-ui/core": "1.5.0",
     "@types/react-loadable": "^5.5.3",
     "antd": "^4.9.4",
     "bootstrap": "^3.4.1",
@@ -64,7 +65,6 @@
   },
   "peerDependencies": {
     "@encodable/color": "=1.1.1",
-    "@superset-ui/core": "*",
     "@superset-ui/legacy-plugin-chart-calendar": "*",
     "@superset-ui/legacy-plugin-chart-chord": "*",
     "@superset-ui/legacy-plugin-chart-country-map": "*",

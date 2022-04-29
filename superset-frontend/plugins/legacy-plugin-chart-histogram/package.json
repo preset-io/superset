@@ -30,14 +30,14 @@
   "dependencies": {
     "@data-ui/histogram": "^0.0.84",
     "@data-ui/theme": "^0.0.84",
+    "@superset-ui/chart-controls": "1.5.0",
+    "@superset-ui/core": "1.5.0",
     "@vx/legend": "^0.0.198",
     "@vx/responsive": "^0.0.199",
     "@vx/scale": "^0.0.197",
     "prop-types": "^15.6.2"
   },
   "peerDependencies": {
-    "@superset-ui/chart-controls": "*",
-    "@superset-ui/core": "*",
     "react": "^15 || ^16"
   }
 }
