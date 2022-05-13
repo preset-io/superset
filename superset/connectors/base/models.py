@@ -78,7 +78,8 @@ class BaseDatasource(
     # class attributes to define when deriving BaseDatasource
     # ---------------------------------------------------------------
     __tablename__: Optional[str] = None  # {connector_name}_datasource
-    baselink: Optional[str] = None  # url portion pointing to ModelView endpoint
+    # url portion pointing to ModelView endpoint
+    baselink: Optional[str] = None
 
     @property
     def column_class(self) -> Type["BaseColumn"]:
