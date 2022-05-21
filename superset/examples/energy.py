@@ -23,15 +23,10 @@ from sqlalchemy.sql import column
 
 import superset.utils.database as database_utils
 from superset import db
-from superset.connectors.sqla.models import SqlMetric
+from superset.connectors.sqla.models import SqlaTable, SqlMetric
 from superset.models.slice import Slice
 
-from .helpers import (
-    get_example_data,
-    get_table_connector_registry,
-    merge_slice,
-    misc_dash_slices,
-)
+from .helpers import get_example_data, merge_slice, misc_dash_slices
 
 
 def load_energy(
@@ -60,10 +55,9 @@ def load_energy(
         )
 
     print("Creating table [wb_health_population] reference")
-    table = get_table_connector_registry()
-    tbl = db.session.query(table).filter_by(table_name=tbl_name).first()
+    tbl = db.session.query(SqlaTable).filter_by(table_name=tbl_name).first()
     if not tbl:
-        tbl = table(table_name=tbl_name, schema=schema)
+        tbl = SqlaTable(table_name=tbl_name, schema=schema)
     tbl.description = "Energy consumption"
     tbl.database = database
     tbl.filter_select_enabled = True

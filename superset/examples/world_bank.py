@@ -25,7 +25,7 @@ from sqlalchemy.sql import column
 
 import superset.utils.database
 from superset import app, db
-from superset.connectors.sqla.models import SqlMetric
+from superset.connectors.sqla.models import SqlaTable, SqlMetric
 from superset.models.dashboard import Dashboard
 from superset.models.slice import Slice
 from superset.utils import core as utils
@@ -35,7 +35,6 @@ from .helpers import (
     get_example_data,
     get_examples_folder,
     get_slice_json,
-    get_table_connector_registry,
     merge_slice,
     misc_dash_slices,
     update_slice_ids,
@@ -83,10 +82,9 @@ def load_world_bank_health_n_pop(  # pylint: disable=too-many-locals, too-many-s
         )
 
     print("Creating table [wb_health_population] reference")
-    table = get_table_connector_registry()
-    tbl = db.session.query(table).filter_by(table_name=tbl_name).first()
+    tbl = db.session.query(SqlaTable).filter_by(table_name=tbl_name).first()
     if not tbl:
-        tbl = table(table_name=tbl_name, schema=schema)
+        tbl = SqlaTable(table_name=tbl_name, schema=schema)
     tbl.description = utils.readfile(
         os.path.join(get_examples_folder(), "countries.md")
     )

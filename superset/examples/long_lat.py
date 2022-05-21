@@ -23,15 +23,10 @@ from sqlalchemy import DateTime, Float, inspect, String
 
 import superset.utils.database as database_utils
 from superset import db
+from superset.connectors.sqla.models import SqlaTable
 from superset.models.slice import Slice
 
-from .helpers import (
-    get_example_data,
-    get_slice_json,
-    get_table_connector_registry,
-    merge_slice,
-    misc_dash_slices,
-)
+from .helpers import get_example_data, get_slice_json, merge_slice, misc_dash_slices
 
 
 def load_long_lat_data(only_metadata: bool = False, force: bool = False) -> None:
@@ -85,10 +80,9 @@ def load_long_lat_data(only_metadata: bool = False, force: bool = False) -> None
         print("-" * 80)
 
     print("Creating table reference")
-    table = get_table_connector_registry()
-    obj = db.session.query(table).filter_by(table_name=tbl_name).first()
+    obj = db.session.query(SqlaTable).filter_by(table_name=tbl_name).first()
     if not obj:
-        obj = table(table_name=tbl_name, schema=schema)
+        obj = SqlaTable(table_name=tbl_name, schema=schema)
     obj.main_dttm_col = "datetime"
     obj.database = database
     obj.filter_select_enabled = True

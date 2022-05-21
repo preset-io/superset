@@ -61,7 +61,8 @@ from sqlalchemy.orm.mapper import Mapper
 from sqlalchemy.orm.query import Query as SqlaQuery
 
 from superset import sql_parse
-from superset.connectors.connector_registry import ConnectorRegistry
+from superset.connectors.sqla.dao import SqlaTableDAO
+from superset.connectors.sqla.models import SqlaTable
 from superset.constants import RouteMethod
 from superset.errors import ErrorLevel, SupersetError, SupersetErrorType
 from superset.exceptions import SupersetSecurityException
@@ -334,7 +335,8 @@ class SupersetSecurityManager(  # pylint: disable=too-many-public-methods
         return (
             self.can_access_all_datasources()
             or self.can_access_all_databases()
-            or self.can_access("database_access", database.perm)  # type: ignore
+            # type: ignore
+            or self.can_access("database_access", database.perm)
         )
 
     def can_access_schema(self, datasource: "BaseDatasource") -> bool:
@@ -458,43 +460,6 @@ class SupersetSecurityManager(  # pylint: disable=too-many-public-methods
 
         return current_app.config.get("PERMISSION_INSTRUCTIONS_LINK")
 
-    def get_user_datasources(self) -> List["BaseDatasource"]:
-        """
-        Collect datasources which the user has explicit permissions to.
-
-        :returns: The list of datasources
-        """
-
-        user_perms = self.user_view_menu_names("datasource_access")
-        schema_perms = self.user_view_menu_names("schema_access")
-        user_datasources = set()
-        for datasource_class in ConnectorRegistry.sources.values():
-            user_datasources.update(
-                self.get_session.query(datasource_class)
-                .filter(
-                    or_(
-                        datasource_class.perm.in_(user_perms),
-                        datasource_class.schema_perm.in_(schema_perms),
-                    )
-                )
-                .all()
-            )
-
-        # group all datasources by database
-        all_datasources = ConnectorRegistry.get_all_datasources(self.get_session)
-        datasources_by_database: Dict["Database", Set["BaseDatasource"]] = defaultdict(
-            set
-        )
-        for datasource in all_datasources:
-            datasources_by_database[datasource.database].add(datasource)
-
-        # add datasources with implicit permission (eg, database access)
-        for database, datasources in datasources_by_database.items():
-            if self.can_access_database(database):
-                user_datasources.update(datasources)
-
-        return list(user_datasources)
-
     def can_access_table(self, database: "Database", table: "Table") -> bool:
         """
         Return True if the user can access the SQL table, False otherwise.
@@ -582,41 +547,6 @@ class SupersetSecurityManager(  # pylint: disable=too-many-public-methods
 
         return [s for s in schemas if s in accessible_schemas]
 
-    def get_datasources_accessible_by_user(  # pylint: disable=invalid-name
-        self,
-        database: "Database",
-        datasource_names: List[DatasourceName],
-        schema: Optional[str] = None,
-    ) -> List[DatasourceName]:
-        """
-        Return the list of SQL tables accessible by the user.
-
-        :param database: The SQL database
-        :param datasource_names: The list of eligible SQL tables w/ schema
-        :param schema: The fallback SQL schema if not present in the table name
-        :returns: The list of accessible SQL tables w/ schema
-        """
-
-        if self.can_access_database(database):
-            return datasource_names
-
-        if schema:
-            schema_perm = self.get_schema_perm(database, schema)
-            if schema_perm and self.can_access("schema_access", schema_perm):
-                return datasource_names
-
-        user_perms = self.user_view_menu_names("datasource_access")
-        schema_perms = self.user_view_menu_names("schema_access")
-        user_datasources = ConnectorRegistry.query_datasources_by_permissions(
-            self.get_session, database, user_perms, schema_perms
-        )
-        if schema:
-            names = {d.table_name for d in user_datasources if d.schema == schema}
-            return [d for d in datasource_names if d.table in names]
-
-        full_names = {d.full_name for d in user_datasources}
-        return [d for d in datasource_names if f"[{database}].[{d}]" in full_names]
-
     def merge_perm(self, permission_name: str, view_menu_name: str) -> None:
         """
         Add the FAB permission/view-menu.
@@ -671,7 +601,7 @@ class SupersetSecurityManager(  # pylint: disable=too-many-public-methods
                 self.add_permission_view_menu(view_menu, perm)
 
         logger.info("Creating missing datasource permissions.")
-        datasources = ConnectorRegistry.get_all_datasources(self.get_session)
+        datasources = SqlaTableDAO.get_all_datasets(self.get_session)
         for datasource in datasources:
             merge_pv("datasource_access", datasource.get_perm())
             merge_pv("schema_access", datasource.get_schema_perm())
@@ -1049,7 +979,7 @@ class SupersetSecurityManager(  # pylint: disable=too-many-public-methods
                 schema_perm = self.get_schema_perm(database, schema=table_.schema)
 
                 if not (schema_perm and self.can_access("schema_access", schema_perm)):
-                    datasources = SqlaTable.query_datasources_by_name(
+                    datasources = SqlaTableDAO.query_datasources_by_name(
                         self.get_session, database, table_.table, schema=table_.schema
                     )
 

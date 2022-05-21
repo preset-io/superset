@@ -925,7 +925,8 @@ class SqlaTable(Model, BaseDatasource):  # pylint: disable=too-many-public-metho
         if sql_query_mutator:
             sql = sql_query_mutator(
                 sql,
-                user_name=get_username(),  # TODO(john-bodley): Deprecate in 3.0.
+                # TODO(john-bodley): Deprecate in 3.0.
+                user_name=get_username(),
                 security_manager=security_manager,
                 database=self.database,
             )

@@ -21,9 +21,11 @@ import polyline
 from sqlalchemy import inspect, String, Text
 
 from superset import db
+from superset.connectors.sqla.models import SqlaTable
+from superset.utils.core import DatasourceType
 
 from ..utils.database import get_example_database
-from .helpers import get_example_data, get_table_connector_registry
+from .helpers import get_example_data
 
 
 def load_bart_lines(only_metadata: bool = False, force: bool = False) -> None:
@@ -56,10 +58,9 @@ def load_bart_lines(only_metadata: bool = False, force: bool = False) -> None:
         )
 
     print("Creating table {} reference".format(tbl_name))
-    table = get_table_connector_registry()
-    tbl = db.session.query(table).filter_by(table_name=tbl_name).first()
+    tbl = db.session.query(SqlaTable).filter_by(table_name=tbl_name).first()
     if not tbl:
-        tbl = table(table_name=tbl_name, schema=schema)
+        tbl = SqlaTable(table_name=tbl_name, schema=schema)
     tbl.description = "BART lines"
     tbl.database = database
     tbl.filter_select_enabled = True

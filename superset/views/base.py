@@ -60,7 +60,7 @@ from superset import (
     security_manager,
 )
 from superset.commands.exceptions import CommandException, CommandInvalidError
-from superset.connectors.sqla import models
+from superset.connectors.sqla.models import SqlaTable
 from superset.datasets.commands.exceptions import get_dataset_exist_error_msg
 from superset.db_engine_specs import get_available_engine_specs
 from superset.db_engine_specs.gsheets import GSheetsEngineSpec
@@ -237,13 +237,13 @@ def handle_api_exception(
     return functools.update_wrapper(wraps, f)
 
 
-def validate_sqlatable(table: models.SqlaTable) -> None:
+def validate_sqlatable(table: SqlaTable) -> None:
     """Checks the table existence in the database."""
     with db.session.no_autoflush:
-        table_query = db.session.query(models.SqlaTable).filter(
-            models.SqlaTable.table_name == table.table_name,
-            models.SqlaTable.schema == table.schema,
-            models.SqlaTable.database_id == table.database.id,
+        table_query = db.session.query(SqlaTable).filter(
+            SqlaTable.table_name == table.table_name,
+            SqlaTable.schema == table.schema,
+            SqlaTable.database_id == table.database.id,
         )
         if db.session.query(table_query.exists()).scalar():
             raise Exception(get_dataset_exist_error_msg(table.full_name))
@@ -263,7 +263,7 @@ def validate_sqlatable(table: models.SqlaTable) -> None:
         ) from ex
 
 
-def create_table_permissions(table: models.SqlaTable) -> None:
+def create_table_permissions(table: SqlaTable) -> None:
     security_manager.add_permission_view_menu("datasource_access", table.get_perm())
     if table.schema:
         security_manager.add_permission_view_menu("schema_access", table.schema_perm)

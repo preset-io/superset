@@ -34,7 +34,6 @@ from ..utils.database import get_example_database
 from .helpers import (
     get_example_data,
     get_slice_json,
-    get_table_connector_registry,
     merge_slice,
     misc_dash_slices,
     update_slice_ids,
@@ -111,11 +110,14 @@ def load_birth_names(
     if not only_metadata and (not table_exists or force):
         load_data(tbl_name, database, sample=sample)
 
-    table = get_table_connector_registry()
-    obj = db.session.query(table).filter_by(table_name=tbl_name, schema=schema).first()
+    obj = (
+        db.session.query(SqlaTable)
+        .filter_by(table_name=tbl_name, schema=schema)
+        .first()
+    )
     if not obj:
         print(f"Creating table [{tbl_name}] reference")
-        obj = table(table_name=tbl_name, schema=schema)
+        obj = SqlaTable(table_name=tbl_name, schema=schema)
         db.session.add(obj)
 
     _set_table_metadata(obj, database)

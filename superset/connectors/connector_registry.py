@@ -66,15 +66,6 @@ class ConnectorRegistry:
         return datasource
 
     @classmethod
-    def get_all_datasources(cls, session: Session) -> List["BaseDatasource"]:
-        datasources: List["BaseDatasource"] = []
-        for source_class in ConnectorRegistry.sources.values():
-            qry = session.query(source_class)
-            qry = source_class.default_query(qry)
-            datasources.extend(qry.all())
-        return datasources
-
-    @classmethod
     def get_datasource_by_id(
         cls, session: Session, datasource_id: int
     ) -> "BaseDatasource":

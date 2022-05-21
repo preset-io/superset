@@ -28,7 +28,6 @@ from flask_babel import gettext as __, lazy_gettext as _
 from flask_compress import Compress
 from werkzeug.middleware.proxy_fix import ProxyFix
 
-from superset.connectors.connector_registry import ConnectorRegistry
 from superset.constants import CHANGE_ME_SECRET_KEY
 from superset.extensions import (
     _event_logger,
@@ -67,7 +66,8 @@ class SupersetAppInitializer:  # pylint: disable=too-many-public-methods
         self.config = app.config
         self.manifest: Dict[Any, Any] = {}
 
-    @deprecated(details="use self.superset_app instead of self.flask_app")  # type: ignore
+    # type: ignore
+    @deprecated(details="use self.superset_app instead of self.flask_app")
     @property
     def flask_app(self) -> SupersetApp:
         return self.superset_app
@@ -407,7 +407,6 @@ class SupersetAppInitializer:  # pylint: disable=too-many-public-methods
         """
         self.configure_fab()
         self.configure_url_map_converters()
-        self.configure_data_sources()
         self.configure_auth_provider()
         self.configure_async_queries()
 
@@ -468,12 +467,6 @@ class SupersetAppInitializer:  # pylint: disable=too-many-public-methods
         _event_logger["event_logger"] = get_event_logger_from_cfg_value(
             self.superset_app.config.get("EVENT_LOGGER", DBEventLogger())
         )
-
-    def configure_data_sources(self) -> None:
-        # Registering sources
-        module_datasource_map = self.config["DEFAULT_MODULE_DS_MAP"]
-        module_datasource_map.update(self.config["ADDITIONAL_MODULE_DS_MAP"])
-        ConnectorRegistry.register_sources(module_datasource_map)
 
     def configure_cache(self) -> None:
         cache_manager.init_app(self.superset_app)

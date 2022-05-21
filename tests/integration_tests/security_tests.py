@@ -960,9 +960,9 @@ class TestDatasources(SupersetTestCase):
         mock_get_session.query.return_value.filter.return_value.all.return_value = []
 
         with mock.patch.object(
-            ConnectorRegistry, "get_all_datasources"
-        ) as mock_get_all_datasources:
-            mock_get_all_datasources.return_value = [
+            ConnectorRegistry, "get_all_sqlatables_datasources"
+        ) as mock_get_all_sqlatables_datasources:
+            mock_get_all_sqlatables_datasources.return_value = [
                 Datasource("database1", "schema1", "table1"),
                 Datasource("database1", "schema1", "table2"),
                 Datasource("database2", None, "table1"),
@@ -988,9 +988,9 @@ class TestDatasources(SupersetTestCase):
         mock_get_session.query.return_value.filter.return_value.all.return_value = []
 
         with mock.patch.object(
-            ConnectorRegistry, "get_all_datasources"
-        ) as mock_get_all_datasources:
-            mock_get_all_datasources.return_value = [
+            ConnectorRegistry, "get_all_sqlatables_datasources"
+        ) as mock_get_all_sqlatables_datasources:
+            mock_get_all_sqlatables_datasources.return_value = [
                 Datasource("database1", "schema1", "table1"),
                 Datasource("database1", "schema1", "table2"),
                 Datasource("database2", None, "table1"),
@@ -1016,9 +1016,9 @@ class TestDatasources(SupersetTestCase):
         ]
 
         with mock.patch.object(
-            ConnectorRegistry, "get_all_datasources"
-        ) as mock_get_all_datasources:
-            mock_get_all_datasources.return_value = [
+            ConnectorRegistry, "get_all_sqlatables_datasources"
+        ) as mock_get_all_sqlatables_datasources:
+            mock_get_all_sqlatables_datasources.return_value = [
                 Datasource("database1", "schema1", "table1"),
                 Datasource("database1", "schema1", "table2"),
                 Datasource("database2", None, "table1"),

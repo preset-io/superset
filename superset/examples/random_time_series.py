@@ -20,14 +20,10 @@ from sqlalchemy import DateTime, inspect, String
 
 import superset.utils.database as database_utils
 from superset import app, db
+from superset.connectors.sqla.models import SqlaTable
 from superset.models.slice import Slice
 
-from .helpers import (
-    get_example_data,
-    get_slice_json,
-    get_table_connector_registry,
-    merge_slice,
-)
+from .helpers import get_example_data, get_slice_json, merge_slice
 
 
 def load_random_time_series_data(
@@ -62,10 +58,9 @@ def load_random_time_series_data(
         print("-" * 80)
 
     print(f"Creating table [{tbl_name}] reference")
-    table = get_table_connector_registry()
-    obj = db.session.query(table).filter_by(table_name=tbl_name).first()
+    obj = db.session.query(SqlaTable).filter_by(table_name=tbl_name).first()
     if not obj:
-        obj = table(table_name=tbl_name, schema=schema)
+        obj = SqlaTable(table_name=tbl_name, schema=schema)
     obj.main_dttm_col = "ds"
     obj.database = database
     obj.filter_select_enabled = True

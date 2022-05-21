@@ -30,8 +30,14 @@ from wtforms.validators import Regexp
 
 from superset import app, db
 from superset.connectors.base.views import DatasourceModelView
-from superset.connectors.sqla import models
+from superset.connectors.sqla.models import (
+    RowLevelSecurityFilter,
+    SqlaTable,
+    SqlMetric,
+    TableColumn,
+)
 from superset.constants import MODEL_VIEW_RW_METHOD_PERMISSION_MAP, RouteMethod
+from superset.models.core import Database
 from superset.superset_typing import FlaskResponse
 from superset.utils import core as utils
 from superset.views.base import (
@@ -48,7 +54,7 @@ logger = logging.getLogger(__name__)
 
 
 class TableColumnInlineView(CompactCRUDMixin, SupersetModelView):
-    datamodel = SQLAInterface(models.TableColumn)
+    datamodel = SQLAInterface(TableColumn)
     # TODO TODO, review need for this on related_views
     class_permission_name = "Dataset"
     method_permission_name = MODEL_VIEW_RW_METHOD_PERMISSION_MAP
@@ -170,7 +176,7 @@ class TableColumnInlineView(CompactCRUDMixin, SupersetModelView):
     add_form_extra_fields = {
         "table": QuerySelectField(
             "Table",
-            query_factory=lambda: db.session.query(models.SqlaTable),
+            query_factory=lambda: db.session.query(SqlaTable),
             allow_blank=True,
             widget=Select2Widget(extra_classes="readonly"),
         )
@@ -180,7 +186,7 @@ class TableColumnInlineView(CompactCRUDMixin, SupersetModelView):
 
 
 class SqlMetricInlineView(CompactCRUDMixin, SupersetModelView):
-    datamodel = SQLAInterface(models.SqlMetric)
+    datamodel = SQLAInterface(SqlMetric)
     class_permission_name = "Dataset"
     method_permission_name = MODEL_VIEW_RW_METHOD_PERMISSION_MAP
     include_route_methods = RouteMethod.RELATED_VIEW_SET | RouteMethod.API_SET
@@ -242,7 +248,7 @@ class SqlMetricInlineView(CompactCRUDMixin, SupersetModelView):
     add_form_extra_fields = {
         "table": QuerySelectField(
             "Table",
-            query_factory=lambda: db.session.query(models.SqlaTable),
+            query_factory=lambda: db.session.query(SqlaTable),
             allow_blank=True,
             widget=Select2Widget(extra_classes="readonly"),
         )
@@ -262,7 +268,7 @@ class RowLevelSecurityListWidget(
 
 
 class RowLevelSecurityFiltersModelView(SupersetModelView, DeleteMixin):
-    datamodel = SQLAInterface(models.RowLevelSecurityFilter)
+    datamodel = SQLAInterface(RowLevelSecurityFilter)
 
     list_widget = cast(SupersetListWidget, RowLevelSecurityListWidget)
 
@@ -333,7 +339,7 @@ class RowLevelSecurityFiltersModelView(SupersetModelView, DeleteMixin):
 class TableModelView(  # pylint: disable=too-many-ancestors
     DatasourceModelView, DeleteMixin, YamlExportMixin
 ):
-    datamodel = SQLAInterface(models.SqlaTable)
+    datamodel = SQLAInterface(SqlaTable)
     class_permission_name = "Dataset"
     method_permission_name = MODEL_VIEW_RW_METHOD_PERMISSION_MAP
     include_route_methods = RouteMethod.CRUD_SET
@@ -454,7 +460,7 @@ class TableModelView(  # pylint: disable=too-many-ancestors
     edit_form_extra_fields = {
         "database": QuerySelectField(
             "Database",
-            query_factory=lambda: db.session.query(models.Database),
+            query_factory=lambda: db.session.query(Database),
             widget=Select2Widget(extra_classes="readonly"),
         )
     }

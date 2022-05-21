@@ -20,16 +20,11 @@ import pandas as pd
 from sqlalchemy import BigInteger, Date, DateTime, inspect, String
 
 from superset import app, db
+from superset.connectors.sqla.models import SqlaTable
 from superset.models.slice import Slice
 
 from ..utils.database import get_example_database
-from .helpers import (
-    get_example_data,
-    get_slice_json,
-    get_table_connector_registry,
-    merge_slice,
-    misc_dash_slices,
-)
+from .helpers import get_example_data, get_slice_json, merge_slice, misc_dash_slices
 
 
 def load_multiformat_time_series(  # pylint: disable=too-many-locals
@@ -77,10 +72,9 @@ def load_multiformat_time_series(  # pylint: disable=too-many-locals
         print("-" * 80)
 
     print(f"Creating table [{tbl_name}] reference")
-    table = get_table_connector_registry()
-    obj = db.session.query(table).filter_by(table_name=tbl_name).first()
+    obj = db.session.query(SqlaTable).filter_by(table_name=tbl_name).first()
     if not obj:
-        obj = table(table_name=tbl_name, schema=schema)
+        obj = SqlaTable(table_name=tbl_name, schema=schema)
     obj.main_dttm_col = "ds"
     obj.database = database
     obj.filter_select_enabled = True

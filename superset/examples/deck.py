@@ -17,15 +17,11 @@
 import json
 
 from superset import db
+from superset.connectors.sqla.models import SqlaTable
 from superset.models.dashboard import Dashboard
 from superset.models.slice import Slice
 
-from .helpers import (
-    get_slice_json,
-    get_table_connector_registry,
-    merge_slice,
-    update_slice_ids,
-)
+from .helpers import get_slice_json, merge_slice, update_slice_ids
 
 COLOR_RED = {"r": 205, "g": 0, "b": 3, "a": 0.82}
 POSITION_JSON = """\
@@ -181,8 +177,7 @@ POSITION_JSON = """\
 def load_deck_dash() -> None:  # pylint: disable=too-many-statements
     print("Loading deck.gl dashboard")
     slices = []
-    table = get_table_connector_registry()
-    tbl = db.session.query(table).filter_by(table_name="long_lat").first()
+    tbl = db.session.query(SqlaTable).filter_by(table_name="long_lat").first()
     slice_data = {
         "spatial": {"type": "latlong", "lonCol": "LON", "latCol": "LAT"},
         "color_picker": COLOR_RED,
