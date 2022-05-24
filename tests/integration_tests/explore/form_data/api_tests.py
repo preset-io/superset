@@ -26,6 +26,7 @@ from superset.datasets.commands.exceptions import DatasetAccessDeniedError
 from superset.explore.form_data.commands.state import TemporaryExploreState
 from superset.extensions import cache_manager
 from superset.models.slice import Slice
+from superset.models.sql_lab import Query
 from superset.utils.core import DatasourceType
 from tests.integration_tests.base_tests import login
 from tests.integration_tests.fixtures.client import client
@@ -38,6 +39,14 @@ from tests.integration_tests.test_app import app
 KEY = "test-key"
 INITIAL_FORM_DATA = json.dumps({"test": "initial value"})
 UPDATED_FORM_DATA = json.dumps({"test": "updated value"})
+
+
+@pytest.fixture
+def query_id() -> int:
+    with app.app_context() as ctx:
+        session: Session = ctx.app.appbuilder.get_session
+        query = session.query(Query).filter_by(tab_name="students").first()
+        return query.id
 
 
 @pytest.fixture
@@ -401,3 +410,26 @@ def test_delete_not_owner(client, chart_id: int, datasource: SqlaTable, admin_id
     login(client, "admin")
     resp = client.delete(f"api/v1/explore/form_data/{another_key}")
     assert resp.status_code == 403
+
+
+@pytest.mark.usefixtures("get_query_datasource")
+def test_post_with_query(client, chart_id: int, query_id: int):
+    login(client, "admin")
+    form_data = {
+        "adhoc_filters": [],
+        "viz_type": "sankey",
+        "groupby": ["target"],
+        "metric": "sum__value",
+        "row_limit": 5000,
+        "slice_id": chart_id,
+        "time_range_endpoints": ["inclusive", "exclusive"],
+        "datasource": f"{query_id}__query",
+    }
+    payload = {
+        "datasource_id": query_id,
+        "chart_id": chart_id,
+        "form_data": json.dumps(form_data),
+        "datasource_type": "query",
+    }
+    resp = client.post("api/v1/explore/form_data", json=payload)
+    assert resp.status_code == 201

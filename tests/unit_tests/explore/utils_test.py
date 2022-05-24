@@ -29,7 +29,6 @@ from superset.commands.exceptions import (
     OwnersNotFoundValidationError,
     QueryNotFoundValidationError,
 )
-
 from superset.datasets.commands.exceptions import (
     DatasetAccessDeniedError,
     DatasetNotFoundError,
@@ -54,6 +53,7 @@ query_datasources_by_name = (
 
 def test_unsaved_chart_no_dataset_id(app_context: AppContext) -> None:
     from superset.explore.utils import check_chart_access
+
     with raises(DatasourceNotFoundValidationError):
         check_chart_access(
             datasource_id=0,
@@ -67,6 +67,7 @@ def test_unsaved_chart_unknown_dataset_id(
     mocker: MockFixture, app_context: AppContext
 ) -> None:
     from superset.explore.utils import check_chart_access
+
     with raises(DatasetNotFoundError):
         mocker.patch(dataset_find_by_id, return_value=None)
         check_chart_access(
@@ -102,7 +103,7 @@ def test_unsaved_chart_unauthorized_dataset(
     with raises(DatasetAccessDeniedError):
         mocker.patch(dataset_find_by_id, return_value=SqlaTable())
         mocker.patch(can_access_datasource, return_value=False)
-        utils.check_chart_access(
+        check_chart_access(
             datasource_id=1,
             chart_id=0,
             actor=User(),
@@ -115,6 +116,7 @@ def test_unsaved_chart_authorized_dataset(
 ) -> None:
     from superset.connectors.sqla.models import SqlaTable
     from superset.explore.utils import check_chart_access
+
     mocker.patch(dataset_find_by_id, return_value=SqlaTable())
     mocker.patch(can_access_datasource, return_value=True)
     assert (
@@ -156,7 +158,7 @@ def test_saved_chart_unauthorized_dataset(
     with raises(DatasetAccessDeniedError):
         mocker.patch(dataset_find_by_id, return_value=SqlaTable())
         mocker.patch(can_access_datasource, return_value=False)
-        utils.check_chart_access(
+        check_chart_access(
             datasource_id=1,
             chart_id=1,
             actor=User(),
