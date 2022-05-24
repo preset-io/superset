@@ -359,7 +359,6 @@ class SupersetTestCase(TestCase):
             json_payload["select_as_cta"] = select_as_cta
         if schema:
             json_payload["schema"] = schema
-
         resp = self.get_json_resp(
             "/superset/sql_json/", raise_on_error=False, json_=json_payload
         )

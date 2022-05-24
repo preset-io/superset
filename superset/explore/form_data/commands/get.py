@@ -27,6 +27,7 @@ from superset.explore.form_data.commands.state import TemporaryExploreState
 from superset.explore.utils import check_chart_access
 from superset.extensions import cache_manager
 from superset.temporary_cache.commands.exceptions import TemporaryCacheGetFailedError
+from superset.utils.core import DatasourceType
 
 logger = logging.getLogger(__name__)
 
@@ -46,10 +47,10 @@ class GetFormDataCommand(BaseCommand, ABC):
             )
             if state:
                 check_chart_access(
-                    datasource_id=state["datasource_id"],
-                    datasource_type=state["datasource_type"],
-                    chart_id=state["chart_id"],
-                    actor=actor,
+                    state["datasource_id"],
+                    state["chart_id"],
+                    actor,
+                    DatasourceType(state["datasource_type"]),
                 )
                 if self._refresh_timeout:
                     cache_manager.explore_form_data_cache.set(key, state)

@@ -40,14 +40,11 @@ class CreateExplorePermalinkCommand(BaseExplorePermalinkCommand):
     def run(self) -> str:
         self.validate()
         try:
-            datasource = self.datasource.split("__")
-            datasource_id: int = int(datasource[0])
-            datasource_type: DatasourceType = DatasourceType(datasource[1])
+            d_id, d_type = self.datasource.split("__")
+            datasource_id = int(d_id)
+            datasource_type = DatasourceType(d_type)
             check_chart_access(
-                datasource_id=datasource_id,
-                datasource_type=datasource_type,
-                chart_id=self.chart_id,
-                actor=self.actor,
+                datasource_id, self.chart_id, self.actor, datasource_type
             )
             value = {
                 "chartId": self.chart_id,

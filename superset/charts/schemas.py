@@ -31,6 +31,7 @@ from superset.db_engine_specs.base import builtin_time_grains
 from superset.utils import pandas_postprocessing, schema as utils
 from superset.utils.core import (
     AnnotationType,
+    DatasourceType,
     FilterOperator,
     PostProcessingBoxplotWhiskerType,
     PostProcessingContributionOrientation,
@@ -199,6 +200,7 @@ class ChartPostSchema(Schema):
     datasource_type = fields.String(
         description=datasource_type_description,
         validate=validate.OneOf(choices=("druid", "table", "view", "query")),
+        validate=validate.OneOf(choices=[ds.value for ds in DatasourceType]),
         required=True,
     )
     datasource_name = fields.String(
@@ -245,6 +247,7 @@ class ChartPutSchema(Schema):
     datasource_type = fields.String(
         description=datasource_type_description,
         validate=validate.OneOf(choices=("druid", "table", "view", "query")),
+        validate=validate.OneOf(choices=[ds.value for ds in DatasourceType]),
         allow_none=True,
     )
     dashboards = fields.List(fields.Integer(description=dashboards_description))
@@ -984,6 +987,7 @@ class ChartDataDatasourceSchema(Schema):
     type = fields.String(
         description="Datasource type",
         validate=validate.OneOf(choices=("druid", "table", "query")),
+        validate=validate.OneOf(choices=[ds.value for ds in DatasourceType]),
     )
 
 

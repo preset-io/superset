@@ -50,15 +50,8 @@ class DeleteFormDataCommand(BaseCommand, ABC):
             if state:
                 datasource_id: int = state["datasource_id"]
                 chart_id: Optional[int] = state["chart_id"]
-                datasource_type: DatasourceType = DatasourceType(
-                    state["datasource_type"]
-                )
-                check_chart_access(
-                    datasource_id=datasource_id,
-                    datasource_type=datasource_type,
-                    chart_id=chart_id,
-                    actor=actor,
-                )
+                datasource_type = DatasourceType(state["datasource_type"])
+                check_chart_access(datasource_id, chart_id, actor, datasource_type)
                 if state["owner"] != actor.get_user_id():
                     raise TemporaryCacheAccessDeniedError()
                 tab_id = self._cmd_params.tab_id

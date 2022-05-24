@@ -522,7 +522,9 @@ class TestChartApi(SupersetTestCase, ApiOwnersTestCaseMixin, InsertChartMixin):
             response,
             {
                 "message": {
-                    "datasource_type": ["Must be one of: druid, table, view, query."]
+                    "datasource_type": [
+                        "Must be one of: sl_table, table, dataset, query, saved_query, view."
+                    ]
                 }
             },
         )
@@ -535,7 +537,7 @@ class TestChartApi(SupersetTestCase, ApiOwnersTestCaseMixin, InsertChartMixin):
         self.assertEqual(rv.status_code, 422)
         response = json.loads(rv.data.decode("utf-8"))
         self.assertEqual(
-            response, {"message": {"datasource_id": ["Dataset does not exist"]}}
+            response, {"message": {"datasource_id": ["Datasource does not exist"]}}
         )
 
     @pytest.mark.usefixtures("load_birth_names_dashboard_with_slices")
@@ -674,6 +676,40 @@ class TestChartApi(SupersetTestCase, ApiOwnersTestCaseMixin, InsertChartMixin):
         db.session.delete(chart)
         db.session.delete(user_alpha1)
         db.session.delete(user_alpha2)
+        db.session.commit()
+
+    def test_update_chart_validate_datasource(self):
+        """
+        Chart API: Test update validate datasource
+        """
+        admin = self.get_user("admin")
+        chart = self.insert_chart("title", owners=[admin.id], datasource_id=1)
+        self.login(username="admin")
+
+        chart_data = {"datasource_id": 1, "datasource_type": "unknown"}
+        rv = self.put_assert_metric(f"/api/v1/chart/{chart.id}", chart_data, "put")
+        self.assertEqual(rv.status_code, 400)
+        response = json.loads(rv.data.decode("utf-8"))
+        self.assertEqual(
+            response,
+            {
+                "message": {
+                    "datasource_type": [
+                        "Must be one of: sl_table, table, dataset, query, saved_query, view."
+                    ]
+                }
+            },
+        )
+
+        chart_data = {"datasource_id": 0, "datasource_type": "table"}
+        rv = self.put_assert_metric(f"/api/v1/chart/{chart.id}", chart_data, "put")
+        self.assertEqual(rv.status_code, 422)
+        response = json.loads(rv.data.decode("utf-8"))
+        self.assertEqual(
+            response, {"message": {"datasource_id": ["Datasource does not exist"]}}
+        )
+
+        db.session.delete(chart)
         db.session.commit()
 
     def test_update_chart_validate_owners(self):

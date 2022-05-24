@@ -46,12 +46,7 @@ class CreateFormDataCommand(BaseCommand):
             tab_id = self._cmd_params.tab_id
             actor = self._cmd_params.actor
             form_data = self._cmd_params.form_data
-            check_chart_access(
-                datasource_id=datasource_id,
-                datasource_type=datasource_type,
-                chart_id=chart_id,
-                actor=actor,
-            )
+            check_chart_access(datasource_id, chart_id, actor, datasource_type)
             contextual_key = cache_key(
                 session.get("_id"), tab_id, datasource_id, chart_id, datasource_type
             )
