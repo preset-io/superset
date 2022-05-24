@@ -527,7 +527,6 @@ class TestCore(SupersetTestCase):
                 "impersonate_user": False,
             }
         )
-
         response = self.client.post(
             "/superset/testconn", data=data, content_type="application/json"
         )
@@ -545,7 +544,6 @@ class TestCore(SupersetTestCase):
         response = self.client.post(
             "/superset/testconn", data=data, content_type="application/json"
         )
-
         assert response.status_code == 200
         assert response.headers["Content-Type"] == "application/json"
 
@@ -1066,7 +1064,7 @@ class TestCore(SupersetTestCase):
             LIMIT 10;
             """,
             client_id="client_id_1",
-            username="admin",
+            user_name="admin",
         )
         count_ds = []
         count_name = []
@@ -1456,7 +1454,7 @@ class TestCore(SupersetTestCase):
         self.run_sql(
             "SELECT name FROM birth_names",
             "client_id_1",
-            username=username,
+            user_name=username,
             raise_on_error=True,
             sql_editor_id=str(tab_state_id),
         )
@@ -1464,7 +1462,7 @@ class TestCore(SupersetTestCase):
         self.run_sql(
             "SELECT name FROM birth_names",
             "client_id_2",
-            username=username,
+            user_name=username,
             raise_on_error=True,
         )
 

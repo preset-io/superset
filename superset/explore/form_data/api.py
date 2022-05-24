@@ -249,7 +249,7 @@ class ExploreFormDataRestApi(BaseApi, ABC):
         """
         try:
             args = CommandParameters(
-                datasource_type=DatasourceType.SQLATABLE, actor=g.user, key=key
+                datasource_type=DatasourceType.TABLE, actor=g.user, key=key
             )
             form_data = GetFormDataCommand(args).run()
             if not form_data:
@@ -307,7 +307,7 @@ class ExploreFormDataRestApi(BaseApi, ABC):
         """
         try:
             args = CommandParameters(
-                datasource_type=DatasourceType.SQLATABLE, actor=g.user, key=key
+                datasource_type=DatasourceType.TABLE, actor=g.user, key=key
             )
             result = DeleteFormDataCommand(args).run()
             if not result:
