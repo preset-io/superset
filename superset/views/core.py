@@ -771,7 +771,7 @@ class Superset(BaseSupersetView):  # pylint: disable=too-many-public-methods
                 return redirect("/chart/list/")
         elif form_data_key:
             parameters = CommandParameters(
-                datasource_type=DatasourceType.TABLE, actor=g.user, key=form_data_key
+                actor=g.user, key=form_data_key
             )
             value = GetFormDataCommand(parameters).run()
             initial_form_data = json.loads(value) if value else {}

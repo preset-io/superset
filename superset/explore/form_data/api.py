@@ -186,7 +186,7 @@ class ExploreFormDataRestApi(BaseApi, ABC):
             args = CommandParameters(
                 actor=g.user,
                 datasource_id=item["datasource_id"],
-                datasource_type=item["datasource_type"],
+                datasource_type=DatasourceType(item["datasource_type"]),
                 chart_id=item.get("chart_id"),
                 tab_id=tab_id,
                 key=key,
@@ -248,9 +248,7 @@ class ExploreFormDataRestApi(BaseApi, ABC):
               $ref: '#/components/responses/500'
         """
         try:
-            args = CommandParameters(
-                datasource_type=DatasourceType.TABLE, actor=g.user, key=key
-            )
+            args = CommandParameters(actor=g.user, key=key)
             form_data = GetFormDataCommand(args).run()
             if not form_data:
                 return self.response_404()
@@ -306,9 +304,7 @@ class ExploreFormDataRestApi(BaseApi, ABC):
               $ref: '#/components/responses/500'
         """
         try:
-            args = CommandParameters(
-                datasource_type=DatasourceType.TABLE, actor=g.user, key=key
-            )
+            args = CommandParameters(actor=g.user, key=key)
             result = DeleteFormDataCommand(args).run()
             if not result:
                 return self.response_404()
