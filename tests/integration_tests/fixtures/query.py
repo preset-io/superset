@@ -26,34 +26,28 @@ from superset.models.sql_lab import Query
 from tests.integration_tests.test_app import app
 
 
-@pytest.fixture()
+@pytest.fixture
 def get_query_datasource():
-    with app.app_context():
-        engine = create_engine(app.config["SQLALCHEMY_DATABASE_URI"], echo=True)
-        meta = MetaData()
+    engine = db.session.get_bind()
+    Query.metadata.create_all(engine)  # pylint: disable=no-member
+    query_obj = Query(
+        client_id="foo",
+        database=Database(database_name="my_database", sqlalchemy_uri="sqlite://"),
+        tab_name="test_tab",
+        sql_editor_id="test_editor_id",
+        sql="select * from bar",
+        select_sql="select * from bar",
+        executed_sql="select * from bar",
+        limit=100,
+        select_as_cta=False,
+        rows=100,
+        error_message="none",
+        results_key="abc",
+    )
+    db.session.add(query_obj)
+    db.session.commit()
 
-        students = Table(
-            "students",
-            meta,
-            Column("id", Integer, primary_key=True),
-            Column("name", String),
-            Column("lastname", String),
-            Column("ds", Date),
-        )
-        meta.create_all(engine)
+    yield query_obj
 
-        students.insert().values(name="George", ds="2021-01-01")
-
-        query = Query(
-            database_id=db.session.query(Database).first().id,
-            client_id=str(uuid.uuid4())[0:10],
-            sql="select * from students",
-            tab_name="students",
-        )
-        db.session.add(query)
-        db.session.commit()
-        yield query
-
-        # rollback changes
-        db.session.delete(students)
-        db.session.delete(query)
+    # rollback changes
+    db.session.delete(query_obj)

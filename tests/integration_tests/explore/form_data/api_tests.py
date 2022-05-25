@@ -15,16 +15,19 @@
 # specific language governing permissions and limitations
 # under the License.
 import json
+import uuid
 from unittest.mock import patch
 
 import pytest
 from flask_appbuilder.security.sqla.models import User
+from sqlalchemy import Column, create_engine, Date, Integer, MetaData, String, Table
 from sqlalchemy.orm import Session
 
 from superset.connectors.sqla.models import SqlaTable
 from superset.datasets.commands.exceptions import DatasetAccessDeniedError
 from superset.explore.form_data.commands.state import TemporaryExploreState
-from superset.extensions import cache_manager
+from superset.extensions import cache_manager, db
+from superset.models.core import Database
 from superset.models.slice import Slice
 from superset.models.sql_lab import Query
 from superset.utils.core import DatasourceType
@@ -42,10 +45,38 @@ UPDATED_FORM_DATA = json.dumps({"test": "updated value"})
 
 
 @pytest.fixture
+def get_query_datasource():
+    with app.app_context() as ctx:
+        session: Session = ctx.app.appbuilder.get_session
+        engine = session.get_bind()
+        Query.metadata.create_all(engine)  # pylint: disable=no-member
+        query_obj = Query(
+            client_id="foo",
+            database=Database(database_name="my_database", sqlalchemy_uri="sqlite://"),
+            tab_name="test_tab",
+            sql_editor_id="test_editor_id",
+            sql="select * from bar",
+            select_sql="select * from bar",
+            executed_sql="select * from bar",
+            limit=100,
+            select_as_cta=False,
+            rows=100,
+            error_message="none",
+            results_key="abc",
+        )
+        session.add(query_obj)
+        session.commit()
+
+        yield query_obj
+
+        session.delete(query_obj)
+
+
+@pytest.fixture
 def query_id() -> int:
     with app.app_context() as ctx:
         session: Session = ctx.app.appbuilder.get_session
-        query = session.query(Query).filter_by(tab_name="students").first()
+        query = session.query(Query).first()
         return query.id
 
 
@@ -413,7 +444,7 @@ def test_delete_not_owner(client, chart_id: int, datasource: SqlaTable, admin_id
 
 
 @pytest.mark.usefixtures("get_query_datasource")
-def test_post_with_query(client, chart_id: int, query_id: int):
+def test_post_with_query(client, chart_id: int, get_query_datasource: Query):
     login(client, "admin")
     form_data = {
         "adhoc_filters": [],
@@ -423,10 +454,10 @@ def test_post_with_query(client, chart_id: int, query_id: int):
         "row_limit": 5000,
         "slice_id": chart_id,
         "time_range_endpoints": ["inclusive", "exclusive"],
-        "datasource": f"{query_id}__query",
+        "datasource": f"100__query",
     }
     payload = {
-        "datasource_id": query_id,
+        "datasource_id": get_query_datasource.id,
         "chart_id": chart_id,
         "form_data": json.dumps(form_data),
         "datasource_type": "query",

@@ -111,7 +111,7 @@ class ExploreFormDataRestApi(BaseApi, ABC):
             args = CommandParameters(
                 actor=g.user,
                 datasource_id=item["datasource_id"],
-                datasource_type=item["datasource_type"],
+                datasource_type=DatasourceType(item["datasource_type"]),
                 chart_id=item.get("chart_id"),
                 tab_id=tab_id,
                 form_data=item["form_data"],
