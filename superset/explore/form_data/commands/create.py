@@ -27,7 +27,6 @@ from superset.extensions import cache_manager
 from superset.key_value.utils import random_key
 from superset.temporary_cache.commands.exceptions import TemporaryCacheCreateFailedError
 from superset.temporary_cache.utils import cache_key
-from superset.utils.core import DatasourceType
 from superset.utils.schema import validate_json
 
 logger = logging.getLogger(__name__)

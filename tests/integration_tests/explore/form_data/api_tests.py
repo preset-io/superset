@@ -31,6 +31,7 @@ from superset.models.core import Database
 from superset.models.slice import Slice
 from superset.models.sql_lab import Query
 from superset.utils.core import DatasourceType
+from superset.utils.database import get_example_database
 from tests.integration_tests.base_tests import login
 from tests.integration_tests.fixtures.client import client
 from tests.integration_tests.fixtures.world_bank_dashboard import (
@@ -51,8 +52,8 @@ def get_query_datasource():
         engine = session.get_bind()
         Query.metadata.create_all(engine)  # pylint: disable=no-member
         query_obj = Query(
-            client_id="foo",
-            database=Database(database_name="my_database", sqlalchemy_uri="sqlite://"),
+            client_id="foo_abc",
+            database=get_example_database(),
             tab_name="test_tab",
             sql_editor_id="test_editor_id",
             sql="select * from bar",
@@ -70,6 +71,7 @@ def get_query_datasource():
         yield query_obj
 
         session.delete(query_obj)
+        session.commit()
 
 
 @pytest.fixture
@@ -443,7 +445,6 @@ def test_delete_not_owner(client, chart_id: int, datasource: SqlaTable, admin_id
     assert resp.status_code == 403
 
 
-@pytest.mark.usefixtures("get_query_datasource")
 def test_post_with_query(client, chart_id: int, get_query_datasource: Query):
     login(client, "admin")
     form_data = {
@@ -453,8 +454,7 @@ def test_post_with_query(client, chart_id: int, get_query_datasource: Query):
         "metric": "sum__value",
         "row_limit": 5000,
         "slice_id": chart_id,
-        "time_range_endpoints": ["inclusive", "exclusive"],
-        "datasource": f"100__query",
+        "datasource": f"{get_query_datasource.id}__query",
     }
     payload = {
         "datasource_id": get_query_datasource.id,
@@ -464,3 +464,15 @@ def test_post_with_query(client, chart_id: int, get_query_datasource: Query):
     }
     resp = client.post("api/v1/explore/form_data", json=payload)
     assert resp.status_code == 201
+
+
+def test_put_with_query(client, chart_id: int, get_query_datasource: Query):
+    login(client, "admin")
+    payload = {
+        "datasource_id": get_query_datasource.id,
+        "datasource_type": get_query_datasource.type,
+        "chart_id": chart_id,
+        "form_data": UPDATED_FORM_DATA,
+    }
+    resp = client.put(f"api/v1/explore/form_data/{KEY}", json=payload)
+    assert resp.status_code == 200
