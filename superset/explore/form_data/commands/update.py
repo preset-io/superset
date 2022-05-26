@@ -24,9 +24,9 @@ from sqlalchemy.exc import SQLAlchemyError
 from superset.commands.base import BaseCommand
 from superset.explore.form_data.commands.parameters import CommandParameters
 from superset.explore.form_data.commands.state import TemporaryExploreState
-from superset.explore.utils import check_chart_access
+from superset.explore.form_data.commands.utils import check_access
 from superset.extensions import cache_manager
-from superset.key_value.utils import random_key
+from superset.key_value.utils import get_owner, random_key
 from superset.temporary_cache.commands.exceptions import (
     TemporaryCacheAccessDeniedError,
     TemporaryCacheUpdateFailedError,
@@ -53,13 +53,13 @@ class UpdateFormDataCommand(BaseCommand, ABC):
             actor = self._cmd_params.actor
             key = self._cmd_params.key
             form_data = self._cmd_params.form_data
-            check_chart_access(datasource_id, chart_id, actor, datasource_type)
+            check_access(datasource_id, chart_id, actor, datasource_type)
             state: TemporaryExploreState = cache_manager.explore_form_data_cache.get(
                 key
             )
+            owner = get_owner(actor)
             if state and form_data:
-                user_id = actor.get_user_id()
-                if state["owner"] != user_id:
+                if state["owner"] != owner:
                     raise TemporaryCacheAccessDeniedError()
 
                 # Generate a new key if tab_id changes or equals 0
@@ -75,10 +75,11 @@ class UpdateFormDataCommand(BaseCommand, ABC):
                 key = cache_manager.explore_form_data_cache.get(contextual_key)
                 if not key or not tab_id:
                     key = random_key()
-                    cache_manager.explore_form_data_cache.set(contextual_key, key)
+                    cache_manager.explore_form_data_cache.set(
+                        contextual_key, key)
 
                 new_state: TemporaryExploreState = {
-                    "owner": actor.get_user_id(),
+                    "owner": owner,
                     "datasource_id": datasource_id,
                     "datasource_type": datasource_type,
                     "chart_id": chart_id,

@@ -24,8 +24,9 @@ from sqlalchemy.exc import SQLAlchemyError
 from superset.commands.base import BaseCommand
 from superset.explore.form_data.commands.parameters import CommandParameters
 from superset.explore.form_data.commands.state import TemporaryExploreState
-from superset.explore.utils import check_chart_access
+from superset.explore.form_data.commands.utils import check_access
 from superset.extensions import cache_manager
+from superset.key_value.utils import get_owner
 from superset.temporary_cache.commands.exceptions import (
     TemporaryCacheAccessDeniedError,
     TemporaryCacheDeleteFailedError,
@@ -51,12 +52,13 @@ class DeleteFormDataCommand(BaseCommand, ABC):
                 datasource_id: int = state["datasource_id"]
                 chart_id: Optional[int] = state["chart_id"]
                 datasource_type = DatasourceType(state["datasource_type"])
-                check_chart_access(datasource_id, chart_id, actor, datasource_type)
-                if state["owner"] != actor.get_user_id():
+                check_access(datasource_id, chart_id, actor, datasource_type)
+                if state["owner"] != get_owner(actor):
                     raise TemporaryCacheAccessDeniedError()
                 tab_id = self._cmd_params.tab_id
                 contextual_key = cache_key(
-                    session.get("_id"), tab_id, datasource_id, chart_id, datasource_type
+                    session.get(
+                        "_id"), tab_id, datasource_id, chart_id, datasource_type
                 )
                 if contextual_key is None:
                     # check again with old keys

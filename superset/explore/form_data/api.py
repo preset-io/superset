@@ -21,15 +21,7 @@ from flask import g, request, Response
 from flask_appbuilder.api import BaseApi, expose, protect, safe
 from marshmallow import ValidationError
 
-from superset.charts.commands.exceptions import (
-    ChartAccessDeniedError,
-    ChartNotFoundError,
-)
 from superset.constants import MODEL_API_RW_METHOD_PERMISSION_MAP, RouteMethod
-from superset.datasets.commands.exceptions import (
-    DatasetAccessDeniedError,
-    DatasetNotFoundError,
-)
 from superset.explore.form_data.commands.create import CreateFormDataCommand
 from superset.explore.form_data.commands.delete import DeleteFormDataCommand
 from superset.explore.form_data.commands.get import GetFormDataCommand
@@ -37,8 +29,11 @@ from superset.explore.form_data.commands.parameters import CommandParameters
 from superset.explore.form_data.commands.update import UpdateFormDataCommand
 from superset.explore.form_data.schemas import FormDataPostSchema, FormDataPutSchema
 from superset.extensions import event_logger
-from superset.temporary_cache.commands.exceptions import TemporaryCacheAccessDeniedError
 from superset.utils.core import DatasourceType
+from superset.temporary_cache.commands.exceptions import (
+    TemporaryCacheAccessDeniedError,
+    TemporaryCacheResourceNotFoundError,
+)
 from superset.views.base_api import requires_json
 
 logger = logging.getLogger(__name__)
@@ -120,13 +115,9 @@ class ExploreFormDataRestApi(BaseApi, ABC):
             return self.response(201, key=key)
         except ValidationError as ex:
             return self.response(400, message=ex.messages)
-        except (
-            ChartAccessDeniedError,
-            DatasetAccessDeniedError,
-            TemporaryCacheAccessDeniedError,
-        ) as ex:
+        except TemporaryCacheAccessDeniedError as ex:
             return self.response(403, message=str(ex))
-        except (ChartNotFoundError, DatasetNotFoundError) as ex:
+        except TemporaryCacheResourceNotFoundError as ex:
             return self.response(404, message=str(ex))
 
     @expose("/form_data/<string:key>", methods=["PUT"])
@@ -198,13 +189,9 @@ class ExploreFormDataRestApi(BaseApi, ABC):
             return self.response(200, key=result)
         except ValidationError as ex:
             return self.response(400, message=ex.messages)
-        except (
-            ChartAccessDeniedError,
-            DatasetAccessDeniedError,
-            TemporaryCacheAccessDeniedError,
-        ) as ex:
+        except TemporaryCacheAccessDeniedError as ex:
             return self.response(403, message=str(ex))
-        except (ChartNotFoundError, DatasetNotFoundError) as ex:
+        except TemporaryCacheResourceNotFoundError as ex:
             return self.response(404, message=str(ex))
 
     @expose("/form_data/<string:key>", methods=["GET"])
@@ -253,13 +240,9 @@ class ExploreFormDataRestApi(BaseApi, ABC):
             if not form_data:
                 return self.response_404()
             return self.response(200, form_data=form_data)
-        except (
-            ChartAccessDeniedError,
-            DatasetAccessDeniedError,
-            TemporaryCacheAccessDeniedError,
-        ) as ex:
+        except TemporaryCacheAccessDeniedError as ex:
             return self.response(403, message=str(ex))
-        except (ChartNotFoundError, DatasetNotFoundError) as ex:
+        except TemporaryCacheResourceNotFoundError as ex:
             return self.response(404, message=str(ex))
 
     @expose("/form_data/<string:key>", methods=["DELETE"])
@@ -309,11 +292,7 @@ class ExploreFormDataRestApi(BaseApi, ABC):
             if not result:
                 return self.response_404()
             return self.response(200, message="Deleted successfully")
-        except (
-            ChartAccessDeniedError,
-            DatasetAccessDeniedError,
-            TemporaryCacheAccessDeniedError,
-        ) as ex:
+        except TemporaryCacheAccessDeniedError as ex:
             return self.response(403, message=str(ex))
-        except (ChartNotFoundError, DatasetNotFoundError) as ex:
+        except TemporaryCacheResourceNotFoundError as ex:
             return self.response(404, message=str(ex))

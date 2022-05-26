@@ -44,7 +44,8 @@ def check_dataset_access(dataset_id: int) -> Optional[bool]:
     if dataset_id:
         dataset = DatasetDAO.find_by_id(dataset_id)
         if dataset:
-            can_access_datasource = security_manager.can_access_datasource(dataset)
+            can_access_datasource = security_manager.can_access_datasource(
+                dataset)
             if can_access_datasource:
                 return True
             raise DatasetAccessDeniedError()
@@ -77,7 +78,7 @@ def check_datasource_access(
     raise DatasourceNotFoundValidationError()
 
 
-def check_chart_access(
+def check_access(
     datasource_id: int,
     chart_id: Optional[int],
     actor: User,
