@@ -17,6 +17,19 @@ specific language governing permissions and limitations
 under the License.
 -->
 ## Change Log
+
+### 1.5.1 (Wed May 25 04:58:15 2022 -0400)
+
+**Fixes**
+- [#20135](https://github.com/apache/superset/pull/20135) fix: Allow dataset owners to see their datasets (@cccs-tom)
+- [#20123](https://github.com/apache/superset/pull/20123) fix(presto,trino): use correct literal dttm separator (@villebro)
+- [#20077](https://github.com/apache/superset/pull/20077) fix(generic-axes): apply contribution before flatten (@villebro)
+- [#19970](https://github.com/apache/superset/pull/19970) fix: Athena timestamp literal format (@thinhnd2104)
+- [#20055](https://github.com/apache/superset/pull/20055) fix(plugin-chart-echarts): support adhoc x-axis (@villebro)
+- [#18873](https://github.com/apache/superset/pull/18873) fix(sqllab/charts): casting from timestamp[us] to timestamp[ns] would result in out of bounds timestamp (@yeachan153)
+- [#19917](https://github.com/apache/superset/pull/19917) fix(sqla): replace custom dttm type with literal_column (@villebro)
+- [#19854](https://github.com/apache/superset/pull/19854) fix: Alpha should not be able to edit datasets that they don't own (@hughhhh)
+
 ### 1.5.0 (Fri Apr 22 17:23:30 2022 -0400)
 
 - **Database Migrations**
