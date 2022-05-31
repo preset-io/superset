@@ -75,8 +75,7 @@ class UpdateFormDataCommand(BaseCommand, ABC):
                 key = cache_manager.explore_form_data_cache.get(contextual_key)
                 if not key or not tab_id:
                     key = random_key()
-                    cache_manager.explore_form_data_cache.set(
-                        contextual_key, key)
+                    cache_manager.explore_form_data_cache.set(contextual_key, key)
 
                 new_state: TemporaryExploreState = {
                     "owner": owner,

@@ -435,7 +435,7 @@ def test_delete_not_owner(client, chart_id: int, datasource: SqlaTable, admin_id
     entry: TemporaryExploreState = {
         "owner": another_owner,
         "datasource_id": datasource.id,
-        "datasource_type": DatasourceType(datasource.type),
+        "datasource_type": datasource.type,
         "chart_id": chart_id,
         "form_data": INITIAL_FORM_DATA,
     }

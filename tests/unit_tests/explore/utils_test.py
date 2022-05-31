@@ -81,7 +81,7 @@ def test_unsaved_chart_unknown_dataset_id(
 def test_unsaved_chart_unknown_query_id(
     mocker: MockFixture, app_context: AppContext
 ) -> None:
-    from superset.explore.utils import check_chart_access
+    from superset.explore.utils import check_access as check_chart_access
 
     with raises(QueryNotFoundValidationError):
         mocker.patch(query_find_by_id, return_value=None)
@@ -125,6 +125,7 @@ def test_unsaved_chart_authorized_dataset(
         actor=User(),
         datasource_type=DatasourceType.TABLE,
     )
+
 
 
 def test_saved_chart_no_datasource_type(

@@ -50,8 +50,7 @@ class GetExplorePermalinkCommand(BaseExplorePermalinkCommand):
                 chart_id: Optional[int] = value.get("chartId")
                 datasource_id: int = value["datasourceId"]
                 datasource_type = DatasourceType(value["datasourceType"])
-                check_chart_access(datasource_id, chart_id,
-                                   self.actor, datasource_type)
+                check_chart_access(datasource_id, chart_id, self.actor, datasource_type)
                 return value
             return None
         except (
