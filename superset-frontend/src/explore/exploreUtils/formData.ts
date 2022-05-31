@@ -56,6 +56,7 @@ const assemblePayload = (
   if (chartId) {
     payload.chart_id = chartId;
   }
+  console.log(payload);
   return payload;
 };
 

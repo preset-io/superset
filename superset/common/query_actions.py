@@ -108,7 +108,7 @@ def _get_full(
     if status != QueryStatus.FAILED:
         payload["colnames"] = list(df.columns)
         payload["indexnames"] = list(df.index)
-        payload["coltypes"] = extract_dataframe_dtypes(df, datasource)
+        payload["coltypes"] = [] # extract_dataframe_dtypes(df, datasource)
         payload["data"] = query_context.get_data(df)
         payload["result_format"] = query_context.result_format
     del payload["df"]

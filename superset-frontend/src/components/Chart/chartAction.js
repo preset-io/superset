@@ -223,6 +223,7 @@ export async function getChartDataRequest({
     };
   }
 
+  console.log(formData);
   if (shouldUseLegacyApi(formData)) {
     return legacyChartDataRequest(
       formData,
@@ -378,6 +379,7 @@ export function exploreJSON(
     const setDataMask = dataMask => {
       dispatch(updateDataMask(formData.slice_id, dataMask));
     };
+    console.log('hi')
     const chartDataRequest = getChartDataRequest({
       setDataMask,
       formData,

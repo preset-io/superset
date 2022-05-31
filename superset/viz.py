@@ -302,7 +302,7 @@ class BaseViz:  # pylint: disable=too-many-public-methods
             utils.normalize_dttm_col(
                 df=df,
                 timestamp_format=timestamp_format,
-                offset=self.datasource.offset,
+                offset=0, # offset=self.datasource.offset,
                 time_shift=self.time_shift,
             )
 
@@ -461,7 +461,7 @@ class BaseViz:  # pylint: disable=too-many-public-methods
 
         cache_dict["time_range"] = self.form_data.get("time_range")
         cache_dict["datasource"] = self.datasource.uid
-        cache_dict["extra_cache_keys"] = self.datasource.get_extra_cache_keys(query_obj)
+        cache_dict["extra_cache_keys"] = [] #  self.datasource.get_extra_cache_keys(query_obj)
         cache_dict["rls"] = security_manager.get_rls_cache_key(self.datasource)
         cache_dict["changed_on"] = self.datasource.changed_on
         json_data = self.json_dumps(cache_dict, sort_keys=True)
@@ -571,6 +571,7 @@ class BaseViz:  # pylint: disable=too-many-public-methods
                             invalid_columns=invalid_columns,
                         )
                     )
+
                 df = self.get_df(query_obj)
                 if self.status != QueryStatus.FAILED:
                     stats_logger.incr("loaded_from_source")
@@ -624,7 +625,7 @@ class BaseViz:  # pylint: disable=too-many-public-methods
             "stacktrace": stacktrace,
             "rowcount": len(df.index) if df is not None else 0,
             "colnames": list(df.columns) if df is not None else None,
-            "coltypes": utils.extract_dataframe_dtypes(df, self.datasource)
+            "coltypes": [] # utils.extract_dataframe_dtypes(df, self.datasource)
             if df is not None
             else None,
         }
@@ -1930,6 +1931,8 @@ class SankeyViz(BaseViz):
 
     def query_obj(self) -> QueryObjectDict:
         query_obj = super().query_obj()
+        # breakpoint()
+        query_obj['groupby'] = ['ethnic_minority', 'gender']
         if len(query_obj["groupby"]) != 2:
             raise QueryObjectValidationError(
                 _("Pick exactly 2 columns as [Source / Target]")

@@ -236,6 +236,7 @@ export const buildV1ChartDataPayload = ({
       omit(query, ['row_limit', 'row_offset']),
     );
   }
+  console.log('payload', payload)
   return payload;
 };
 

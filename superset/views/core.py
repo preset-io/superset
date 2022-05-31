@@ -68,6 +68,7 @@ from superset.connectors.sqla.models import (
     SqlMetric,
     TableColumn,
 )
+from superset.dao.datasource.dao import DatasourceDAO
 from superset.dashboards.commands.importers.v0 import ImportDashboardsCommand
 from superset.dashboards.dao import DashboardDAO
 from superset.dashboards.permalink.commands.get import GetDashboardPermalinkCommand
@@ -129,7 +130,7 @@ from superset.tasks.async_queries import load_explore_json_into_cache
 from superset.utils import core as utils, csv
 from superset.utils.async_query_manager import AsyncQueryTokenException
 from superset.utils.cache import etag_cache
-from superset.utils.core import apply_max_row_limit, ReservedUrlParameters
+from superset.utils.core import DatasourceType, apply_max_row_limit, ReservedUrlParameters
 from superset.utils.dates import now_as_float
 from superset.utils.decorators import check_dashboard_access
 from superset.views.base import (
@@ -565,6 +566,7 @@ class Superset(BaseSupersetView):  # pylint: disable=too-many-public-methods
         TODO: form_data should not be loaded twice from cache
           (also loaded in `check_explore_cache_perms`)
         """
+
         try:
             cached = cache_manager.cache.get(cache_key)
             if not cached:
@@ -613,7 +615,6 @@ class Superset(BaseSupersetView):  # pylint: disable=too-many-public-methods
         payloads based on the request args in the first block
 
         TODO: break into one endpoint for each return shape"""
-
         response_type = ChartDataResultFormat.JSON.value
         responses: List[Union[ChartDataResultFormat, ChartDataResultType]] = list(
             ChartDataResultFormat
@@ -773,6 +774,145 @@ class Superset(BaseSupersetView):  # pylint: disable=too-many-public-methods
             value = GetFormDataCommand(parameters).run()
             initial_form_data = json.loads(value) if value else {}
 
+
+        if True: # isinstance(datasource, Query)
+            # 1. Get object type + id for explore
+            datasource_id, datasource_type = get_datasource_info(
+                    None, None, initial_form_data
+            )
+
+            # 2. Query datasource object by type and id
+            datasource = DatasourceDAO.get_datasource(
+                session=db.session,
+                datasource_type=DatasourceType(datasource_type),
+                datasource_id=datasource_id,
+            )
+            # Handle Query object bootstrap
+            datasource_name = datasource.name if datasource else _("[Missing Dataset]")
+            form_data, slc = get_form_data(
+                use_slice_data=True, initial_form_data=initial_form_data
+            )
+
+            query_context = request.form.get("query_context")
+
+            viz_type = form_data.get("viz_type")
+            if not viz_type and datasource and datasource.default_endpoint:
+                return redirect(datasource.default_endpoint)
+
+            # slc perms
+            slice_add_perm = security_manager.can_access("can_write", "Chart")
+            slice_overwrite_perm = is_owner(slc, g.user) if slc else False
+            slice_download_perm = security_manager.can_access("can_csv", "Superset")
+
+            form_data["datasource"] = str(datasource_id) + "__" + cast(str, datasource_type)
+
+            # On explore, merge legacy and extra filters into the form data
+            utils.convert_legacy_filters_into_adhoc(form_data)
+            utils.merge_extra_filters(form_data)
+
+            # merge request url params
+            if request.method == "GET":
+                utils.merge_request_params(form_data, request.args)
+
+            # handle save or overwrite
+            action = request.args.get("action")
+
+            if action == "overwrite" and not slice_overwrite_perm:
+                return json_error_response(
+                    _("You don't have the rights to ") + _("alter this ") + _("chart"),
+                    status=403,
+                )
+
+            if action == "saveas" and not slice_add_perm:
+                return json_error_response(
+                    _("You don't have the rights to ") + _("create a ") + _("chart"),
+                    status=403,
+                )
+
+            if action in ("saveas", "overwrite") and datasource:
+                return self.save_or_overwrite_slice(
+                    slc,
+                    slice_add_perm,
+                    slice_overwrite_perm,
+                    slice_download_perm,
+                    datasource.id,
+                    datasource.type,
+                    datasource.name,
+                    query_context,
+                )
+            standalone_mode = ReservedUrlParameters.is_standalone_mode()
+            force = request.args.get("force") in {"force", "1", "true"}
+            dummy_datasource_data: Dict[str, Any] = {
+                "type": datasource_type,
+                "name": datasource_name,
+                "columns": [],
+                "metrics": [],
+                "database": {"id": 0, "backend": ""},
+            }
+            try:
+                datasource_data = datasource.data if datasource else dummy_datasource_data
+            except (SupersetException, SQLAlchemyError):
+                datasource_data = dummy_datasource_data
+
+            columns: List[Dict[str, Any]] = []
+            if datasource:
+                datasource_data["owners"] = datasource.owners_data
+                if isinstance(datasource, Query):
+                    datasource_data["columns"] = datasource.extra.get("columns", [
+                        {
+                            'column_name': 'highest_degree_earned',
+                            'verbose_name': 'Highest Degree Earned',
+                        },
+                        {
+                            'column_name': 'ethnic_minority',
+                            'verbose_name': 'Ethnic Minority',
+                        },
+                        {
+                            'column_name': 'gender',
+                            'verbose_name': 'Gender',
+                        }
+
+                    ])
+                    datasource_data["metrics"] = datasource.extra.get("metrics", [])
+                    datasource_data["id"] = datasource_id
+                    datasource_data["type"] = datasource_type
+
+            bootstrap_data = {
+                "can_add": slice_add_perm,
+                "can_download": slice_download_perm,
+                "datasource": sanitize_datasource_data(datasource_data),
+                "form_data": form_data,
+                "datasource_id": datasource_id,
+                "datasource_type": datasource_type,
+                "slice": slc.data if slc else None,
+                "standalone": standalone_mode,
+                "force": force,
+                "user": bootstrap_user_data(g.user, include_perms=True),
+                "forced_height": request.args.get("height"),
+                "common": common_bootstrap_payload(),
+            }
+            if slc:
+                title = slc.slice_name
+            elif datasource:
+                table_name = (
+                    datasource.table_name
+                    if datasource_type == "table"
+                    else datasource.datasource_name
+                )
+                title = _("Explore - %(table)s", table=table_name)
+            else:
+                title = _("Explore")
+
+            return self.render_template(
+                "superset/basic.html",
+                bootstrap_data=json.dumps(
+                    bootstrap_data, default=utils.pessimistic_json_iso_dttm_ser
+                ),
+                entry="explore",
+                title=title.__str__(),
+                standalone_mode=standalone_mode,
+            )
+
         if not initial_form_data:
             slice_id = request.args.get("slice_id")
             dataset_id = request.args.get("dataset_id")
@@ -893,7 +1033,24 @@ class Superset(BaseSupersetView):  # pylint: disable=too-many-public-methods
         if datasource:
             datasource_data["owners"] = datasource.owners_data
             if isinstance(datasource, Query):
-                columns = datasource.extra.get("columns", [])
+                datasource_data["columns"] = datasource.extra.get("columns", [
+                    {
+                        'column_name': 'highest_degree_earned',
+                        'verbose_name': 'Highest Degree Earned',
+                    },
+                    {
+                        'column_name': 'ethnic_minority',
+                        'verbose_name': 'Ethnic Minority',
+                    },
+                    {
+                        'column_name': 'gender',
+                        'verbose_name': 'Gender',
+                    }
+
+                ])
+                datasource_data["metrics"] = datasource.extra.get("metrics", [])
+                datasource_data["id"] = datasource_id
+                datasource_data["type"] = datasource_type
 
         bootstrap_data = {
             "can_add": slice_add_perm,
@@ -908,7 +1065,6 @@ class Superset(BaseSupersetView):  # pylint: disable=too-many-public-methods
             "user": bootstrap_user_data(g.user, include_perms=True),
             "forced_height": request.args.get("height"),
             "common": common_bootstrap_payload(),
-            "columns": columns,
         }
         if slc:
             title = slc.slice_name

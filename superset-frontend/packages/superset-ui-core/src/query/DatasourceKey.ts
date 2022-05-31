@@ -27,8 +27,14 @@ export default class DatasourceKey {
   constructor(key: string) {
     const [idStr, typeStr] = key.split('__');
     this.id = parseInt(idStr, 10);
-    this.type =
-      typeStr === 'table' ? DatasourceType.Table : DatasourceType.Druid;
+    this.type = typeStr === 'table' ? DatasourceType.Table : DatasourceType.Druid;
+
+    this.type = typeStr === 'query' ? DatasourceType.Query : this.type
+
+    // todo(hugh): make this work
+    // const temp: DatasourceType = DatasourceType[typeStr];
+    // console.log('after cast', temp)
+    // this.type = temp;
   }
 
   public toString() {

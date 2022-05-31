@@ -162,6 +162,7 @@ const updateHistory = debounce(
     title,
     tabId,
   ) => {
+    console.log(datasourceId)
     const payload = { ...formData };
     const chartId = formData.slice_id;
     const additionalParam = {};
@@ -179,6 +180,8 @@ const updateHistory = debounce(
       }
     });
 
+    console.log(datasourceId);
+    console.log(datasourceType);
     try {
       let key;
       let stateModifier;
@@ -253,6 +256,8 @@ function ExploreViewContainer(props) {
           }
         : props.form_data;
       const { id: datasourceId, type: datasourceType } = props.datasource;
+
+      console.log('index', props.datasource);
 
       updateHistory(
         formData,

@@ -15,12 +15,15 @@
 # specific language governing permissions and limitations
 # under the License.
 """A collection of ORM sqlalchemy models for SQL Lab"""
+import logging
 import re
 from datetime import datetime
-from typing import Any, Dict, List
+from typing import Any, Dict, List, NamedTuple, Optional, Type, Union
 
+import pandas as pd
 import simplejson as json
 import sqlalchemy as sqla
+import sqlparse
 from flask import Markup
 from flask_appbuilder import Model
 from flask_appbuilder.models.decorators import renders
@@ -38,20 +41,35 @@ from sqlalchemy import (
 )
 from sqlalchemy.engine.url import URL
 from sqlalchemy.orm import backref, relationship
+from sqlalchemy.sql.elements import ColumnElement, Label, literal_column
 
-from superset import security_manager
+from superset import db_engine_specs, security_manager
+from superset.exceptions import QueryObjectValidationError
 from superset.models.helpers import (
     AuditMixinNullable,
+    ExploreMixin,
     ExtraJSONMixin,
     ImportExportMixin,
+    QueryResult,
 )
 from superset.models.tags import QueryUpdater
 from superset.sql_parse import CtasMethod, ParsedQuery, Table
 from superset.sqllab.limiting_factor import LimitingFactor
-from superset.utils.core import QueryStatus, user_label
+from superset.superset_typing import AdhocMetric, Metric, OrderBy, QueryObjectDict
+from superset.utils import core as utils
+from superset.utils.core import QueryObjectFilterClause, QueryStatus, user_label
+
+logger = logging.getLogger(__name__)
+
+# todo(hugh): centralize where this code lives
+class QueryStringExtended(NamedTuple):
+    applied_template_filters: Optional[List[str]]
+    labels_expected: List[str]
+    prequeries: List[str]
+    sql: str
 
 
-class Query(Model, ExtraJSONMixin):
+class Query(Model, ExtraJSONMixin, ExploreMixin):
     """ORM model for SQL query
 
     Now that SQL Lab support multi-statement execution, an entry in this
@@ -175,7 +193,10 @@ class Query(Model, ExtraJSONMixin):
         """
 
         security_manager.raise_for_access(query=self)
-
+   
+    @property
+    def db_engine_spec(self) -> Type["BaseEngineSpec"]:
+        return self.database.db_engine_spec
 
 class SavedQuery(Model, AuditMixinNullable, ExtraJSONMixin, ImportExportMixin):
     """ORM model for SQL query"""

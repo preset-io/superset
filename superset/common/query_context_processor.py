@@ -183,8 +183,14 @@ class QueryContextProcessor:
         # support multiple queries from different data sources.
 
         # The datasource here can be different backend but the interface is common
-        result = query_context.datasource.query(query_object.to_dict())
-        query = result.query + ";\n\n"
+        from superset.models.sql_lab import Query
+        query = ""
+        if isinstance(query_context.datasource, Query):
+            #todo(hugh): add logic to manage all sip68 models here
+            result = query_context.datasource.exc_query(query_object.to_dict())
+        else:
+            result = query_context.datasource.query(query_object.to_dict())
+            query = result.query + ";\n\n"
 
         df = result.df
         # Transform the timestamp we received from database to pandas supported

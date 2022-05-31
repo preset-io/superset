@@ -127,12 +127,14 @@ def get_viz(
     force_cached: bool = False,
 ) -> BaseViz:
     viz_type = form_data.get("viz_type", "table")
-    datasource = ConnectorRegistry.get_datasource(
-        datasource_type, datasource_id, db.session
+    from superset.dao.datasource.dao import DatasourceDAO
+    datasource = DatasourceDAO.get_datasource(
+        datasource_type=datasource_type, datasource_id=datasource_id, session=db.session
     )
     viz_obj = viz.viz_types[viz_type](
         datasource, form_data=form_data, force=force, force_cached=force_cached
     )
+    # breakpoint()
     return viz_obj
 
 
@@ -259,7 +261,6 @@ def get_datasource_info(
     """
 
     datasource = form_data.get("datasource", "")
-
     if "__" in datasource:
         datasource_id, datasource_type = datasource.split("__")
         # The case where the datasource has been deleted

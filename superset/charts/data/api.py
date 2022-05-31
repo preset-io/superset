@@ -218,7 +218,6 @@ class ChartDataRestApi(ChartRestApi):
 
         if json_body is None:
             return self.response_400(message=_("Request is not JSON"))
-
         try:
             query_context = self._create_query_context_from_form(json_body)
             command = ChartDataCommand(query_context)

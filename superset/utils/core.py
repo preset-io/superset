@@ -1648,11 +1648,14 @@ def extract_dataframe_dtypes(
         "date": GenericDataType.TEMPORAL,
     }
 
-    columns_by_name = (
-        {column.column_name: column for column in datasource.columns}
-        if datasource
-        else {}
-    )
+    # todo(hugh): fix this for query objects
+    # columns_by_name = (
+    #     {column.column_name: column for column in datasource.columns}
+    #     if datasource
+    #     else {}
+    # )
+
+    columns_by_name = []
     generic_types: List[GenericDataType] = []
     for column in df.columns:
         column_object = columns_by_name.get(column)
@@ -1696,7 +1699,9 @@ def get_time_filter_status(
     datasource: "BaseDatasource",
     applied_time_extras: Dict[str, str],
 ) -> Tuple[List[Dict[str, str]], List[Dict[str, str]]]:
-    temporal_columns = {col.column_name for col in datasource.columns if col.is_dttm}
+    temporal_columns = (
+        {}
+    )  # temporal_columns = {col.column_name for col in datasource.columns if col.is_dttm}
     applied: List[Dict[str, str]] = []
     rejected: List[Dict[str, str]] = []
     time_column = applied_time_extras.get(ExtraFiltersTimeColumnType.TIME_COL)
