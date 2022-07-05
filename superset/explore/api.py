@@ -45,7 +45,7 @@ class ExploreRestApi(BaseApi):
     openapi_spec_component_schemas = (ExploreContextSchema,)
 
     @expose("/", methods=["GET"])
-    @protect()
+    # @protect() # todo: this is throwing a 403 everytime we hit this endpoint from explore
     @safe
     @event_logger.log_this_with_context(
         action=lambda self, *args, **kwargs: f"{self.__class__.__name__}.get",

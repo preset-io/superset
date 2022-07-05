@@ -41,6 +41,10 @@ const datasource: IDatasource = {
     id: 1,
   },
   datasource_name: 'table1',
+  description: 'desc',
+  owners: [
+    { first_name: 'admin', last_name: 'admin', username: 'admin', id: 1 },
+  ],
 };
 
 const mockUser = {
