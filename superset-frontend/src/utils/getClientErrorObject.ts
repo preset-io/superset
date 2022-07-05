@@ -98,7 +98,9 @@ export function getClientErrorObject(
       response.message === 'Failed to fetch'
     ) {
       resolve({
-        error: t('Network error'),
+        error: t(
+          'We’re having some trouble connecting to the network. Please check your connectivity and try again.',
+        ),
       });
       return;
     }

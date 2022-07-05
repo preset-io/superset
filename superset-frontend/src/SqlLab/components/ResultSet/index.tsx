@@ -386,7 +386,7 @@ export default class ResultSet extends React.PureComponent<
       return (
         <ResultSetErrorMessage>
           <ErrorMessageWithStackTrace
-            title={t('Database error')}
+            title={t('Network Error')}
             error={query?.errors?.[0]}
             subtitle={<MonospaceDiv>{query.errorMessage}</MonospaceDiv>}
             copyText={query.errorMessage || undefined}
