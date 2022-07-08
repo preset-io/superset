@@ -196,13 +196,15 @@ test('Click on Save as dataset', () => {
 
   // Renders a save dataset modal
   const saveRadioBtn = screen.getByRole('radio', {
-    name: /save as new undefined/i,
+    name: /save as new untitled/i,
   });
   const overwriteRadioBtn = screen.getByRole('radio', {
-    name: /overwrite existing select or type dataset name/i,
+    name: /overwrite existing/i,
   });
+  const dropdownField = screen.getByText(/select or type dataset name/i);
   expect(saveRadioBtn).toBeVisible();
   expect(overwriteRadioBtn).toBeVisible();
   expect(screen.getByRole('button', { name: /save/i })).toBeVisible();
   expect(screen.getByRole('button', { name: /close/i })).toBeVisible();
+  expect(dropdownField).toBeVisible();
 });

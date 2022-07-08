@@ -14,12 +14,3 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
-from __future__ import annotations
-
-from superset import conf, security_manager
-
-
-def is_user_admin() -> bool:
-    user_roles = [role.name.lower() for role in security_manager.get_user_roles()]
-    admin_role = conf.get("AUTH_ROLE_ADMIN").lower()
-    return admin_role in user_roles

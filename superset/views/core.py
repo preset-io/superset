@@ -132,6 +132,7 @@ from superset.utils.cache import etag_cache
 from superset.utils.core import (
     apply_max_row_limit,
     DatasourceType,
+    get_user_id,
     ReservedUrlParameters,
 )
 from superset.utils.dates import now_as_float
@@ -139,7 +140,6 @@ from superset.utils.decorators import check_dashboard_access
 from superset.views.base import (
     api,
     BaseSupersetView,
-    check_ownership,
     common_bootstrap_payload,
     create_table_permissions,
     CsvResponse,
@@ -163,7 +163,6 @@ from superset.views.utils import (
     get_datasource_info,
     get_form_data,
     get_viz,
-    is_owner,
     sanitize_datasource_data,
 )
 from superset.viz import BaseViz
@@ -367,8 +366,8 @@ class Superset(BaseSupersetView):  # pylint: disable=too-many-public-methods
             return json_error_response(err)
 
         # check if you can approve
-        if security_manager.can_access_all_datasources() or check_ownership(
-            datasource, raise_if_false=False
+        if security_manager.can_access_all_datasources() or security_manager.is_owner(
+            datasource
         ):
             # can by done by admin only
             if role_to_grant:
@@ -673,7 +672,7 @@ class Superset(BaseSupersetView):  # pylint: disable=too-many-public-methods
                         request
                     )["channel"]
                     job_metadata = async_query_manager.init_job(
-                        async_channel_id, g.user.get_id()
+                        async_channel_id, get_user_id()
                     )
                     load_explore_json_into_cache.delay(
                         job_metadata, form_data, response_type, force
@@ -741,7 +740,6 @@ class Superset(BaseSupersetView):  # pylint: disable=too-many-public-methods
     @event_logger.log_this
     @expose("/explore/<datasource_type>/<int:datasource_id>/", methods=["GET", "POST"])
     @expose("/explore/", methods=["GET", "POST"])
-    @expose("/explore/p/<key>/", methods=["GET"])
     # pylint: disable=too-many-locals,too-many-branches,too-many-statements
     def explore(
         self,
@@ -749,10 +747,16 @@ class Superset(BaseSupersetView):  # pylint: disable=too-many-public-methods
         datasource_id: Optional[int] = None,
         key: Optional[str] = None,
     ) -> FlaskResponse:
+        logger.warning(
+            "%s.explore "
+            "This API endpoint is deprecated and will be removed in version 3.0.0",
+            self.__class__.__name__,
+        )
         initial_form_data = {}
+
         form_data_key = request.args.get("form_data_key")
         if key is not None:
-            command = GetExplorePermalinkCommand(g.user, key)
+            command = GetExplorePermalinkCommand(key)
             try:
                 permalink_value = command.run()
                 if permalink_value:
@@ -769,133 +773,9 @@ class Superset(BaseSupersetView):  # pylint: disable=too-many-public-methods
                 flash(__("Error: %(msg)s", msg=ex.message), "danger")
                 return redirect("/chart/list/")
         elif form_data_key:
-            parameters = CommandParameters(actor=g.user, key=form_data_key)
+            parameters = CommandParameters(key=form_data_key)
             value = GetFormDataCommand(parameters).run()
             initial_form_data = json.loads(value) if value else {}
-
-        from superset.datasource.dao import DatasourceDAO
-        from superset.models.helpers import ExploreMixin
-        from superset.utils.core import DatasourceType
-
-        # Handle SIP-68 Models or explore view
-        # API will always use /explore/<datasource_type>/<int:datasource_id>/ to query
-        # new models to power any viz in explore
-        datasource: Optional[BaseDatasource] = None
-        datasource_id = request.args.get("datasource_id", datasource_id)
-        datasource_type = request.args.get("datasource_type", datasource_type)
-        dummy_datasource_data: Dict[str, Any] = {
-            "type": datasource_type,
-            "name": "[Missing Dataset]",
-            "columns": [],
-            "metrics": [],
-            "database": {"id": 0, "backend": ""},
-        }
-
-        if datasource_id and datasource_type:
-            # 1. Query datasource object by type and id
-            datasource = DatasourceDAO.get_datasource(
-                session=db.session,
-                datasource_type=DatasourceType(datasource_type),
-                datasource_id=datasource_id,
-            )
-
-            # 2. Verify that it's an ExploreMixin
-            if isinstance(datasource, ExploreMixin):
-                # Handle Query object bootstrap
-                datasource_name = (
-                    datasource.name if datasource else _("[Missing Dataset]")
-                )
-                form_data, slc = get_form_data(
-                    use_slice_data=True, initial_form_data=initial_form_data
-                )
-
-                query_context = request.form.get("query_context")
-
-                viz_type = form_data.get("viz_type", "table")
-                if not viz_type and datasource and datasource.default_endpoint:
-                    return redirect(datasource.default_endpoint)
-
-                # slc perms
-                slice_add_perm = security_manager.can_access("can_write", "Chart")
-                slice_overwrite_perm = is_owner(slc, g.user) if slc else False
-                slice_download_perm = security_manager.can_access("can_csv", "Superset")
-
-                form_data["datasource"] = (
-                    str(datasource_id) + "__" + cast(str, datasource_type)
-                )
-
-                # On explore, merge legacy and extra filters into the form data
-                utils.convert_legacy_filters_into_adhoc(form_data)
-                utils.merge_extra_filters(form_data)
-
-                # merge request url params
-                if request.method == "GET":
-                    utils.merge_request_params(form_data, request.args)
-
-                # handle save or overwrite
-                action = request.args.get("action")
-
-                if action == "overwrite" and not slice_overwrite_perm:
-                    return json_error_response(
-                        _("You don't have the rights to ")
-                        + _("alter this ")
-                        + _("chart"),
-                        status=403,
-                    )
-
-                if action == "saveas" and not slice_add_perm:
-                    return json_error_response(
-                        _("You don't have the rights to ")
-                        + _("create a ")
-                        + _("chart"),
-                        status=403,
-                    )
-
-                if action in ("saveas", "overwrite") and datasource:
-                    return self.save_or_overwrite_slice(
-                        slc,
-                        slice_add_perm,
-                        slice_overwrite_perm,
-                        slice_download_perm,
-                        datasource.id,
-                        datasource.type,
-                        datasource.name,
-                        query_context,
-                    )
-                standalone_mode = ReservedUrlParameters.is_standalone_mode()
-                force = request.args.get("force") in {"force", "1", "true"}
-                try:
-                    datasource_data = (
-                        datasource.data if datasource else dummy_datasource_data
-                    )
-                except (SupersetException, SQLAlchemyError):
-                    datasource_data = dummy_datasource_data
-
-                bootstrap_data = {
-                    "can_add": slice_add_perm,
-                    "can_download": slice_download_perm,
-                    "datasource": sanitize_datasource_data(datasource_data),
-                    "form_data": form_data,
-                    "datasource_id": datasource_id,
-                    "datasource_type": datasource_type,
-                    "slice": slc.data if slc else None,
-                    "standalone": standalone_mode,
-                    "force": force,
-                    "user": bootstrap_user_data(g.user, include_perms=True),
-                    "forced_height": request.args.get("height"),
-                    "common": common_bootstrap_payload(),
-                }
-
-                title = _("Explore - %(name)s", name=datasource.name)
-                return self.render_template(
-                    "superset/basic.html",
-                    bootstrap_data=json.dumps(
-                        bootstrap_data, default=utils.pessimistic_json_iso_dttm_ser
-                    ),
-                    entry="explore",
-                    title=title.__str__(),
-                    standalone_mode=standalone_mode,
-                )
 
         if not initial_form_data:
             slice_id = request.args.get("slice_id")
@@ -930,6 +810,7 @@ class Superset(BaseSupersetView):  # pylint: disable=too-many-public-methods
             # fallback unkonw datasource to table type
             datasource_type = SqlaTable.type
 
+        datasource: Optional[BaseDatasource] = None
         if datasource_id is not None:
             try:
                 datasource = DatasourceDAO.get_datasource(
@@ -959,9 +840,22 @@ class Superset(BaseSupersetView):  # pylint: disable=too-many-public-methods
         if not viz_type and datasource and datasource.default_endpoint:
             return redirect(datasource.default_endpoint)
 
+        selectedColumns = []
+
+        if "selectedColumns" in form_data:
+            selectedColumns = form_data.pop("selectedColumns")
+
+        if "viz_type" not in form_data:
+            form_data["viz_type"] = app.config["DEFAULT_VIZ_TYPE"]
+            if app.config["DEFAULT_VIZ_TYPE"] == "table":
+                all_columns = []
+                for x in selectedColumns:
+                    all_columns.append(x["name"])
+                form_data["all_columns"] = all_columns
+
         # slc perms
         slice_add_perm = security_manager.can_access("can_write", "Chart")
-        slice_overwrite_perm = is_owner(slc, g.user) if slc else False
+        slice_overwrite_perm = security_manager.is_owner(slc) if slc else False
         slice_download_perm = security_manager.can_access("can_csv", "Superset")
 
         form_data["datasource"] = str(datasource_id) + "__" + cast(str, datasource_type)
@@ -1002,6 +896,13 @@ class Superset(BaseSupersetView):  # pylint: disable=too-many-public-methods
             )
         standalone_mode = ReservedUrlParameters.is_standalone_mode()
         force = request.args.get("force") in {"force", "1", "true"}
+        dummy_datasource_data: Dict[str, Any] = {
+            "type": datasource_type,
+            "name": datasource_name,
+            "columns": [],
+            "metrics": [],
+            "database": {"id": 0, "backend": ""},
+        }
         try:
             datasource_data = datasource.data if datasource else dummy_datasource_data
         except (SupersetException, SQLAlchemyError):
@@ -1147,7 +1048,7 @@ class Superset(BaseSupersetView):  # pylint: disable=too-many-public-methods
                 .one(),
             )
             # check edit dashboard permissions
-            dash_overwrite_perm = check_ownership(dash, raise_if_false=False)
+            dash_overwrite_perm = security_manager.is_owner(dash)
             if not dash_overwrite_perm:
                 return json_error_response(
                     _("You don't have the rights to ")
@@ -1394,7 +1295,7 @@ class Superset(BaseSupersetView):  # pylint: disable=too-many-public-methods
         """Save a dashboard's metadata"""
         session = db.session()
         dash = session.query(Dashboard).get(dashboard_id)
-        check_ownership(dash, raise_if_false=True)
+        security_manager.raise_for_ownership(dash)
         data = json.loads(request.form["data"])
         # client-side send back last_modified_time which was set when
         # the dashboard was open. it was use to avoid mid-air collision.
@@ -1437,7 +1338,7 @@ class Superset(BaseSupersetView):  # pylint: disable=too-many-public-methods
         data = json.loads(request.form["data"])
         session = db.session()
         dash = session.query(Dashboard).get(dashboard_id)
-        check_ownership(dash, raise_if_false=True)
+        security_manager.raise_for_ownership(dash)
         new_slices = session.query(Slice).filter(Slice.id.in_(data["slice_ids"]))
         dash.slices += new_slices
         session.merge(dash)
@@ -1761,7 +1662,7 @@ class Superset(BaseSupersetView):  # pylint: disable=too-many-public-methods
     def user_slices(self, user_id: Optional[int] = None) -> FlaskResponse:
         """List of slices a user owns, created, modified or faved"""
         if not user_id:
-            user_id = cast(int, g.user.id)
+            user_id = cast(int, get_user_id())
         error_obj = self.get_user_activity_access_error(user_id)
         if error_obj:
             return error_obj
@@ -1814,7 +1715,7 @@ class Superset(BaseSupersetView):  # pylint: disable=too-many-public-methods
     def created_slices(self, user_id: Optional[int] = None) -> FlaskResponse:
         """List of slices created by this user"""
         if not user_id:
-            user_id = cast(int, g.user.id)
+            user_id = cast(int, get_user_id())
         error_obj = self.get_user_activity_access_error(user_id)
         if error_obj:
             return error_obj
@@ -1845,7 +1746,7 @@ class Superset(BaseSupersetView):  # pylint: disable=too-many-public-methods
     def fave_slices(self, user_id: Optional[int] = None) -> FlaskResponse:
         """Favorite slices for a user"""
         if user_id is None:
-            user_id = g.user.id
+            user_id = cast(int, get_user_id())
         error_obj = self.get_user_activity_access_error(user_id)
         if error_obj:
             return error_obj
@@ -1982,13 +1883,13 @@ class Superset(BaseSupersetView):  # pylint: disable=too-many-public-methods
         self, class_name: str, obj_id: int, action: str
     ) -> FlaskResponse:
         """Toggle favorite stars on Slices and Dashboard"""
-        if not g.user.get_id():
+        if not get_user_id():
             return json_error_response("ERROR: Favstar toggling denied", status=403)
         session = db.session()
         count = 0
         favs = (
             session.query(FavStar)
-            .filter_by(class_name=class_name, obj_id=obj_id, user_id=g.user.get_id())
+            .filter_by(class_name=class_name, obj_id=obj_id, user_id=get_user_id())
             .all()
         )
         if action == "select":
@@ -1997,7 +1898,7 @@ class Superset(BaseSupersetView):  # pylint: disable=too-many-public-methods
                     FavStar(
                         class_name=class_name,
                         obj_id=obj_id,
-                        user_id=g.user.get_id(),
+                        user_id=get_user_id(),
                         dttm=datetime.now(),
                     )
                 )
@@ -2054,8 +1955,8 @@ class Superset(BaseSupersetView):  # pylint: disable=too-many-public-methods
                         f"/superset/request_access/?dashboard_id={dashboard.id}"
                     )
 
-        dash_edit_perm = check_ownership(
-            dashboard, raise_if_false=False
+        dash_edit_perm = security_manager.is_owner(
+            dashboard
         ) and security_manager.can_access("can_save_dash", "Superset")
         edit_mode = (
             request.args.get(utils.ReservedUrlParameters.EDIT_MODE.value) == "true"
@@ -2091,19 +1992,19 @@ class Superset(BaseSupersetView):  # pylint: disable=too-many-public-methods
         key: str,
     ) -> FlaskResponse:
         try:
-            value = GetDashboardPermalinkCommand(g.user, key).run()
+            value = GetDashboardPermalinkCommand(key).run()
         except DashboardPermalinkGetFailedError as ex:
             flash(__("Error: %(msg)s", msg=ex.message), "danger")
             return redirect("/dashboard/list/")
         if not value:
             return json_error_response(_("permalink state not found"), status=404)
-        dashboard_id = value["dashboardId"]
+        dashboard_id, state = value["dashboardId"], value.get("state", {})
         url = f"/superset/dashboard/{dashboard_id}?permalink_key={key}"
-        url_params = value["state"].get("urlParams")
+        url_params = state.get("urlParams")
         if url_params:
             params = parse.urlencode(url_params)
             url = f"{url}&{params}"
-        hash_ = value["state"].get("hash")
+        hash_ = state.get("anchor", state.get("hash"))
         if hash_:
             url = f"{url}#{hash_}"
         return redirect(url)
@@ -2679,7 +2580,7 @@ class Superset(BaseSupersetView):  # pylint: disable=too-many-public-methods
     @staticmethod
     def queries_exec(last_updated_ms: Union[float, int]) -> FlaskResponse:
         stats_logger.incr("queries")
-        if not g.user.get_id():
+        if not get_user_id():
             return json_error_response(
                 "Please login to access the queries.", status=403
             )
@@ -2689,9 +2590,7 @@ class Superset(BaseSupersetView):  # pylint: disable=too-many-public-methods
 
         sql_queries = (
             db.session.query(Query)
-            .filter(
-                Query.user_id == g.user.get_id(), Query.changed_on >= last_updated_dt
-            )
+            .filter(Query.user_id == get_user_id(), Query.changed_on >= last_updated_dt)
             .all()
         )
         dict_queries = {q.client_id: q.to_dict() for q in sql_queries}
@@ -2717,10 +2616,10 @@ class Superset(BaseSupersetView):  # pylint: disable=too-many-public-methods
                 search_user_id = int(cast(int, request.args.get("user_id")))
             except ValueError:
                 return Response(status=400, mimetype="application/json")
-            if search_user_id != g.user.get_user_id():
+            if search_user_id != get_user_id():
                 return Response(status=403, mimetype="application/json")
         else:
-            search_user_id = g.user.get_user_id()
+            search_user_id = get_user_id()
         database_id = request.args.get("database_id")
         search_text = request.args.get("search_text")
         status = request.args.get("status")
@@ -2773,14 +2672,14 @@ class Superset(BaseSupersetView):  # pylint: disable=too-many-public-methods
     @expose("/welcome/")
     def welcome(self) -> FlaskResponse:
         """Personalized welcome page"""
-        if not g.user or not g.user.get_id():
+        if not g.user or not get_user_id():
             if conf["PUBLIC_ROLE_LIKE"]:
                 return self.render_template("superset/public_welcome.html")
             return redirect(appbuilder.get_url_for_login)
 
         welcome_dashboard_id = (
             db.session.query(UserAttribute.welcome_dashboard_id)
-            .filter_by(user_id=g.user.get_id())
+            .filter_by(user_id=get_user_id())
             .scalar()
         )
         if welcome_dashboard_id:
@@ -2825,7 +2724,7 @@ class Superset(BaseSupersetView):  # pylint: disable=too-many-public-methods
         )
 
     @staticmethod
-    def _get_sqllab_tabs(user_id: int) -> Dict[str, Any]:
+    def _get_sqllab_tabs(user_id: Optional[int]) -> Dict[str, Any]:
         # send list of tab state ids
         tabs_state = (
             db.session.query(TabState.id, TabState.label)
@@ -2877,7 +2776,7 @@ class Superset(BaseSupersetView):  # pylint: disable=too-many-public-methods
         payload = {
             "defaultDbId": config["SQLLAB_DEFAULT_DBID"],
             "common": common_bootstrap_payload(),
-            **self._get_sqllab_tabs(g.user.get_id()),
+            **self._get_sqllab_tabs(get_user_id()),
         }
 
         form_data = request.form.get("form_data")

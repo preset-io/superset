@@ -15,6 +15,7 @@
 # specific language governing permissions and limitations
 # under the License.
 """a collection of model-related helper classes and functions"""
+# pylint: disable=too-many-lines
 import json
 import logging
 import re
@@ -23,24 +24,27 @@ from datetime import datetime, timedelta
 from json.decoder import JSONDecodeError
 from typing import (
     Any,
-    Callable,
     cast,
     Dict,
-    Hashable,
     List,
+    Mapping,
     NamedTuple,
     Optional,
     Set,
+    Text,
     Tuple,
     Type,
     TYPE_CHECKING,
     Union,
 )
 
+import dateutil.parser
 import humanize
+import numpy as np
 import pandas as pd
 import pytz
 import sqlalchemy as sa
+import sqlparse
 import yaml
 from flask import escape, g, Markup
 from flask_appbuilder import Model
@@ -49,41 +53,45 @@ from flask_appbuilder.models.mixins import AuditMixin
 from flask_appbuilder.security.sqla.models import User
 from flask_babel import lazy_gettext as _
 from jinja2.exceptions import TemplateError
-from sqlalchemy import and_, or_, UniqueConstraint
+from sqlalchemy import and_, Column, or_, UniqueConstraint
 from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy.orm import Mapper, Session
 from sqlalchemy.orm.exc import MultipleResultsFound
-from sqlalchemy.sql.elements import ColumnClause, TextClause
+from sqlalchemy.sql.elements import ColumnElement, literal_column, TextClause
 from sqlalchemy.sql.expression import Label, Select, TextAsFrom
 from sqlalchemy.sql.selectable import Alias, TableClause
 from sqlalchemy_utils import UUIDType
 
-from superset import app, db, is_feature_enabled, security_manager
+from superset import app, is_feature_enabled, security_manager
+from superset.advanced_data_type.types import AdvancedDataTypeResponse
 from superset.common.db_query_status import QueryStatus
 from superset.constants import EMPTY_STRING, NULL_STRING
 from superset.errors import ErrorLevel, SupersetError, SupersetErrorType
-from superset.exceptions import SupersetSecurityException
+from superset.exceptions import (
+    AdvancedDataTypeResponseError,
+    QueryClauseValidationException,
+    QueryObjectValidationError,
+    SupersetSecurityException,
+)
 from superset.extensions import feature_flag_manager
-from superset.jinja_context import (
-    BaseTemplateProcessor,
-    ExtraCache,
-    get_template_processor,
+from superset.jinja_context import BaseTemplateProcessor
+from superset.sql_parse import has_table_query, insert_rls, ParsedQuery, sanitize_clause
+from superset.superset_typing import (
+    AdhocMetric,
+    FilterValue,
+    FilterValues,
+    Metric,
+    OrderBy,
+    QueryObjectDict,
 )
-from superset.sql_parse import (
-    extract_table_references,
-    has_table_query,
-    insert_rls,
-    ParsedQuery,
-    sanitize_clause,
-    Table as TableName,
-)
-from superset.superset_typing import AdhocColumn
 from superset.utils import core as utils
+from superset.utils.core import get_user_id
 
 if TYPE_CHECKING:
     from superset.connectors.sqla.models import SqlMetric, TableColumn
     from superset.db_engine_specs import BaseEngineSpec
     from superset.models.core import Database
+
 
 config = app.config
 logger = logging.getLogger(__name__)
@@ -91,6 +99,38 @@ logger = logging.getLogger(__name__)
 CTE_ALIAS = "__cte"
 VIRTUAL_TABLE_ALIAS = "virtual_table"
 ADVANCED_DATA_TYPES = config["ADVANCED_DATA_TYPES"]
+
+
+def validate_adhoc_subquery(
+    sql: str,
+    database_id: int,
+    default_schema: str,
+) -> str:
+    """
+    Check if adhoc SQL contains sub-queries or nested sub-queries with table.
+
+    If sub-queries are allowed, the adhoc SQL is modified to insert any applicable RLS
+    predicates to it.
+
+    :param sql: adhoc sql expression
+    :raise SupersetSecurityException if sql contains sub-queries or
+    nested sub-queries with table
+    """
+    statements = []
+    for statement in sqlparse.parse(sql):
+        if has_table_query(statement):
+            if not is_feature_enabled("ALLOW_ADHOC_SUBQUERY"):
+                raise SupersetSecurityException(
+                    SupersetError(
+                        error_type=SupersetErrorType.ADHOC_SUBQUERY_NOT_ALLOWED_ERROR,
+                        message=_("Custom SQL fields cannot contain sub-queries."),
+                        level=ErrorLevel.ERROR,
+                    )
+                )
+            statement = insert_rls(statement, database_id, default_schema)
+        statements.append(statement)
+
+    return ";\n".join(str(statement) for statement in statements)
 
 
 def json_to_dict(json_str: str) -> Dict[Any, Any]:
@@ -433,7 +473,7 @@ class AuditMixinNullable(AuditMixin):
         return sa.Column(
             sa.Integer,
             sa.ForeignKey("ab_user.id"),
-            default=self.get_user_id,
+            default=get_user_id,
             nullable=True,
         )
 
@@ -442,8 +482,8 @@ class AuditMixinNullable(AuditMixin):
         return sa.Column(
             sa.Integer,
             sa.ForeignKey("ab_user.id"),
-            default=self.get_user_id,
-            onupdate=self.get_user_id,
+            default=get_user_id,
+            onupdate=get_user_id,
             nullable=True,
         )
 
@@ -594,24 +634,6 @@ def clone_model(
     return target.__class__(**data)
 
 
-from typing import Any, Dict, List, NamedTuple
-
-import sqlparse
-from sqlalchemy import Column
-from sqlalchemy.sql.elements import ColumnElement, Label, literal_column
-
-from superset.exceptions import QueryObjectValidationError
-from superset.superset_typing import (
-    AdhocMetric,
-    FilterValue,
-    FilterValues,
-    Metric,
-    OrderBy,
-    QueryObjectDict,
-)
-from superset.utils import core as utils
-
-
 # todo(hugh): centralize where this code lives
 class QueryStringExtended(NamedTuple):
     applied_template_filters: Optional[List[str]]
@@ -629,7 +651,7 @@ class SqlaQuery(NamedTuple):
     sqla_query: Select
 
 
-class ExploreMixin:
+class ExploreMixin:  # pylint: disable=too-many-public-methods
     """
     Allows any flask_appbuilder.Model (Query, Table, etc.)
     to be used to power a chart inside /explore
@@ -681,7 +703,7 @@ class ExploreMixin:
         raise NotImplementedError()
 
     @property
-    def main_dttm_col(self) -> str:
+    def main_dttm_col(self) -> Optional[str]:
         raise NotImplementedError()
 
     @property
@@ -715,6 +737,27 @@ class ExploreMixin:
     @staticmethod
     def get_extra_cache_keys(query_obj: Dict[str, Any]) -> List[str]:
         raise NotImplementedError()
+
+    def _process_sql_expression(  # type: ignore # pylint: disable=no-self-use
+        self,
+        expression: Optional[str],
+        database_id: int,
+        schema: str,
+        template_processor: Optional[BaseTemplateProcessor],
+    ) -> Optional[str]:
+        if template_processor and expression:
+            expression = template_processor.process_template(expression)
+        if expression:
+            expression = validate_adhoc_subquery(
+                expression,
+                database_id,
+                schema,
+            )
+            try:
+                expression = sanitize_clause(expression)
+            except QueryClauseValidationException as ex:
+                raise QueryObjectValidationError(ex.message) from ex
+        return expression
 
     def make_sqla_column_compatible(
         self, sqla_col: ColumnElement, label: Optional[str] = None
@@ -760,8 +803,8 @@ class ExploreMixin:
             sql = f"{cte}\n{sql}"
         return sql
 
+    @staticmethod
     def validate_adhoc_subquery(
-        self,
         sql: str,
         database_id: int,
         default_schema: str,
@@ -776,8 +819,6 @@ class ExploreMixin:
         :raise SupersetSecurityException if sql contains sub-queries or
         nested sub-queries with table
         """
-        # pylint: disable=import-outside-toplevel
-        from superset import is_feature_enabled
 
         statements = []
         for statement in sqlparse.parse(sql):
@@ -797,19 +838,53 @@ class ExploreMixin:
 
     def get_query_str_extended(self, query_obj: QueryObjectDict) -> QueryStringExtended:
         sqlaq = self.get_sqla_query(**query_obj)
-        sql = self.database.compile_sqla_query(sqlaq.sqla_query)
+        sql = self.database.compile_sqla_query(sqlaq.sqla_query)  # type: ignore
         sql = self._apply_cte(sql, sqlaq.cte)
         sql = sqlparse.format(sql, reindent=True)
         sql = self.mutate_query_from_config(sql)
-        # from pprint import pprint
-        # pprint(sql)
-        # breakpoint()
         return QueryStringExtended(
             applied_template_filters=sqlaq.applied_template_filters,
             labels_expected=sqlaq.labels_expected,
             prequeries=sqlaq.prequeries,
             sql=sql,
         )
+
+    def _normalize_prequery_result_type(
+        self,
+        row: pd.Series,
+        dimension: str,
+        columns_by_name: Dict[str, "TableColumn"],
+    ) -> Union[str, int, float, bool, Text]:
+        """
+        Convert a prequery result type to its equivalent Python type.
+
+        Some databases like Druid will return timestamps as strings, but do not perform
+        automatic casting when comparing these strings to a timestamp. For cases like
+        this we convert the value via the appropriate SQL transform.
+
+        :param row: A prequery record
+        :param dimension: The dimension name
+        :param columns_by_name: The mapping of columns by name
+        :return: equivalent primitive python type
+        """
+
+        value = row[dimension]
+
+        if isinstance(value, np.generic):
+            value = value.item()
+
+        column_ = columns_by_name[dimension]
+        db_extra: Dict[str, Any] = self.database.get_extra()  # type: ignore
+
+        if column_.type and column_.is_temporal and isinstance(value, str):
+            sql = self.db_engine_spec.convert_dttm(
+                column_.type, dateutil.parser.parse(value), db_extra=db_extra
+            )
+
+            if sql:
+                value = self.text(sql)
+
+        return value
 
     def make_orderby_compatible(
         self, select_exprs: List[ColumnElement], orderby_exprs: List[ColumnElement]
@@ -848,49 +923,42 @@ class ExploreMixin:
         errors = None
         error_message = None
 
-        # def assign_column_label(df: pd.DataFrame) -> Optional[pd.DataFrame]:
-        #     """
-        #     Some engines change the case or generate bespoke column names, either by
-        #     default or due to lack of support for aliasing. This function ensures that
-        #     the column names in the DataFrame correspond to what is expected by
-        #     the viz components.
-        #     Sometimes a query may also contain only order by columns that are not used
-        #     as metrics or groupby columns, but need to present in the SQL `select`,
-        #     filtering by `labels_expected` make sure we only return columns users want.
-        #     :param df: Original DataFrame returned by the engine
-        #     :return: Mutated DataFrame
-        #     """
-        #     labels_expected = query_str_ext.labels_expected
-        #     if df is not None and not df.empty:
-        #         if len(df.columns) < len(labels_expected):
-        #             raise QueryObjectValidationError(
-        #                 _("Db engine did not return all queried columns")
-        #             )
-        #         if len(df.columns) > len(labels_expected):
-        #             df = df.iloc[:, 0: len(labels_expected)]
-        #         df.columns = labels_expected
-        #     return df
+        def assign_column_label(df: pd.DataFrame) -> Optional[pd.DataFrame]:
+            """
+            Some engines change the case or generate bespoke column names, either by
+            default or due to lack of support for aliasing. This function ensures that
+            the column names in the DataFrame correspond to what is expected by
+            the viz components.
+            Sometimes a query may also contain only order by columns that are not used
+            as metrics or groupby columns, but need to present in the SQL `select`,
+            filtering by `labels_expected` make sure we only return columns users want.
+            :param df: Original DataFrame returned by the engine
+            :return: Mutated DataFrame
+            """
+            labels_expected = query_str_ext.labels_expected
+            if df is not None and not df.empty:
+                if len(df.columns) < len(labels_expected):
+                    raise QueryObjectValidationError(
+                        _("Db engine did not return all queried columns")
+                    )
+                if len(df.columns) > len(labels_expected):
+                    df = df.iloc[:, 0 : len(labels_expected)]
+                df.columns = labels_expected
+            return df
 
         try:
-            # todo(hugh) fix this
-            # df = self.database.get_df(
-            #     sql, self.schema, mutator=assign_column_label)
-            df = self.database.get_df(sql, self.schema)
+            df = self.database.get_df(
+                sql, self.schema, mutator=assign_column_label  # type: ignore
+            )
         except Exception as ex:  # pylint: disable=broad-except
             df = pd.DataFrame()
             status = QueryStatus.FAILED
             logger.warning(
                 "Query %s on schema %s failed", sql, self.schema, exc_info=True
             )
-            # todo(hugh): how are we handling errors
-            # db_engine_spec = self.db_engine_spec
-            # errors = [
-            #     dataclasses.asdict(error) for error in db_engine_spec.extract_errors(ex)
-            # ]
             error_message = utils.error_msg_from_exception(ex)
 
         return QueryResult(
-            # applied_template_filters=query_str_ext.applied_template_filters,
             status=status,
             df=df,
             duration=datetime.now() - qry_start_dttm,
@@ -963,7 +1031,7 @@ class ExploreMixin:
     def adhoc_metric_to_sqla(
         self,
         metric: AdhocMetric,
-        columns_by_name: Dict[str, Dict[str, Any]],
+        columns_by_name: Dict[str, "TableColumn"],  # # pylint: disable=unused-argument
         template_processor: Optional[BaseTemplateProcessor] = None,
     ) -> ColumnElement:
         """
@@ -981,16 +1049,10 @@ class ExploreMixin:
         if expression_type == utils.AdhocMetricExpressionType.SIMPLE:
             metric_column = metric.get("column") or {}
             column_name = cast(str, metric_column.get("column_name"))
-            table_column: Optional[TableColumn] = columns_by_name.get(column_name)
             sqla_column = sa.column(column_name)
-            # todo(hughhh): understand how this works?
-            # if table_column:
-            #     sqla_column = table_column.get_sqla_col()
-            # else:
-            #     sqla_column = column(column_name)
             sqla_metric = self.sqla_aggregations[metric["aggregate"]](sqla_column)
         elif expression_type == utils.AdhocMetricExpressionType.SQL:
-            expression = _process_sql_expression(
+            expression = self._process_sql_expression(  # type: ignore
                 expression=metric["sqlExpression"],
                 database_id=self.database_id,
                 schema=self.schema,
@@ -1058,15 +1120,22 @@ class ExploreMixin:
             values = values[0] if values else None
         return values
 
+    def get_query_str(self, query_obj: QueryObjectDict) -> str:
+        query_str_ext = self.get_query_str_extended(query_obj)
+        all_queries = query_str_ext.prequeries + [query_str_ext.sql]
+        return ";\n\n".join(all_queries) + ";"
+
     def _get_series_orderby(
         self,
         series_limit_metric: Metric,
-        metrics_by_name: Dict[str, "SqlMetric"],
-        columns_by_name: Dict[str, "TableColumn"],
+        metrics_by_name: Mapping[str, "SqlMetric"],
+        columns_by_name: Mapping[str, "TableColumn"],
     ) -> Column:
         if utils.is_adhoc_metric(series_limit_metric):
             assert isinstance(series_limit_metric, dict)
-            ob = self.adhoc_metric_to_sqla(series_limit_metric, columns_by_name)
+            ob = self.adhoc_metric_to_sqla(
+                series_limit_metric, columns_by_name  # type: ignore
+            )
         elif (
             isinstance(series_limit_metric, str)
             and series_limit_metric in metrics_by_name
@@ -1080,7 +1149,7 @@ class ExploreMixin:
 
     def adhoc_column_to_sqla(
         self,
-        col: Type["AdhocColumn"],
+        col: Type["AdhocColumn"],  # type: ignore
         template_processor: Optional[BaseTemplateProcessor] = None,
     ) -> ColumnElement:
         """
@@ -1091,9 +1160,9 @@ class ExploreMixin:
         :returns: The metric defined as a sqlalchemy column
         :rtype: sqlalchemy.sql.column
         """
-        label = utils.get_column_name(col)
-        expression = _process_sql_expression(
-            expression=col["sqlExpression"],
+        label = utils.get_column_name(col)  # type: ignore
+        expression = self._process_sql_expression(  # type: ignore
+            expression=col["sqlExpression"],  # type: ignore
             database_id=self.database_id,
             schema=self.schema,
             template_processor=template_processor,
@@ -1197,12 +1266,14 @@ class ExploreMixin:
         if granularity not in self.dttm_cols and granularity is not None:
             granularity = self.main_dttm_col
 
-        columns_by_name: Dict[str, TableColumn] = {
+        columns_by_name: Dict[str, "TableColumn"] = {
             col.get("column_name"): col
             for col in self.columns  # col.column_name: col for col in self.columns
         }
 
-        metrics_by_name: Dict[str, SqlMetric] = {m.metric_name: m for m in self.metrics}
+        metrics_by_name: Dict[str, "SqlMetric"] = {
+            m.metric_name: m for m in self.metrics
+        }
 
         if not granularity and is_timeseries:
             raise QueryObjectValidationError(
@@ -1221,7 +1292,7 @@ class ExploreMixin:
                 metrics_exprs.append(
                     self.adhoc_metric_to_sqla(
                         metric=metric,
-                        columns_by_name=columns_by_name,
+                        columns_by_name=columns_by_name,  # type: ignore
                         template_processor=template_processor,
                     )
                 )
@@ -1251,7 +1322,7 @@ class ExploreMixin:
             if isinstance(col, dict):
                 col = cast(AdhocMetric, col)
                 if col.get("sqlExpression"):
-                    col["sqlExpression"] = _process_sql_expression(
+                    col["sqlExpression"] = self._process_sql_expression(  # type: ignore
                         expression=col["sqlExpression"],
                         database_id=self.database_id,
                         schema=self.schema,
@@ -1259,7 +1330,7 @@ class ExploreMixin:
                     )
                 if utils.is_adhoc_metric(col):
                     # add adhoc sort by column to columns_by_name if not exists
-                    col = self.adhoc_metric_to_sqla(col, columns_by_name)
+                    col = self.adhoc_metric_to_sqla(col, columns_by_name)  # type: ignore
                     # if the adhoc metric has been defined before
                     # use the existing instance.
                     col = metrics_exprs_by_expr.get(str(col), col)
@@ -1407,12 +1478,12 @@ class ExploreMixin:
             flt_col = flt["col"]
             val = flt.get("val")
             op = flt["op"].upper()
-            col_obj: Optional[TableColumn] = None
+            col_obj: Optional["TableColumn"] = None
             sqla_col: Optional[Column] = None
             if flt_col == utils.DTTM_ALIAS and is_timeseries and dttm_col:
                 col_obj = dttm_col
             elif utils.is_adhoc_column(flt_col):
-                sqla_col = self.adhoc_column_to_sqla(flt_col)
+                sqla_col = self.adhoc_column_to_sqla(flt_col)  # type: ignore
             else:
                 col_obj = columns_by_name.get(flt_col)
             filter_grain = flt.get("grain")
@@ -1440,7 +1511,7 @@ class ExploreMixin:
                     col_type = col_obj.type if col_obj else None
                 col_spec = db_engine_spec.get_column_spec(
                     native_type=col_type,
-                    db_extra=self.database.get_extra(),
+                    db_extra=self.database.get_extra(),  # type: ignore
                 )
                 is_list_target = op in (
                     utils.FilterOperator.IN.value,
@@ -1464,7 +1535,7 @@ class ExploreMixin:
                     target_native_type=col_type,
                     is_list_target=is_list_target,
                     db_engine_spec=db_engine_spec,
-                    db_extra=self.database.get_extra(),
+                    db_extra=self.database.get_extra(),  # type: ignore
                 )
                 if (
                     col_advanced_data_type != ""
@@ -1553,7 +1624,9 @@ class ExploreMixin:
             where = extras.get("where")
             if where:
                 try:
-                    where = template_processor.process_template(f"({where})")
+                    where = template_processor.process_template(  # type: ignore
+                        f"({where})"
+                    )
                 except TemplateError as ex:
                     raise QueryObjectValidationError(
                         _(
@@ -1565,7 +1638,9 @@ class ExploreMixin:
             having = extras.get("having")
             if having:
                 try:
-                    having = template_processor.process_template(f"({having})")
+                    having = template_processor.process_template(  # type: ignore
+                        f"({having})"
+                    )
                 except TemplateError as ex:
                     raise QueryObjectValidationError(
                         _(
@@ -1574,8 +1649,8 @@ class ExploreMixin:
                         )
                     ) from ex
                 having_clause_and += [self.text(having)]
-        if apply_fetch_values_predicate and self.fetch_values_predicate:
-            qry = qry.where(self.get_fetch_values_predicate())
+        if apply_fetch_values_predicate and self.fetch_values_predicate:  # type: ignore
+            qry = qry.where(self.get_fetch_values_predicate())  # type: ignore
         if granularity:
             qry = qry.where(and_(*(time_filters + where_clause_and)))
         else:
@@ -1681,7 +1756,7 @@ class ExploreMixin:
                     "order_desc": True,
                 }
 
-                result = self.query(prequery_obj)  # ignore: typing
+                result = self.query(prequery_obj)  # type: ignore
                 prequeries.append(result.query)
                 dimensions = [
                     c

@@ -22,13 +22,16 @@ import React, {
   useState,
   useMemo,
   useCallback,
+  useEffect,
 } from 'react';
 import rison from 'rison';
+import { useHistory, useLocation } from 'react-router-dom';
 import {
   createFetchRelated,
   createFetchDistinct,
   createErrorHandler,
 } from 'src/views/CRUD/utils';
+import { getItem, LocalStorageKeys } from 'src/utils/localStorageHelpers';
 import { ColumnObject } from 'src/views/CRUD/data/dataset/types';
 import { useListViewResource } from 'src/views/CRUD/hooks';
 import ConfirmStatusChange from 'src/components/ConfirmStatusChange';
@@ -56,7 +59,7 @@ import InfoTooltip from 'src/components/InfoTooltip';
 import ImportModelsModal from 'src/components/ImportModal/index';
 import { isFeatureEnabled, FeatureFlag } from 'src/featureFlags';
 import WarningIconWithTooltip from 'src/components/WarningIconWithTooltip';
-import { isUserAdmin } from 'src/dashboard/util/findPermission';
+import { isUserAdmin } from 'src/dashboard/util/permissionUtils';
 import AddDatasetModal from './AddDatasetModal';
 
 import {
@@ -178,6 +181,12 @@ const DatasetList: FunctionComponent<DatasetListProps> = ({
     hasPerm('can_export') && isFeatureEnabled(FeatureFlag.VERSIONED_EXPORT);
 
   const initialSort = SORT_BY;
+  useEffect(() => {
+    const db = getItem(LocalStorageKeys.db, null);
+    if (!loading && db) {
+      setDatasetAddModalOpen(true);
+    }
+  }, [loading]);
 
   const openDatasetEditModal = useCallback(
     ({ id }: Dataset) => {
@@ -553,6 +562,26 @@ const DatasetList: FunctionComponent<DatasetListProps> = ({
     });
   }
 
+  const CREATE_HASH = '#create';
+  const location = useLocation();
+  const history = useHistory();
+
+  //  Sync Dataset Add modal with #create hash
+  useEffect(() => {
+    const modalOpen = location.hash === CREATE_HASH && canCreate;
+    setDatasetAddModalOpen(modalOpen);
+  }, [canCreate, location.hash]);
+
+  //  Add #create hash
+  const openDatasetAddModal = useCallback(() => {
+    history.replace(`${location.pathname}${location.search}${CREATE_HASH}`);
+  }, [history, location.pathname, location.search]);
+
+  //  Remove #create hash
+  const closeDatasetAddModal = useCallback(() => {
+    history.replace(`${location.pathname}${location.search}`);
+  }, [history, location.pathname, location.search]);
+
   if (canCreate) {
     buttonArr.push({
       name: (
@@ -560,7 +589,7 @@ const DatasetList: FunctionComponent<DatasetListProps> = ({
           <i className="fa fa-plus" /> {t('Dataset')}{' '}
         </>
       ),
-      onClick: () => setDatasetAddModalOpen(true),
+      onClick: openDatasetAddModal,
       buttonStyle: 'primary',
     });
 
@@ -631,7 +660,7 @@ const DatasetList: FunctionComponent<DatasetListProps> = ({
       <SubMenu {...menuData} />
       <AddDatasetModal
         show={datasetAddModalOpen}
-        onHide={() => setDatasetAddModalOpen(false)}
+        onHide={closeDatasetAddModal}
         onDatasetAdd={refreshData}
       />
       {datasetCurrentlyDeleting && (
