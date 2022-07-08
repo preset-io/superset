@@ -93,7 +93,6 @@ class SaveModal extends React.Component<SaveModalProps, SaveModalState> {
     this.changeAction = this.changeAction.bind(this);
     this.saveOrOverwrite = this.saveOrOverwrite.bind(this);
     this.isNewDashboard = this.isNewDashboard.bind(this);
-    this.handleDatasetNameChange = this.handleDatasetNameChange.bind(this);
   }
 
   isNewDashboard(): boolean {
@@ -217,6 +216,7 @@ class SaveModal extends React.Component<SaveModalProps, SaveModalState> {
           const prefix = url.includes('?') ? '&' : '?';
           url = `${url}${prefix}${new URLSearchParams(url_params).toString()}`;
         }
+        console.log('i hit in window.location.assign')
         window.location.assign(url);
       });
 
@@ -327,7 +327,7 @@ class SaveModal extends React.Component<SaveModalProps, SaveModalState> {
               data-test="new-chart-name"
             />
           </FormItem>
-          {this.props.datasource && this.props.datasource.type === 'query' ? (
+          {this.props.datasource?.type === 'query' ? (
             <FormItem label={t('Dataset Name')} required>
               <InfoTooltipWithTrigger
                 tooltip={t('A reusable dataset will be saved with your chart.')}
