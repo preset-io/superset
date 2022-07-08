@@ -67,7 +67,6 @@ type PickedSelectProps = Pick<
   | 'showSearch'
   | 'tokenSeparators'
   | 'value'
-  | 'getPopupContainer'
 >;
 
 export type OptionsType = Exclude<AntdSelectAllProps['options'], undefined>;
@@ -317,7 +316,6 @@ const Select = (
     sortComparator = DEFAULT_SORT_COMPARATOR,
     tokenSeparators,
     value,
-    getPopupContainer,
     ...props
   }: SelectProps,
   ref: RefObject<SelectRef>,
@@ -703,9 +701,7 @@ const Select = (
         dropdownRender={dropdownRender}
         filterOption={handleFilterOption}
         filterSort={sortComparatorWithSearch}
-        getPopupContainer={
-          getPopupContainer || (triggerNode => triggerNode.parentNode)
-        }
+        getPopupContainer={triggerNode => triggerNode.parentNode}
         labelInValue={isAsync || labelInValue}
         maxTagCount={MAX_TAG_COUNT}
         mode={mappedMode}
