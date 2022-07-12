@@ -216,7 +216,6 @@ class SaveModal extends React.Component<SaveModalProps, SaveModalState> {
           const prefix = url.includes('?') ? '&' : '?';
           url = `${url}${prefix}${new URLSearchParams(url_params).toString()}`;
         }
-        console.log('i hit in window.location.assign')
         window.location.assign(url);
       });
 
