@@ -275,7 +275,7 @@ export default class ResultSet extends React.PureComponent<
               this.props.database?.allows_virtual_table_explore && (
                 <ExploreResultsButton
                   database={this.props.database}
-                  onClick={() => this.setState({ showSaveDatasetModal: true })}
+                  onClick={this.createExploreResultsOnClick}
                 />
                 // In order to use the new workflow for a query powered chart, replace the
                 // above function with:
