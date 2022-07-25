@@ -20,6 +20,7 @@
 import React from 'react';
 import { TypedRegistry } from '../models';
 import { makeSingleton } from '../utils';
+import { User } from 'src/types/bootstrapTypes';
 
 /** A function (or component) which returns text (or marked-up text) */
 type UiGeneratorText<P = void> = (props: P) => string | React.ReactElement;
@@ -31,13 +32,18 @@ type UiGeneratorText<P = void> = (props: P) => string | React.ReactElement;
  * When defining a new option here, take care to keep any parameters to functions (or components) minimal.
  * Any removal or alteration to a parameter will be considered a breaking change.
  */
+type DataProps = {
+  examples?: any[];
+  user: User;
+}
+
 export type UiOverrides = Partial<{
   'embedded.documentation.description': UiGeneratorText;
   'embedded.documentation.url': string;
   'navbar.right': React.ComponentType;
   'welcome.banner': React.ComponentType;
-  'welcome.data': React.ComponentType;
-  'welcome.table': React.ComponentType;
+  'welcome.data': React.ComponentType<DataProps>;
+  'welcome.table': React.ComponentType<DataProps>;
 }>;
 
 /**
