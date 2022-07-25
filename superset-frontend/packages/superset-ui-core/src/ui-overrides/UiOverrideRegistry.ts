@@ -36,6 +36,8 @@ export type UiOverrides = Partial<{
   'embedded.documentation.url': string;
   'navbar.right': React.ComponentType;
   'welcome.banner': React.ComponentType;
+  'welcome.data': React.ComponentType;
+  'welcome.table': React.ComponentType;
 }>;
 
 /**
