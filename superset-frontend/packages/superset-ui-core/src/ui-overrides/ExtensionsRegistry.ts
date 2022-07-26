@@ -50,7 +50,7 @@ type ReturningDisplayable<P = void> = (props: P) => string | React.ReactElement;
 type DataProps = {
   examples?: any[];
   user: User;
-}
+};
 
 export type Extensions = Partial<{
   'embedded.documentation.description': ReturningDisplayable;
