@@ -46,7 +46,7 @@ type UiGeneratorText<P = void> = (props: P) => string | React.ReactElement;
 type DataProps = {
   examples?: any[];
   user: User;
-}
+};
 
 export type UiOverrides = Partial<{
   'embedded.documentation.description': UiGeneratorText;
