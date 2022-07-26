@@ -15,6 +15,7 @@
 # specific language governing permissions and limitations
 # under the License.
 import io
+import logging
 import os
 import tempfile
 import zipfile
@@ -225,6 +226,7 @@ class CsvToDatabaseView(SimpleFormView):
                 db_name=database.database_name,
                 error_msg=str(ex),
             )
+            logging.exception(message)
 
             flash(message, "danger")
             stats_logger.incr("failed_csv_upload")
