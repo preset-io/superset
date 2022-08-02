@@ -179,6 +179,7 @@ function Welcome({ user, addDangerToast }: WelcomeProps) {
     setItem(LocalStorageKeys.homepage_collapse_state, state);
   };
 
+  const WelcomeMessageExtension = uiOverrideRegistry.get('welcome.message');
   const WelcomeTopExtension = uiOverrideRegistry.get('welcome.banner');
   const WelcomeDataExtension = uiOverrideRegistry.get('welcome.data');
   const WelcomeTableExtension = uiOverrideRegistry.get('welcome.table');
@@ -284,6 +285,7 @@ function Welcome({ user, addDangerToast }: WelcomeProps) {
     !activityData?.Examples && !activityData?.Viewed;
   return (
     <WelcomeContainer>
+      {WelcomeMessageExtension && <WelcomeMessageExtension user={user} />}
       {WelcomeTopExtension && <WelcomeTopExtension />}
       {WelcomeDataExtension && (
         <WelcomeDataExtension examples={activityData?.Examples} user={user} />
