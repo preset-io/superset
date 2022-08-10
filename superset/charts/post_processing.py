@@ -235,7 +235,7 @@ def pivot_table_v2(
         df,
         rows=get_column_names(form_data.get("groupbyRows"), verbose_map),
         columns=get_column_names(form_data.get("groupbyColumns"), verbose_map),
-        metrics=get_metric_names(form_data["metrics"]),
+        metrics=get_metric_names(form_data["metrics"], verbose_map),
         aggfunc=form_data.get("aggregateFunction", "Sum"),
         transpose_pivot=bool(form_data.get("transposePivot")),
         combine_metrics=bool(form_data.get("combineMetric")),
@@ -335,6 +335,10 @@ def apply_post_process(
             df = pd.DataFrame.from_dict(query["data"])
         elif query["result_format"] == ChartDataResultFormat.CSV:
             df = pd.read_csv(StringIO(query["data"]))
+
+        # convert all columns to verbose (label) name
+        if datasource:
+            df.rename(columns=datasource.data["verbose_map"], inplace=True)
 
         processed_df = post_processor(df, form_data, datasource)
 
