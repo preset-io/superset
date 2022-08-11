@@ -339,6 +339,12 @@ class ChartDataRestApi(ChartRestApi):
         # Post-process the data so it matches the data presented in the chart.
         # This is needed for sending reports based on text charts that do the
         # post-processing of data, eg, the pivot table.
+        logger.info(
+            "report_type: %s report_format: %s result: %s",
+            result_type,
+            result_format,
+            result,
+        )
         if result_type == ChartDataResultType.POST_PROCESSED:
             result = apply_post_process(result, form_data, datasource)
 

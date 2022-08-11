@@ -154,6 +154,11 @@ class BaseReportState:
         Get the url for this report schedule: chart or dashboard
         """
         force = "true" if self._report_schedule.force_screenshot else "false"
+        logger.info(
+            "chart_id: %d report_format: %s",
+            self._report_schedule.chart_id,
+            result_format,
+        )
         if self._report_schedule.chart:
             if result_format in {
                 ChartDataResultFormat.CSV,
