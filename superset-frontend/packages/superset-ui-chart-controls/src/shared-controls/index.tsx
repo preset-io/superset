@@ -556,9 +556,9 @@ const x_axis: SharedControlConfig<'SelectControl', ColumnMeta> = {
   ...xAxisControlConfig,
 };
 
-const enableExploreDnd = isFeatureEnabled(
-  FeatureFlag.ENABLE_EXPLORE_DRAG_AND_DROP,
-);
+//  TODO: Revert hard-coding of enableExploreDnd to `true`
+const enableExploreDnd =
+  isFeatureEnabled(FeatureFlag.ENABLE_EXPLORE_DRAG_AND_DROP) || true;
 
 const sharedControls = {
   metrics: enableExploreDnd ? dnd_adhoc_metrics : metrics,
