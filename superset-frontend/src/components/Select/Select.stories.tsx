@@ -34,7 +34,7 @@ import AsyncSelect, {
 import Select, { SelectProps, OptionsType } from './Select';
 
 export default {
-  title: 'Select',
+  title: 'Design System/Components/Select',
   component: Select,
 };
 

@@ -20,7 +20,7 @@ import React from 'react';
 import BoundsControl, { BoundsControlProps } from './BoundsControl';
 
 export default {
-  title: 'BoundsControl',
+  title: 'Design System/Components/BoundsControl',
   component: BoundsControl,
 };
 

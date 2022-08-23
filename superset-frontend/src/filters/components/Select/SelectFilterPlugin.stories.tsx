@@ -29,7 +29,7 @@ new SelectFilterPlugin().configure({ key: 'filter_select' }).register();
 getChartTransformPropsRegistry().registerValue('filter_select', transformProps);
 
 export default {
-  title: 'Filter Plugins',
+  title: 'Design System/Plugins/Filter Plugins',
   decorators: [withKnobs],
 };
 

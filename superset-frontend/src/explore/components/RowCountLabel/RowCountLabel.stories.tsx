@@ -20,7 +20,7 @@ import React from 'react';
 import RowCountLabel, { RowCountLabelProps } from '.';
 
 export default {
-  title: 'RowCountLabel',
+  title: 'Design System/Components/RowCountLabel',
   component: RowCountLabel,
 };
 

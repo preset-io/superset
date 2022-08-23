@@ -20,7 +20,7 @@ import React from 'react';
 import ControlHeader, { ControlHeaderProps } from './ControlHeader';
 
 export default {
-  title: 'ControlHeader',
+  title: 'Design System/Components/ControlHeader',
   component: ControlHeader,
 };
 

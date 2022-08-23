@@ -54,4 +54,8 @@ module.exports = {
     __DEV__: true,
     caches: true,
   },
+  transform: {
+    '^.+\\.[tj]sx?$': 'babel-jest',
+    '^.+\\.mdx$': '@storybook/addon-docs/jest-transform-mdx',
+  },
 };

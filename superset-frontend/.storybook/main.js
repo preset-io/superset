@@ -32,6 +32,7 @@ module.exports = {
     'storybook-addon-jsx',
     '@storybook/addon-knobs',
     'storybook-addon-paddings',
+    '@storybook/addon-a11y',
   ],
   staticDirs: ['../src/assets/images'],
   webpackFinal: config => ({

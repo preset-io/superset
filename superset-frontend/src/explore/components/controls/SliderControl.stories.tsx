@@ -20,7 +20,7 @@ import React from 'react';
 import SliderControl from './SliderControl';
 
 export default {
-  title: 'SliderControl',
+  title: 'Design System/Components/SliderControl',
   component: SliderControl,
 };
 
