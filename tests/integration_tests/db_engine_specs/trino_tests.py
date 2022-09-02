@@ -69,7 +69,7 @@ class TestTrinoDbEngineSpec(TestDbEngineSpec):
         )
 
         params: Dict[str, Any] = {}
-        TrinoEngineSpec.update_encrypted_extra_params(database, params)
+        TrinoEngineSpec.update_params_from_encrypted_extra(database, params)
         connect_args = params.setdefault("connect_args", {})
         self.assertEqual(connect_args.get("http_scheme"), "https")
         auth.assert_called_once_with(**auth_params)
@@ -88,7 +88,7 @@ class TestTrinoDbEngineSpec(TestDbEngineSpec):
         )
 
         params: Dict[str, Any] = {}
-        TrinoEngineSpec.update_encrypted_extra_params(database, params)
+        TrinoEngineSpec.update_params_from_encrypted_extra(database, params)
         connect_args = params.setdefault("connect_args", {})
         self.assertEqual(connect_args.get("http_scheme"), "https")
         auth.assert_called_once_with(**auth_params)
@@ -103,7 +103,7 @@ class TestTrinoDbEngineSpec(TestDbEngineSpec):
         )
 
         params: Dict[str, Any] = {}
-        TrinoEngineSpec.update_encrypted_extra_params(database, params)
+        TrinoEngineSpec.update_params_from_encrypted_extra(database, params)
         connect_args = params.setdefault("connect_args", {})
         self.assertEqual(connect_args.get("http_scheme"), "https")
         auth.assert_called_once_with(**auth_params)
@@ -124,7 +124,7 @@ class TestTrinoDbEngineSpec(TestDbEngineSpec):
             clear=True,
         ):
             params: Dict[str, Any] = {}
-            TrinoEngineSpec.update_encrypted_extra_params(database, params)
+            TrinoEngineSpec.update_params_from_encrypted_extra(database, params)
 
             connect_args = params.setdefault("connect_args", {})
             self.assertEqual(connect_args.get("http_scheme"), "https")
@@ -142,7 +142,7 @@ class TestTrinoDbEngineSpec(TestDbEngineSpec):
         superset.config.ALLOWED_EXTRA_AUTHENTICATIONS = {}
 
         with pytest.raises(ValueError) as excinfo:
-            TrinoEngineSpec.update_encrypted_extra_params(database, {})
+            TrinoEngineSpec.update_params_from_encrypted_extra(database, {})
 
         assert str(excinfo.value) == (
             f"For security reason, custom authentication '{auth_method}' "
