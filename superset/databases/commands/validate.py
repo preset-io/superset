@@ -44,6 +44,8 @@ class ValidateDatabaseParametersCommand(BaseCommand):
         self._model: Optional[Database] = None
 
     def run(self) -> None:
+        self.validate()
+
         engine = self._properties["engine"]
         engine_specs = get_engine_specs()
 
@@ -92,7 +94,15 @@ class ValidateDatabaseParametersCommand(BaseCommand):
             event_logger.log_with_context(action="validation_error", engine=engine)
             raise InvalidParametersError(errors)
 
-        serialized_encrypted_extra = self._properties.get("encrypted_extra", "{}")
+        serialized_encrypted_extra = self._properties.get(
+            "masked_encrypted_extra",
+            "{}",
+        )
+        if self._model:
+            serialized_encrypted_extra = engine_spec.unmask_encrypted_extra(
+                self._model.encrypted_extra,
+                serialized_encrypted_extra,
+            )
         try:
             encrypted_extra = json.loads(serialized_encrypted_extra)
         except json.decoder.JSONDecodeError:
@@ -140,6 +150,6 @@ class ValidateDatabaseParametersCommand(BaseCommand):
             )
 
     def validate(self) -> None:
-        database_name = self._properties.get("database_name")
-        if database_name is not None:
-            self._model = DatabaseDAO.get_database_by_name(database_name)
+        database_id = self._properties.get("id")
+        if database_id is not None:
+            self._model = DatabaseDAO.find_by_id(database_id)
