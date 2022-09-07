@@ -152,7 +152,7 @@ kombu==5.2.4
     # via celery
 korean-lunar-calendar==0.2.1
     # via holidays
-mako==1.1.4
+mako==1.2.2
     # via alembic
 markdown==3.3.4
     # via apache-superset
