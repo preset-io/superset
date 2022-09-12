@@ -18,6 +18,7 @@ from typing import Any, Dict, List, Optional, Union
 
 from sqlalchemy.engine.url import make_url, URL
 
+from superset import db
 from superset.databases.commands.exceptions import DatabaseInvalidError
 
 
@@ -55,7 +56,7 @@ def get_table_metadata(
     database: Any,
     table_name: str,
     schema_name: Optional[str],
-    get_row_count: bool = False,
+    get_row_count: bool = True,
 ) -> Dict[str, Any]:
     """
     Get table metadata information, including type, pk, fks.
@@ -69,6 +70,7 @@ def get_table_metadata(
     keys = []
     columns = database.get_columns(table_name, schema_name)
     primary_key = database.get_pk_constraint(table_name, schema_name)
+    print("database", database)
     if primary_key and primary_key.get("constrained_columns"):
         primary_key["column_names"] = primary_key.pop("constrained_columns")
         primary_key["type"] = "pk"
@@ -90,9 +92,15 @@ def get_table_metadata(
             }
         )
 
+    print("000000000 0000 i hit in gettable metadata 00000 000000000 ")
+
+    print("get_row_count", get_row_count)
+    # row_length = None
     if get_row_count:
+        breakpoint()
+        # row_length = db.session.query(table_name).all()
+        # print("-----row_length -------->>>>", row_length)
         # compute `select count(*) from {table}`
-        pass
 
     return {
         "name": table_name,
@@ -108,6 +116,7 @@ def get_table_metadata(
         "primaryKey": primary_key,
         "foreignKeys": foreign_keys,
         "indexes": keys,
+        # "rowLength": row_length,
         "comment": table_comment,
     }
 

@@ -156,6 +156,13 @@ export default function LeftPanel({
       });
   };
 
+  const getTableInfo = (tableName) => {
+    /*const url = encodeURI(
+      `/superset/${dbId}/table/${tableName}/${encodedSchema}/`,
+    );
+    SupersetClient.get({ url }).then()*/
+  }
+
   const setSchema = (schema: string) => {
     if (schema) {
       setDataset({
