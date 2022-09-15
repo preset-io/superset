@@ -22,7 +22,7 @@ from typing import Any
 from zipfile import is_zipfile, ZipFile
 
 import yaml
-from flask import g, request, Response, send_file
+from flask import request, Response, send_file
 from flask_appbuilder.api import expose, protect, rison, safe
 from flask_appbuilder.models.sqla.interface import SQLAInterface
 from flask_babel import ngettext
@@ -37,7 +37,6 @@ from superset.databases.filters import DatabaseFilter
 from superset.datasets.commands.bulk_delete import BulkDeleteDatasetCommand
 from superset.datasets.commands.create import CreateDatasetCommand
 from superset.datasets.commands.delete import DeleteDatasetCommand
-from superset.datasets.commands.duplicate import DuplicateDatasetCommand
 from superset.datasets.commands.exceptions import (
     DatasetBulkDeleteFailedError,
     DatasetCreateFailedError,
@@ -55,7 +54,6 @@ from superset.datasets.commands.update import UpdateDatasetCommand
 from superset.datasets.dao import DatasetDAO
 from superset.datasets.filters import DatasetCertifiedFilter, DatasetIsNullOrEmptyFilter
 from superset.datasets.schemas import (
-    DatasetDuplicateSchema,
     DatasetPostSchema,
     DatasetPutSchema,
     DatasetRelatedObjectsResponse,
@@ -92,7 +90,6 @@ class DatasetRestApi(BaseSupersetModelRestApi):
         "bulk_delete",
         "refresh",
         "related_objects",
-        "duplicate",
     }
     list_columns = [
         "id",
@@ -193,7 +190,6 @@ class DatasetRestApi(BaseSupersetModelRestApi):
     ]
     add_model_schema = DatasetPostSchema()
     edit_model_schema = DatasetPutSchema()
-    duplicate_model_schema = DatasetDuplicateSchema()
     add_columns = ["database", "schema", "table_name", "owners"]
     edit_columns = [
         "table_name",
@@ -230,10 +226,7 @@ class DatasetRestApi(BaseSupersetModelRestApi):
     apispec_parameter_schemas = {
         "get_export_ids_schema": get_export_ids_schema,
     }
-    openapi_spec_component_schemas = (
-        DatasetRelatedObjectsResponse,
-        DatasetDuplicateSchema,
-    )
+    openapi_spec_component_schemas = (DatasetRelatedObjectsResponse,)
 
     @expose("/", methods=["POST"])
     @protect()
@@ -524,77 +517,6 @@ class DatasetRestApi(BaseSupersetModelRestApi):
             headers=generate_download_headers("yaml"),
             mimetype="application/text",
         )
-
-    @expose("/duplicate", methods=["POST"])
-    @protect()
-    @safe
-    @statsd_metrics
-    @event_logger.log_this_with_context(
-        action=lambda self, *args, **kwargs: f"{self.__class__.__name__}" f".duplicate",
-        log_to_statsd=False,
-    )
-    @requires_json
-    def duplicate(self) -> Response:
-        """Duplicates a Dataset
-        ---
-        post:
-          description: >-
-            Duplicates a Dataset
-          requestBody:
-            description: Dataset schema
-            required: true
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/DatasetDuplicateSchema'
-          responses:
-            201:
-              description: Dataset duplicated
-              content:
-                application/json:
-                  schema:
-                    type: object
-                    properties:
-                      id:
-                        type: number
-                      result:
-                        $ref: '#/components/schemas/DatasetDuplicateSchema'
-            400:
-              $ref: '#/components/responses/400'
-            401:
-              $ref: '#/components/responses/401'
-            403:
-              $ref: '#/components/responses/403'
-            404:
-              $ref: '#/components/responses/404'
-            422:
-              $ref: '#/components/responses/422'
-            500:
-              $ref: '#/components/responses/500'
-        """
-        try:
-            item = self.duplicate_model_schema.load(request.json)
-        # This validates custom Schema with custom validations
-        except ValidationError as error:
-            return self.response_400(message=error.messages)
-
-        try:
-            new_model = DuplicateDatasetCommand([g.user.id], item).run()
-            return self.response(201, id=new_model.id, result=item)
-        except DatasetInvalidError as ex:
-            return self.response_422(
-                message=ex.normalized_messages()
-                if isinstance(ex, ValidationError)
-                else str(ex)
-            )
-        except DatasetCreateFailedError as ex:
-            logger.error(
-                "Error creating model %s: %s",
-                self.__class__.__name__,
-                str(ex),
-                exc_info=True,
-            )
-            return self.response_422(message=str(ex))
 
     @expose("/<pk>/refresh", methods=["PUT"])
     @protect()

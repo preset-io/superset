@@ -187,7 +187,3 @@ class DatasetImportError(ImportFailedError):
 
 class DatasetAccessDeniedError(ForbiddenError):
     message = _("You don't have access to this dataset.")
-
-
-class DatasetDuplicateFailedError(CreateFailedError):
-    message = _("Dataset could not be duplicated.")

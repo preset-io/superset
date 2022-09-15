@@ -69,7 +69,6 @@ import {
   PASSWORDS_NEEDED_MESSAGE,
   CONFIRM_OVERWRITE_MESSAGE,
 } from './constants';
-import DuplicateDatasetModal from './DuplicateDatasetModal';
 
 const FlexRowContainer = styled.div`
   align-items: center;
@@ -120,11 +119,6 @@ type Dataset = {
   table_name: string;
 };
 
-interface VirtualDataset extends Dataset {
-  extra: Record<string, any>;
-  sql: string;
-}
-
 interface DatasetListProps {
   addDangerToast: (msg: string) => void;
   addSuccessToast: (msg: string) => void;
@@ -163,9 +157,6 @@ const DatasetList: FunctionComponent<DatasetListProps> = ({
   const [datasetCurrentlyEditing, setDatasetCurrentlyEditing] =
     useState<Dataset | null>(null);
 
-  const [datasetCurrentlyDuplicating, setDatasetCurrentlyDuplicating] =
-    useState<VirtualDataset | null>(null);
-
   const [importingDataset, showImportModal] = useState<boolean>(false);
   const [passwordFields, setPasswordFields] = useState<string[]>([]);
   const [preparingExport, setPreparingExport] = useState<boolean>(false);
@@ -187,7 +178,6 @@ const DatasetList: FunctionComponent<DatasetListProps> = ({
   const canEdit = hasPerm('can_write');
   const canDelete = hasPerm('can_write');
   const canCreate = hasPerm('can_write');
-  const canDuplicate = hasPerm('can_duplicate');
   const canExport =
     hasPerm('can_export') && isFeatureEnabled(FeatureFlag.VERSIONED_EXPORT);
 
@@ -250,10 +240,6 @@ const DatasetList: FunctionComponent<DatasetListProps> = ({
           ),
         ),
       );
-
-  const openDatasetDuplicateModal = (dataset: VirtualDataset) => {
-    setDatasetCurrentlyDuplicating(dataset);
-  };
 
   const handleBulkDatasetExport = (datasetsToExport: Dataset[]) => {
     const ids = datasetsToExport.map(({ id }) => id);
@@ -411,8 +397,7 @@ const DatasetList: FunctionComponent<DatasetListProps> = ({
           const handleEdit = () => openDatasetEditModal(original);
           const handleDelete = () => openDatasetDeleteModal(original);
           const handleExport = () => handleBulkDatasetExport([original]);
-          const handleDuplicate = () => openDatasetDuplicateModal(original);
-          if (!canEdit && !canDelete && !canExport && !canDuplicate) {
+          if (!canEdit && !canDelete && !canExport) {
             return null;
           }
           return (
@@ -471,32 +456,16 @@ const DatasetList: FunctionComponent<DatasetListProps> = ({
                   </span>
                 </Tooltip>
               )}
-              {canDuplicate && original.kind === 'virtual' && (
-                <Tooltip
-                  id="duplicate-action-tooltop"
-                  title={t('Duplicate')}
-                  placement="bottom"
-                >
-                  <span
-                    role="button"
-                    tabIndex={0}
-                    className="action-button"
-                    onClick={handleDuplicate}
-                  >
-                    <Icons.Copy />
-                  </span>
-                </Tooltip>
-              )}
             </Actions>
           );
         },
         Header: t('Actions'),
         id: 'actions',
-        hidden: !canEdit && !canDelete && !canDuplicate,
+        hidden: !canEdit && !canDelete,
         disableSortBy: true,
       },
     ],
-    [canEdit, canDelete, canExport, openDatasetEditModal, canDuplicate],
+    [canEdit, canDelete, canExport, openDatasetEditModal],
   );
 
   const filterTypes: Filters = useMemo(
@@ -656,10 +625,6 @@ const DatasetList: FunctionComponent<DatasetListProps> = ({
     setDatasetCurrentlyEditing(null);
   };
 
-  const closeDatasetDuplicateModal = () => {
-    setDatasetCurrentlyDuplicating(null);
-  };
-
   const handleDatasetDelete = ({ id, table_name: tableName }: Dataset) => {
     SupersetClient.delete({
       endpoint: `/api/v1/dataset/${id}`,
@@ -690,30 +655,6 @@ const DatasetList: FunctionComponent<DatasetListProps> = ({
       createErrorHandler(errMsg =>
         addDangerToast(
           t('There was an issue deleting the selected datasets: %s', errMsg),
-        ),
-      ),
-    );
-  };
-
-  const handleDatasetDuplicate = (newDatasetName: string) => {
-    if (datasetCurrentlyDuplicating === null) {
-      addDangerToast(t('There was an issue duplicating the dataset.'));
-    }
-
-    SupersetClient.post({
-      endpoint: `/api/v1/dataset/duplicate`,
-      postPayload: {
-        base_model_id: datasetCurrentlyDuplicating?.id,
-        table_name: newDatasetName,
-      },
-    }).then(
-      () => {
-        setDatasetCurrentlyDuplicating(null);
-        refreshData();
-      },
-      createErrorHandler(errMsg =>
-        addDangerToast(
-          t('There was an issue duplicating the selected datasets: %s', errMsg),
         ),
       ),
     );
@@ -753,11 +694,6 @@ const DatasetList: FunctionComponent<DatasetListProps> = ({
           show
         />
       )}
-      <DuplicateDatasetModal
-        dataset={datasetCurrentlyDuplicating}
-        onHide={closeDatasetDuplicateModal}
-        onDuplicate={handleDatasetDuplicate}
-      />
       <ConfirmStatusChange
         title={t('Please confirm')}
         description={t(
