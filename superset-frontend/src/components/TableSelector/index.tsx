@@ -112,9 +112,9 @@ export interface TableOption {
 }
 
 export const TableOption = ({ table }: { table: Table }) => {
-  const { value, type, extra } = table;
+  const { label, type, extra } = table;
   return (
-    <TableLabel title={value}>
+    <TableLabel title={label}>
       {type === 'view' ? (
         <Icons.Eye iconSize="m" />
       ) : (
@@ -133,7 +133,7 @@ export const TableOption = ({ table }: { table: Table }) => {
           size="l"
         />
       )}
-      {value}
+      {label}
     </TableLabel>
   );
 };
@@ -286,7 +286,9 @@ const TableSelector: FunctionComponent<TableSelectorProps> = ({
   );
 
   function renderTableSelect() {
-    const disabled = (currentSchema && !formMode && readOnly) || !currentSchema;
+    const disabled =
+      (currentSchema && !formMode && readOnly) ||
+      (!currentSchema && !database?.allow_multi_schema_metadata_fetch);
 
     const header = sqlLabMode ? (
       <FormLabel>{t('See table schema')}</FormLabel>
