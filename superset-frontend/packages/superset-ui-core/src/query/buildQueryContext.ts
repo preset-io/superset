@@ -23,8 +23,6 @@ import { QueryFieldAliases, QueryFormData } from './types/QueryFormData';
 import { QueryContext, QueryObject } from './types/Query';
 import { SetDataMaskHook } from '../chart';
 import { JsonObject } from '../connection';
-import { isFeatureEnabled, FeatureFlag } from '../utils';
-import { normalizeTimeColumn } from './normalizeTimeColumn';
 
 const WRAP_IN_ARRAY = (baseQueryObject: QueryObject) => [baseQueryObject];
 
@@ -47,16 +45,13 @@ export default function buildQueryContext(
     typeof options === 'function'
       ? { buildQuery: options, queryFields: {} }
       : options || {};
-  let queries = buildQuery(buildQueryObject(formData, queryFields));
+  const queries = buildQuery(buildQueryObject(formData, queryFields));
   queries.forEach(query => {
     if (Array.isArray(query.post_processing)) {
       // eslint-disable-next-line no-param-reassign
       query.post_processing = query.post_processing.filter(Boolean);
     }
   });
-  if (isFeatureEnabled(FeatureFlag.GENERIC_CHART_AXES)) {
-    queries = queries.map(query => normalizeTimeColumn(formData, query));
-  }
   return {
     datasource: new DatasourceKey(formData.datasource).toObject(),
     force: formData.force || false,

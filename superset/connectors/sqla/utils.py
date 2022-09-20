@@ -14,8 +14,6 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
-from __future__ import annotations
-
 import logging
 from contextlib import closing
 from typing import (
@@ -104,7 +102,7 @@ def get_physical_table_metadata(
     return cols
 
 
-def get_virtual_table_metadata(dataset: SqlaTable) -> List[ResultSetColumnType]:
+def get_virtual_table_metadata(dataset: "SqlaTable") -> List[ResultSetColumnType]:
     """Use SQLparser to get virtual dataset metadata"""
     if not dataset.sql:
         raise SupersetGenericDBErrorException(
@@ -139,7 +137,7 @@ def get_virtual_table_metadata(dataset: SqlaTable) -> List[ResultSetColumnType]:
     try:
         with closing(engine.raw_connection()) as conn:
             cursor = conn.cursor()
-            query = dataset.database.apply_limit_to_sql(statements[0], limit=1)
+            query = dataset.database.apply_limit_to_sql(statements[0])
             db_engine_spec.execute(cursor, query)
             result = db_engine_spec.fetch_data(cursor, limit=1)
             result_set = SupersetResultSet(result, cursor.description, db_engine_spec)
@@ -147,24 +145,6 @@ def get_virtual_table_metadata(dataset: SqlaTable) -> List[ResultSetColumnType]:
     except Exception as ex:
         raise SupersetGenericDBErrorException(message=str(ex)) from ex
     return cols
-
-
-def get_columns_description(
-    database: Database,
-    query: str,
-) -> List[ResultSetColumnType]:
-    db_engine_spec = database.db_engine_spec
-    try:
-        with closing(database.get_sqla_engine().raw_connection()) as conn:
-            cursor = conn.cursor()
-            query = database.apply_limit_to_sql(query, limit=1)
-            cursor.execute(query)
-            db_engine_spec.execute(cursor, query)
-            result = db_engine_spec.fetch_data(cursor, limit=1)
-            result_set = SupersetResultSet(result, cursor.description, db_engine_spec)
-            return result_set.columns
-    except Exception as ex:
-        raise SupersetGenericDBErrorException(message=str(ex)) from ex
 
 
 def validate_adhoc_subquery(
@@ -204,12 +184,12 @@ def validate_adhoc_subquery(
 
 @memoized
 def get_dialect_name(drivername: str) -> str:
-    return SqlaURL.create(drivername).get_dialect().name
+    return SqlaURL(drivername).get_dialect().name
 
 
 @memoized
 def get_identifier_quoter(drivername: str) -> Dict[str, Callable[[str], str]]:
-    return SqlaURL.create(drivername).get_dialect()().identifier_preparer.quote
+    return SqlaURL(drivername).get_dialect()().identifier_preparer.quote
 
 
 DeclarativeModel = TypeVar("DeclarativeModel", bound=DeclarativeMeta)

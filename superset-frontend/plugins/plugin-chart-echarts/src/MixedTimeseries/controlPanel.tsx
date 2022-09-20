@@ -291,12 +291,12 @@ function createAdvancedAnalyticsSection(
 
 const config: ControlPanelConfig = {
   controlPanelSections: [
-    sections.genericTime,
+    sections.legacyTimeseriesTime,
     isFeatureEnabled(FeatureFlag.GENERIC_CHART_AXES)
       ? {
           label: t('Shared query fields'),
           expanded: true,
-          controlSetRows: [['x_axis'], ['time_grain_sqla']],
+          controlSetRows: [['x_axis']],
         }
       : null,
     createQuerySection(t('Query A'), ''),
