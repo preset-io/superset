@@ -49,8 +49,8 @@ def get_engine_parameters(properties: Dict[str, Any]) -> Dict[str, Any]:
 
 
 class ValidateDatabaseParametersCommand(BaseCommand):
-    def __init__(self, parameters: Dict[str, Any]):
-        self._properties = parameters.copy()
+    def __init__(self, properties: Dict[str, Any]):
+        self._properties = properties.copy()
         self._model: Optional[Database] = None
 
     def run(self) -> None:
@@ -77,8 +77,7 @@ class ValidateDatabaseParametersCommand(BaseCommand):
             )
 
         # perform initial validation
-        parameters = get_engine_parameters(self._properties)
-        errors = engine_spec.validate_parameters(parameters)  # type: ignore
+        errors = engine_spec.validate_parameters(self._properties)  # type: ignore
         if errors:
             event_logger.log_with_context(action="validation_error", engine=engine)
             raise InvalidParametersError(errors)
