@@ -251,6 +251,7 @@ class GSheetsEngineSpec(SqliteEngineSpec):
         conn = engine.connect()
         idx = 0
         for name, url in table_catalog.items():
+
             if not name:
                 errors.append(
                     SupersetError(
