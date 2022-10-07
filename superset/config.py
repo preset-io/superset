@@ -463,6 +463,8 @@ DEFAULT_FEATURE_FLAGS: Dict[str, bool] = {
     # Enable sharing charts with embedding
     "EMBEDDABLE_CHARTS": True,
     "DRILL_TO_DETAIL": False,
+    "DATAPANEL_CLOSED_BY_DEFAULT": False,
+    "CROSS_REFERENCES": False,
 }
 
 # Feature flags may also be set via 'SUPERSET_FEATURE_' prefixed environment vars.

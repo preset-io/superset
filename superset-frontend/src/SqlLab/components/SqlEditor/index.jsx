@@ -224,13 +224,19 @@ const SqlEditor = ({
     }
   };
 
-  useState(() => {
+  const runQuery = () => {
+    if (database) {
+      startQuery();
+    }
+  };
+
+  useEffect(() => {
     if (autorun) {
       setAutorun(false);
       dispatch(queryEditorSetAutorun(queryEditor, false));
       startQuery();
     }
-  });
+  }, []);
 
   // One layer of abstraction for easy spying in unit tests
   const getSqlEditorHeight = () =>
@@ -493,8 +499,8 @@ const SqlEditor = ({
     );
   };
 
-  const onSaveQuery = async query => {
-    const savedQuery = await dispatch(saveQuery(query));
+  const onSaveQuery = async (query, clientId) => {
+    const savedQuery = await dispatch(saveQuery(query, clientId));
     dispatch(addSavedQueryToTabState(queryEditor, savedQuery));
   };
 
@@ -537,7 +543,7 @@ const SqlEditor = ({
               allowAsync={database ? database.allow_run_async : false}
               queryEditorId={queryEditor.id}
               queryState={latestQuery?.state}
-              runQuery={startQuery}
+              runQuery={runQuery}
               stopQuery={stopQuery}
               overlayCreateAsMenu={showMenu ? runMenuBtn : null}
             />
@@ -574,7 +580,9 @@ const SqlEditor = ({
               queryEditorId={queryEditor.id}
               columns={latestQuery?.results?.columns || []}
               onSave={onSaveQuery}
-              onUpdate={query => dispatch(updateSavedQuery(query))}
+              onUpdate={(query, remoteId, id) =>
+                dispatch(updateSavedQuery(query, remoteId, id))
+              }
               saveQueryWarning={saveQueryWarning}
               database={database}
             />
