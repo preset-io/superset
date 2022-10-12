@@ -32,9 +32,6 @@ import {
 import { DatabaseObject } from '../types';
 
 const extensionsRegistry = getExtensionsRegistry();
-const dbConfigExtensions = extensionsRegistry.get(
-  'databaseconnection.extensions',
-);
 
 const ExtraOptions = ({
   db,
@@ -59,6 +56,10 @@ const ExtraOptions = ({
   const extensionProps = {
     db,
   };
+
+  const dbConfigExtensions = extensionsRegistry.get(
+    'databaseconnection.extensions',
+  );
 
   return (
     <Collapse
