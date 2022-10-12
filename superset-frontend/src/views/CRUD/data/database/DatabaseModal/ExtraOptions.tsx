@@ -18,7 +18,7 @@
  */
 import React, { ChangeEvent, EventHandler } from 'react';
 import cx from 'classnames';
-import { t, SupersetTheme } from '@superset-ui/core';
+import { t, SupersetTheme, getExtensionsRegistry } from '@superset-ui/core';
 import InfoTooltip from 'src/components/InfoTooltip';
 import IndeterminateCheckbox from 'src/components/IndeterminateCheckbox';
 import Collapse from 'src/components/Collapse';
@@ -30,6 +30,11 @@ import {
   no_margin_bottom,
 } from './styles';
 import { DatabaseObject } from '../types';
+
+const extensionsRegistry = getExtensionsRegistry();
+const dbConfigExtensions = extensionsRegistry.get(
+  'databaseconnection.extensions',
+);
 
 const ExtraOptions = ({
   db,
@@ -50,6 +55,10 @@ const ExtraOptions = ({
   const createAsOpen = !!(db?.allow_ctas || db?.allow_cvas);
   const isFileUploadSupportedByEngine =
     db?.engine_information?.supports_file_upload;
+
+  const extensionProps = {
+    db,
+  };
 
   return (
     <Collapse
@@ -503,6 +512,21 @@ const ExtraOptions = ({
           </div>
         </StyledInputContainer>
       </Collapse.Panel>
+      {dbConfigExtensions?.map?.(extension => (
+        <Collapse.Panel
+          header={
+            <div>
+              <h4>{extension?.title}</h4>
+              <p className="helper">{extension?.description}</p>
+            </div>
+          }
+          key={extension?.title}
+        >
+          <StyledInputContainer css={no_margin_bottom}>
+            <extension.component {...extensionProps} />
+          </StyledInputContainer>
+        </Collapse.Panel>
+      ))}
     </Collapse>
   );
 };

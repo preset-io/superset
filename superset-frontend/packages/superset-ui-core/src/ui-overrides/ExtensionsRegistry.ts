@@ -17,6 +17,7 @@
  * under the License.
  */
 
+import { string } from 'prop-types';
 import React from 'react';
 import { TypedRegistry } from '../models';
 import { makeSingleton } from '../utils';
@@ -39,6 +40,12 @@ type ConfigDetailsProps = {
   embeddedId: string;
 };
 
+interface DatabaseConnectionExtension {
+  title: string;
+  description: string;
+  component: React.ComponentType;
+}
+
 export type Extensions = Partial<{
   'embedded.documentation.configuration_details': React.ComponentType<ConfigDetailsProps>;
   'embedded.documentation.description': ReturningDisplayable;
@@ -48,6 +55,7 @@ export type Extensions = Partial<{
   'welcome.message': React.ComponentType;
   'welcome.banner': React.ComponentType;
   'welcome.main.replacement': React.ComponentType;
+  'databaseconnection.extensions': DatabaseConnectionExtension[];
 }>;
 
 /**
