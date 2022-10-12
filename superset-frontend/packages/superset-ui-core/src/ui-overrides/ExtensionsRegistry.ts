@@ -17,7 +17,6 @@
  * under the License.
  */
 
-import { string } from 'prop-types';
 import React from 'react';
 import { TypedRegistry } from '../models';
 import { makeSingleton } from '../utils';
