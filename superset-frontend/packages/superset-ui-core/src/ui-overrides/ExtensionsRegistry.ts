@@ -41,6 +41,7 @@ type ConfigDetailsProps = {
 
 interface DatabaseConnectionExtension {
   title: string;
+  logo: string;
   description: string;
   component: React.ComponentType;
 }

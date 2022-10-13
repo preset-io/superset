@@ -439,6 +439,25 @@ const ExtraOptions = ({
           </StyledInputContainer>
         )}
       </Collapse.Panel>
+      {dbConfigExtensions?.map?.(extension => (
+        <Collapse.Panel
+          header={
+            <div>
+              {extension.logo ? (
+                <img src={extension.logo} style={{ height: '16px' }} />
+              ) : (
+                <h4>{extension?.title}</h4>
+              )}
+              <p className="helper">{extension?.description}</p>
+            </div>
+          }
+          key={extension?.title}
+        >
+          <StyledInputContainer css={no_margin_bottom}>
+            <extension.component {...extensionProps} />
+          </StyledInputContainer>
+        </Collapse.Panel>
+      ))}
       <Collapse.Panel
         header={
           <div>
@@ -513,21 +532,6 @@ const ExtraOptions = ({
           </div>
         </StyledInputContainer>
       </Collapse.Panel>
-      {dbConfigExtensions?.map?.(extension => (
-        <Collapse.Panel
-          header={
-            <div>
-              <h4>{extension?.title}</h4>
-              <p className="helper">{extension?.description}</p>
-            </div>
-          }
-          key={extension?.title}
-        >
-          <StyledInputContainer css={no_margin_bottom}>
-            <extension.component {...extensionProps} />
-          </StyledInputContainer>
-        </Collapse.Panel>
-      ))}
     </Collapse>
   );
 };
