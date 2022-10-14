@@ -567,6 +567,7 @@ const DatabaseModal: FunctionComponent<DatabaseModalProps> = ({
     // Clone DB object
     const dbToUpdate = { ...(db || {}) };
 
+    setLoading(true);
     if (dbToUpdate.configuration_method === CONFIGURATION_METHOD.DYNAMIC_FORM) {
       // Validate DB before saving
       if (dbToUpdate?.parameters?.catalog) {
@@ -578,8 +579,11 @@ const DatabaseModal: FunctionComponent<DatabaseModalProps> = ({
           },
         });
       }
+
       const errors = await getValidation(dbToUpdate, true);
+
       if ((validationErrors && !isEmpty(validationErrors)) || errors) {
+        setLoading(false);
         return;
       }
       const parameters_schema = isEditMode
