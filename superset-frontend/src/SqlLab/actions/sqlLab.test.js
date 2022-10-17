@@ -24,12 +24,7 @@ import thunk from 'redux-thunk';
 import shortid from 'shortid';
 import * as featureFlags from 'src/featureFlags';
 import * as actions from 'src/SqlLab/actions/sqlLab';
-import {
-  defaultQueryEditor,
-  query,
-  initialState,
-  queryId,
-} from 'src/SqlLab/fixtures';
+import { defaultQueryEditor, query, initialState } from 'src/SqlLab/fixtures';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
@@ -64,11 +59,11 @@ describe('async actions', () => {
   fetchMock.post(runQueryEndpoint, `{ "data": ${mockBigNumber} }`);
 
   describe('saveQuery', () => {
-    const saveQueryEndpoint = 'glob:*/api/v1/saved_query/';
+    const saveQueryEndpoint = 'glob:*/savedqueryviewapi/api/create';
     fetchMock.post(saveQueryEndpoint, { results: { json: {} } });
 
     const makeRequest = () => {
-      const request = actions.saveQuery(query, queryId);
+      const request = actions.saveQuery(query);
       return request(dispatch, () => initialState);
     };
 
@@ -76,20 +71,18 @@ describe('async actions', () => {
       expect.assertions(1);
 
       const store = mockStore(initialState);
-      return store.dispatch(actions.saveQuery(query, queryId)).then(() => {
+      return store.dispatch(actions.saveQuery(query)).then(() => {
         expect(fetchMock.calls(saveQueryEndpoint)).toHaveLength(1);
       });
     });
 
     it('posts the correct query object', () => {
       const store = mockStore(initialState);
-      return store.dispatch(actions.saveQuery(query, queryId)).then(() => {
+      return store.dispatch(actions.saveQuery(query)).then(() => {
         const call = fetchMock.calls(saveQueryEndpoint)[0];
-        const formData = JSON.parse(call[1].body);
-        const mappedQueryToServer = actions.convertQueryToServer(query);
-
-        Object.keys(mappedQueryToServer).forEach(key => {
-          expect(formData[key]).toBeDefined();
+        const formData = call[1].body;
+        Object.keys(query).forEach(key => {
+          expect(formData.get(key)).toBeDefined();
         });
       });
     });
@@ -377,13 +370,12 @@ describe('async actions', () => {
           queryEditor: {
             name: 'Copy of Dummy query editor',
             dbId: 1,
-            schema: query.schema,
+            schema: null,
             autorun: true,
             sql: 'SELECT * FROM something',
             queryLimit: undefined,
             maxRow: undefined,
             id: 'abcd',
-            templateParams: undefined,
           },
         },
       ];
@@ -643,9 +635,7 @@ describe('async actions', () => {
           },
         ];
         return store
-          .dispatch(
-            actions.queryEditorSetTitle(queryEditor, name, queryEditor.id),
-          )
+          .dispatch(actions.queryEditorSetTitle(queryEditor, name))
           .then(() => {
             expect(store.getActions()).toEqual(expectedActions);
             expect(fetchMock.calls(updateTabStateEndpoint)).toHaveLength(1);

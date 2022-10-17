@@ -111,8 +111,8 @@ const ERR_MSG_CANT_LOAD_QUERY = t("The query couldn't be loaded");
 const queryClientMapping = {
   id: 'remoteId',
   db_id: 'dbId',
+  client_id: 'id',
   label: 'name',
-  template_parameters: 'templateParams',
 };
 const queryServerMapping = invert(queryClientMapping);
 
@@ -120,8 +120,8 @@ const queryServerMapping = invert(queryClientMapping);
 const fieldConverter = mapping => obj =>
   mapKeys(obj, (value, key) => (key in mapping ? mapping[key] : key));
 
-export const convertQueryToServer = fieldConverter(queryServerMapping);
-export const convertQueryToClient = fieldConverter(queryClientMapping);
+const convertQueryToServer = fieldConverter(queryServerMapping);
+const convertQueryToClient = fieldConverter(queryClientMapping);
 
 export function getUpToDateQuery(rootState, queryEditor, key) {
   const {
@@ -903,23 +903,17 @@ export function queryEditorSetAutorun(queryEditor, autorun) {
   };
 }
 
-export function queryEditorSetTitle(queryEditor, name, id) {
+export function queryEditorSetTitle(queryEditor, name) {
   return function (dispatch) {
     const sync = isFeatureEnabled(FeatureFlag.SQLLAB_BACKEND_PERSISTENCE)
       ? SupersetClient.put({
-          endpoint: encodeURI(`/tabstateview/${id}`),
+          endpoint: encodeURI(`/tabstateview/${queryEditor.id}`),
           postPayload: { label: name },
         })
       : Promise.resolve();
 
     return sync
-      .then(() =>
-        dispatch({
-          type: QUERY_EDITOR_SET_TITLE,
-          queryEditor: { ...queryEditor, id },
-          name,
-        }),
-      )
+      .then(() => dispatch({ type: QUERY_EDITOR_SET_TITLE, queryEditor, name }))
       .catch(() =>
         dispatch(
           addDangerToast(
@@ -932,26 +926,21 @@ export function queryEditorSetTitle(queryEditor, name, id) {
   };
 }
 
-export function saveQuery(query, clientId) {
-  const { id, ...payload } = convertQueryToServer(query);
-
+export function saveQuery(query) {
   return dispatch =>
     SupersetClient.post({
-      endpoint: '/api/v1/saved_query/',
-      jsonPayload: convertQueryToServer(payload),
+      endpoint: '/savedqueryviewapi/api/create',
+      postPayload: convertQueryToServer(query),
+      stringify: false,
     })
       .then(result => {
-        const savedQuery = convertQueryToClient({
-          id: result.json.id,
-          ...result.json.result,
-        });
+        const savedQuery = convertQueryToClient(result.json.item);
         dispatch({
           type: QUERY_EDITOR_SAVED,
           query,
-          clientId,
           result: savedQuery,
         });
-        dispatch(queryEditorSetTitle(query, query.name, clientId));
+        dispatch(queryEditorSetTitle(query, query.name));
         return savedQuery;
       })
       .catch(() =>
@@ -977,17 +966,16 @@ export const addSavedQueryToTabState =
       });
   };
 
-export function updateSavedQuery(query, clientId) {
-  const { id, ...payload } = convertQueryToServer(query);
-
+export function updateSavedQuery(query) {
   return dispatch =>
     SupersetClient.put({
-      endpoint: `/api/v1/saved_query/${query.remoteId}`,
-      jsonPayload: convertQueryToServer(payload),
+      endpoint: `/savedqueryviewapi/api/update/${query.remoteId}`,
+      postPayload: convertQueryToServer(query),
+      stringify: false,
     })
       .then(() => {
         dispatch(addSuccessToast(t('Your query was updated')));
-        dispatch(queryEditorSetTitle(query, query.name, clientId));
+        dispatch(queryEditorSetTitle(query, query.name));
       })
       .catch(e => {
         const message = t('Your query could not be updated');
@@ -1362,12 +1350,11 @@ export function popStoredQuery(urlId) {
 export function popSavedQuery(saveQueryId) {
   return function (dispatch) {
     return SupersetClient.get({
-      endpoint: `/api/v1/saved_query/${saveQueryId}`,
+      endpoint: `/savedqueryviewapi/api/get/${saveQueryId}`,
     })
       .then(({ json }) => {
         const queryEditorProps = {
           ...convertQueryToClient(json.result),
-          dbId: json.result?.database?.id,
           loaded: true,
           autorun: false,
         };

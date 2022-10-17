@@ -499,8 +499,8 @@ const SqlEditor = ({
     );
   };
 
-  const onSaveQuery = async (query, clientId) => {
-    const savedQuery = await dispatch(saveQuery(query, clientId));
+  const onSaveQuery = async query => {
+    const savedQuery = await dispatch(saveQuery(query));
     dispatch(addSavedQueryToTabState(queryEditor, savedQuery));
   };
 
@@ -580,9 +580,7 @@ const SqlEditor = ({
               queryEditorId={queryEditor.id}
               columns={latestQuery?.results?.columns || []}
               onSave={onSaveQuery}
-              onUpdate={(query, remoteId, id) =>
-                dispatch(updateSavedQuery(query, remoteId, id))
-              }
+              onUpdate={query => dispatch(updateSavedQuery(query))}
               saveQueryWarning={saveQueryWarning}
               database={database}
             />
