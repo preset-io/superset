@@ -32,7 +32,6 @@ import {
 } from 'src/components/MessageToasts/actions';
 import { getClientErrorObject } from 'src/utils/getClientErrorObject';
 import COMMON_ERR_MESSAGES from 'src/utils/errorMessages';
-import { newQueryTabName } from '../utils/newQueryTabName';
 
 export const RESET_STATE = 'RESET_STATE';
 export const ADD_QUERY_EDITOR = 'ADD_QUERY_EDITOR';
@@ -588,22 +587,6 @@ export function addQueryEditor(queryEditor) {
           ),
         ),
       );
-  };
-}
-
-export function addNewQueryEditor(queryEditor) {
-  return function (dispatch, getState) {
-    const {
-      sqlLab: { queryEditors },
-    } = getState();
-    const name = newQueryTabName(queryEditors || []);
-
-    return dispatch(
-      addQueryEditor({
-        ...queryEditor,
-        name,
-      }),
-    );
   };
 }
 

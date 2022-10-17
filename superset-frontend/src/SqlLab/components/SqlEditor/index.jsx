@@ -37,7 +37,7 @@ import { Menu } from 'src/components/Menu';
 import Icons from 'src/components/Icons';
 import { detectOS } from 'src/utils/common';
 import {
-  addNewQueryEditor,
+  addQueryEditor,
   CtasEnum,
   estimateQueryCost,
   persistEditorHeight,
@@ -84,6 +84,7 @@ import ShareSqlLabQuery from '../ShareSqlLabQuery';
 import SqlEditorLeftBar from '../SqlEditorLeftBar';
 import AceEditorWrapper from '../AceEditorWrapper';
 import RunQueryActionButton from '../RunQueryActionButton';
+import { newQueryTabName } from '../../utils/newQueryTabName';
 import QueryLimitSelect from '../QueryLimitSelect';
 
 const appContainer = document.getElementById('app');
@@ -178,6 +179,8 @@ const SqlEditor = ({
     },
   );
 
+  const queryEditors = useSelector(({ sqlLab }) => sqlLab.queryEditors);
+
   const [height, setHeight] = useState(0);
   const [autorun, setAutorun] = useState(queryEditor.autorun);
   const [ctas, setCtas] = useState('');
@@ -271,7 +274,13 @@ const SqlEditor = ({
         key: userOS === 'Windows' ? 'ctrl+q' : 'ctrl+t',
         descr: t('New tab'),
         func: () => {
-          dispatch(addNewQueryEditor(queryEditor));
+          const name = newQueryTabName(queryEditors || []);
+          dispatch(
+            addQueryEditor({
+              ...queryEditor,
+              name,
+            }),
+          );
         },
       },
       {
