@@ -25,28 +25,15 @@ import SaveQuery from 'src/SqlLab/components/SaveQuery';
 import { initialState, databases } from 'src/SqlLab/fixtures';
 
 const mockedProps = {
-  queryEditorId: '123',
+  queryEditor: {
+    dbId: 1,
+    schema: 'main',
+    sql: 'SELECT * FROM t',
+  },
   animation: false,
   database: databases.result[0],
   onUpdate: () => {},
   onSave: () => {},
-  saveQueryWarning: null,
-  columns: [],
-};
-
-const mockState = {
-  ...initialState,
-  sqlLab: {
-    ...initialState.sqlLab,
-    queryEditors: [
-      {
-        id: mockedProps.queryEditorId,
-        dbId: 1,
-        schema: 'main',
-        sql: 'SELECT * FROM t',
-      },
-    ],
-  },
 };
 
 const splitSaveBtnProps = {
@@ -64,7 +51,7 @@ describe('SavedQuery', () => {
   it('renders a non-split save button when allows_virtual_table_explore is not enabled', () => {
     render(<SaveQuery {...mockedProps} />, {
       useRedux: true,
-      store: mockStore(mockState),
+      store: mockStore(initialState),
     });
 
     const saveBtn = screen.getByRole('button', { name: /save/i });
@@ -75,7 +62,7 @@ describe('SavedQuery', () => {
   it('renders a save query modal when user clicks save button', () => {
     render(<SaveQuery {...mockedProps} />, {
       useRedux: true,
-      store: mockStore(mockState),
+      store: mockStore(initialState),
     });
 
     const saveBtn = screen.getByRole('button', { name: /save/i });
@@ -91,7 +78,7 @@ describe('SavedQuery', () => {
   it('renders the save query modal UI', () => {
     render(<SaveQuery {...mockedProps} />, {
       useRedux: true,
-      store: mockStore(mockState),
+      store: mockStore(initialState),
     });
 
     const saveBtn = screen.getByRole('button', { name: /save/i });
@@ -124,18 +111,16 @@ describe('SavedQuery', () => {
   });
 
   it('renders a "save as new" and "update" button if query already exists', () => {
-    render(<SaveQuery {...mockedProps} />, {
+    const props = {
+      ...mockedProps,
+      queryEditor: {
+        ...mockedProps.query,
+        remoteId: '42',
+      },
+    };
+    render(<SaveQuery {...props} />, {
       useRedux: true,
-      store: mockStore({
-        ...mockState,
-        sqlLab: {
-          ...mockState.sqlLab,
-          unsavedQueryEditor: {
-            id: mockedProps.queryEditorId,
-            remoteId: '42',
-          },
-        },
-      }),
+      store: mockStore(initialState),
     });
 
     const saveBtn = screen.getByRole('button', { name: /save/i });
@@ -151,7 +136,7 @@ describe('SavedQuery', () => {
   it('renders a split save button when allows_virtual_table_explore is enabled', async () => {
     render(<SaveQuery {...splitSaveBtnProps} />, {
       useRedux: true,
-      store: mockStore(mockState),
+      store: mockStore(initialState),
     });
 
     await waitFor(() => {
@@ -166,7 +151,7 @@ describe('SavedQuery', () => {
   it('renders a save dataset modal when user clicks "save dataset" menu item', async () => {
     render(<SaveQuery {...splitSaveBtnProps} />, {
       useRedux: true,
-      store: mockStore(mockState),
+      store: mockStore(initialState),
     });
 
     await waitFor(() => {
@@ -185,7 +170,7 @@ describe('SavedQuery', () => {
   it('renders the save dataset modal UI', async () => {
     render(<SaveQuery {...splitSaveBtnProps} />, {
       useRedux: true,
-      store: mockStore(mockState),
+      store: mockStore(initialState),
     });
 
     await waitFor(() => {

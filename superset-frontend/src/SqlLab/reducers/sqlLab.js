@@ -449,7 +449,7 @@ export default function sqlLabReducer(state = {}, action) {
         );
         return {
           ...(action.queryEditor.id === state.unsavedQueryEditor.id
-            ? alterInArr(
+            ? alterInObject(
                 mergeUnsavedState,
                 'queryEditors',
                 action.queryEditor,

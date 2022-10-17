@@ -48,7 +48,7 @@ jest.mock('src/components/AsyncAceEditor', () => ({
 const setup = (queryEditor: QueryEditor, store?: Store) =>
   render(
     <AceEditorWrapper
-      queryEditorId={queryEditor.id}
+      queryEditor={queryEditor}
       height="100px"
       hotkeys={[]}
       database={{}}

@@ -16,7 +16,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector, shallowEqual } from 'react-redux';
 import { Row, Col } from 'src/components';
 import { Input, TextArea } from 'src/components/Input';
 import { t, styled } from '@superset-ui/core';
@@ -30,11 +31,10 @@ import {
   ISaveableDatasource,
 } from 'src/SqlLab/components/SaveDatasetModal';
 import { getDatasourceAsSaveableDataset } from 'src/utils/datasourceUtils';
-import useQueryEditor from 'src/SqlLab/hooks/useQueryEditor';
-import { QueryEditor } from 'src/SqlLab/types';
+import { QueryEditor, SqlLabRootState } from 'src/SqlLab/types';
 
 interface SaveQueryProps {
-  queryEditorId: string;
+  queryEditor: QueryEditor;
   columns: ISaveableDatasource['columns'];
   onSave: (arg0: QueryPayload) => void;
   onUpdate: (arg0: QueryPayload) => void;
@@ -43,22 +43,30 @@ interface SaveQueryProps {
 }
 
 type QueryPayload = {
-  name: string;
+  autorun: boolean;
+  dbId: number;
   description?: string;
   id?: string;
-} & Pick<
-  QueryEditor,
-  | 'autorun'
-  | 'dbId'
-  | 'schema'
-  | 'sql'
-  | 'selectedText'
-  | 'remoteId'
-  | 'latestQueryId'
-  | 'queryLimit'
-  | 'tableOptions'
-  | 'schemaOptions'
->;
+  latestQueryId: string;
+  queryLimit: number;
+  remoteId: number;
+  schema: string;
+  schemaOptions: Array<{
+    label: string;
+    title: string;
+    value: string;
+  }>;
+  selectedText: string | null;
+  sql: string;
+  tableOptions: Array<{
+    label: string;
+    schema: string;
+    title: string;
+    type: string;
+    value: string;
+  }>;
+  name: string;
+};
 
 const Styles = styled.span`
   span[role='img'] {
@@ -73,33 +81,20 @@ const Styles = styled.span`
 `;
 
 export default function SaveQuery({
-  queryEditorId,
+  queryEditor,
   onSave = () => {},
   onUpdate,
   saveQueryWarning = null,
   database,
   columns,
 }: SaveQueryProps) {
-  const queryEditor = useQueryEditor(queryEditorId, [
-    'autorun',
-    'name',
-    'description',
-    'remoteId',
-    'dbId',
-    'latestQueryId',
-    'queryLimit',
-    'schema',
-    'schemaOptions',
-    'selectedText',
-    'sql',
-    'tableOptions',
-  ]);
-  const query = useMemo(
-    () => ({
+  const query = useSelector<SqlLabRootState, QueryEditor>(
+    ({ sqlLab: { unsavedQueryEditor } }) => ({
       ...queryEditor,
+      ...(queryEditor.id === unsavedQueryEditor.id && unsavedQueryEditor),
       columns,
     }),
-    [queryEditor, columns],
+    shallowEqual,
   );
   const defaultLabel = query.name || query.description || t('Undefined');
   const [description, setDescription] = useState<string>(
@@ -119,12 +114,12 @@ export default function SaveQuery({
     </Menu>
   );
 
-  const queryPayload = () => ({
-    ...query,
-    name: label,
-    description,
-    dbId: query.dbId ?? 0,
-  });
+  const queryPayload = () =>
+    ({
+      ...query,
+      name: label,
+      description,
+    } as any as QueryPayload);
 
   useEffect(() => {
     if (!isSaved) setLabel(defaultLabel);

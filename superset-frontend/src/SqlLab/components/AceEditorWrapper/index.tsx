@@ -37,7 +37,7 @@ import {
   AceCompleterKeyword,
   FullSQLEditor as AceEditor,
 } from 'src/components/AsyncAceEditor';
-import useQueryEditor from 'src/SqlLab/hooks/useQueryEditor';
+import { QueryEditor } from 'src/SqlLab/types';
 
 type HotKey = {
   key: string;
@@ -50,7 +50,7 @@ type AceEditorWrapperProps = {
   autocomplete: boolean;
   onBlur: (sql: string) => void;
   onChange: (sql: string) => void;
-  queryEditorId: string;
+  queryEditor: QueryEditor;
   database: any;
   extendedTables?: Array<{ name: string; columns: any[] }>;
   height: string;
@@ -61,7 +61,7 @@ const AceEditorWrapper = ({
   autocomplete,
   onBlur = () => {},
   onChange = () => {},
-  queryEditorId,
+  queryEditor,
   database,
   extendedTables = [],
   height,
@@ -69,17 +69,7 @@ const AceEditorWrapper = ({
 }: AceEditorWrapperProps) => {
   const dispatch = useDispatch();
 
-  const queryEditor = useQueryEditor(queryEditorId, [
-    'id',
-    'dbId',
-    'sql',
-    'functionNames',
-    'schemaOptions',
-    'tableOptions',
-    'validationResult',
-    'schema',
-  ]);
-  const currentSql = queryEditor.sql ?? '';
+  const { sql: currentSql } = queryEditor;
   const functionNames = queryEditor.functionNames ?? [];
   const schemas = queryEditor.schemaOptions ?? [];
   const tables = queryEditor.tableOptions ?? [];

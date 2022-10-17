@@ -41,13 +41,13 @@ jest.mock('src/components/Select/AsyncSelect', () => () => (
 ));
 
 const defaultProps = {
-  queryEditorId: defaultQueryEditor.id,
+  queryEditor: defaultQueryEditor,
   allowAsync: false,
   dbId: 1,
   queryState: 'ready',
-  runQuery: () => {},
+  runQuery: jest.fn(),
   selectedText: null,
-  stopQuery: () => {},
+  stopQuery: jest.fn(),
   overlayCreateAsMenu: null,
 };
 
@@ -57,104 +57,95 @@ const setup = (props?: Partial<Props>, store?: Store) =>
     ...(store && { store }),
   });
 
-it('renders a single Button', () => {
-  const { getByRole } = setup({}, mockStore(initialState));
-  expect(getByRole('button')).toBeInTheDocument();
-});
+describe('RunQueryActionButton', () => {
+  beforeEach(() => {
+    defaultProps.runQuery.mockReset();
+    defaultProps.stopQuery.mockReset();
+  });
 
-it('renders a label for Run Query', () => {
-  const { getByText } = setup({}, mockStore(initialState));
-  expect(getByText('Run')).toBeInTheDocument();
-});
+  it('renders a single Button', () => {
+    const { getByRole } = setup({}, mockStore(initialState));
+    expect(getByRole('button')).toBeInTheDocument();
+  });
 
-it('renders a label for Selected Query', () => {
-  const { getByText } = setup(
-    {},
-    mockStore({
-      ...initialState,
-      sqlLab: {
-        ...initialState.sqlLab,
-        unsavedQueryEditor: {
-          id: defaultQueryEditor.id,
-          selectedText: 'select * from\n-- this is comment\nwhere',
+  it('renders a label for Run Query', () => {
+    const { getByText } = setup({}, mockStore(initialState));
+    expect(getByText('Run')).toBeInTheDocument();
+  });
+
+  it('renders a label for Selected Query', () => {
+    const { getByText } = setup(
+      {},
+      mockStore({
+        ...initialState,
+        sqlLab: {
+          ...initialState.sqlLab,
+          unsavedQueryEditor: {
+            id: defaultQueryEditor.id,
+            selectedText: 'FROM',
+          },
         },
-      },
-    }),
-  );
-  expect(getByText('Run selection')).toBeInTheDocument();
-});
+      }),
+    );
+    expect(getByText('Run selection')).toBeInTheDocument();
+  });
 
-it('disable button when sql from unsaved changes is empty', () => {
-  const { getByRole } = setup(
-    {},
-    mockStore({
-      ...initialState,
-      sqlLab: {
-        ...initialState.sqlLab,
-        unsavedQueryEditor: {
-          id: defaultQueryEditor.id,
-          sql: '',
+  it('disable button when sql from unsaved changes is empty', () => {
+    const { getByRole } = setup(
+      {},
+      mockStore({
+        ...initialState,
+        sqlLab: {
+          ...initialState.sqlLab,
+          unsavedQueryEditor: {
+            id: defaultQueryEditor.id,
+            sql: '',
+          },
         },
-      },
-    }),
-  );
-  const button = getByRole('button');
-  expect(button).toBeDisabled();
-});
+      }),
+    );
+    const button = getByRole('button');
+    expect(button).toBeDisabled();
+  });
 
-it('disable button when selectedText only contains blank contents', () => {
-  const { getByRole } = setup(
-    {},
-    mockStore({
-      ...initialState,
-      sqlLab: {
-        ...initialState.sqlLab,
-        unsavedQueryEditor: {
-          id: defaultQueryEditor.id,
-          selectedText: '-- this is comment\n\n     \t',
+  it('enable default button for unrelated unsaved changes', () => {
+    const { getByRole } = setup(
+      {},
+      mockStore({
+        ...initialState,
+        sqlLab: {
+          ...initialState.sqlLab,
+          unsavedQueryEditor: {
+            id: `${defaultQueryEditor.id}-other`,
+            sql: '',
+          },
         },
-      },
-    }),
-  );
-  const button = getByRole('button');
-  expect(button).toBeDisabled();
-});
+      }),
+    );
+    const button = getByRole('button');
+    expect(button).toBeEnabled();
+  });
 
-it('enable default button for unrelated unsaved changes', () => {
-  const { getByRole } = setup(
-    {},
-    mockStore({
-      ...initialState,
-      sqlLab: {
-        ...initialState.sqlLab,
-        unsavedQueryEditor: {
-          id: `${defaultQueryEditor.id}-other`,
-          sql: '',
-        },
-      },
-    }),
-  );
-  const button = getByRole('button');
-  expect(button).toBeEnabled();
-});
+  it('dispatch runQuery on click', async () => {
+    const { getByRole } = setup({}, mockStore(initialState));
+    const button = getByRole('button');
+    expect(defaultProps.runQuery).toHaveBeenCalledTimes(0);
+    fireEvent.click(button);
+    await waitFor(() => expect(defaultProps.runQuery).toHaveBeenCalledTimes(1));
+  });
 
-it('dispatch runQuery on click', async () => {
-  const runQuery = jest.fn();
-  const { getByRole } = setup({ runQuery }, mockStore(initialState));
-  const button = getByRole('button');
-  expect(runQuery).toHaveBeenCalledTimes(0);
-  fireEvent.click(button);
-  await waitFor(() => expect(runQuery).toHaveBeenCalledTimes(1));
-});
-
-it('dispatch stopQuery on click while running state', async () => {
-  const stopQuery = jest.fn();
-  const { getByRole } = setup(
-    { queryState: 'running', stopQuery },
-    mockStore(initialState),
-  );
-  const button = getByRole('button');
-  expect(stopQuery).toHaveBeenCalledTimes(0);
-  fireEvent.click(button);
-  await waitFor(() => expect(stopQuery).toHaveBeenCalledTimes(1));
+  describe('on running state', () => {
+    it('dispatch stopQuery on click', async () => {
+      const { getByRole } = setup(
+        { queryState: 'running' },
+        mockStore(initialState),
+      );
+      const button = getByRole('button');
+      expect(defaultProps.stopQuery).toHaveBeenCalledTimes(0);
+      fireEvent.click(button);
+      await waitFor(() =>
+        expect(defaultProps.stopQuery).toHaveBeenCalledTimes(1),
+      );
+    });
+  });
 });

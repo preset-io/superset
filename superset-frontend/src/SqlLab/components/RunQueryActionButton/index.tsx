@@ -24,11 +24,16 @@ import Button from 'src/components/Button';
 import Icons from 'src/components/Icons';
 import { DropdownButton } from 'src/components/DropdownButton';
 import { detectOS } from 'src/utils/common';
-import { QueryButtonProps } from 'src/SqlLab/types';
-import useQueryEditor from 'src/SqlLab/hooks/useQueryEditor';
+import { shallowEqual, useSelector } from 'react-redux';
+import {
+  QueryEditor,
+  SqlLabRootState,
+  QueryButtonProps,
+} from 'src/SqlLab/types';
+import { getUpToDateQuery } from 'src/SqlLab/actions/sqlLab';
 
 export interface Props {
-  queryEditorId: string;
+  queryEditor: QueryEditor;
   allowAsync: boolean;
   queryState?: string;
   runQuery: (c?: boolean) => void;
@@ -81,21 +86,29 @@ const StyledButton = styled.span`
   }
 `;
 
-const RunQueryActionButton: React.FC<Props> = ({
+const RunQueryActionButton = ({
   allowAsync = false,
-  queryEditorId,
+  queryEditor,
   queryState,
   overlayCreateAsMenu,
   runQuery,
   stopQuery,
-}) => {
+}: Props) => {
   const theme = useTheme();
   const userOS = detectOS();
-
-  const { selectedText, sql } = useQueryEditor(queryEditorId, [
-    'selectedText',
-    'sql',
-  ]);
+  const { selectedText, sql } = useSelector<
+    SqlLabRootState,
+    Pick<QueryEditor, 'selectedText' | 'sql'>
+  >(rootState => {
+    const currentQueryEditor = getUpToDateQuery(
+      rootState,
+      queryEditor,
+    ) as unknown as QueryEditor;
+    return {
+      selectedText: currentQueryEditor.selectedText,
+      sql: currentQueryEditor.sql,
+    };
+  }, shallowEqual);
 
   const shouldShowStopBtn =
     !!queryState && ['running', 'pending'].indexOf(queryState) > -1;
@@ -104,10 +117,7 @@ const RunQueryActionButton: React.FC<Props> = ({
     ? (DropdownButton as React.FC)
     : Button;
 
-  const sqlContent = selectedText || sql || '';
-  const isDisabled =
-    !sqlContent ||
-    !sqlContent.replace(/(\/\*[^*]*\*\/)|(\/\/[^*]*)|(--[^.].*)/gm, '').trim();
+  const isDisabled = !sql || !sql.trim();
 
   const stopButtonTooltipText = useMemo(
     () =>
