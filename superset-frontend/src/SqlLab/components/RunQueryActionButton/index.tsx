@@ -120,7 +120,6 @@ const RunQueryActionButton: React.FC<Props> = ({
   return (
     <StyledButton>
       <ButtonComponent
-        data-test="run-query-action"
         onClick={() =>
           onClick(shouldShowStopBtn, allowAsync, runQuery, stopQuery)
         }
