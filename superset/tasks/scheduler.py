@@ -15,6 +15,7 @@
 # specific language governing permissions and limitations
 # under the License.
 import logging
+from typing import Optional
 
 from celery.exceptions import SoftTimeLimitExceeded
 from dateutil import parser
@@ -30,6 +31,19 @@ from superset.tasks.cron_util import cron_schedule_window
 from superset.utils.celery import session_scope
 
 logger = logging.getLogger(__name__)
+
+
+def log_downstream_error(status: int, task_id: Optional[str]) -> None:
+    # 4xx errors and 5xx are mapped to different log levels
+    map = {"4": "warning", "5": "exception"}
+    log_level = map[str(status)[0]]
+    logger_func = getattr(logger, log_level)
+
+    logger_func(
+        "A downstream %s occurred while generating" " a report: %s",
+        log_level,
+        task_id,
+    )
 
 
 @celery_app.task(name="reports.scheduler")
@@ -90,10 +104,8 @@ def execute(report_schedule_id: int, scheduled_dttm: str) -> None:
         logger.exception(
             "An unexpected occurred while executing the report: %s", task_id
         )
-    except CommandException:
-        logger.exception(
-            "A downstream exception occurred while generating" " a report: %s", task_id
-        )
+    except CommandException as ex:
+        log_downstream_error(ex.status, task_id)
 
 
 @celery_app.task(name="reports.prune_log")
