@@ -44,7 +44,7 @@
     "@types/lodash": "^4.14.149",
     "@types/math-expression-evaluator": "^1.2.1",
     "@types/node": "^18.0.0",
-    "@types/prop-types": "^15.7.2",
+    "@types/prop-types": "^15.7.5",
     "@types/rison": "0.0.6",
     "@types/seedrandom": "^2.4.28",
     "@vx/responsive": "^0.0.199",
