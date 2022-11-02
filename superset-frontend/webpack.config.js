@@ -22,6 +22,7 @@ const path = require('path');
 const webpack = require('webpack');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const CopyPlugin = require('copy-webpack-plugin');
+const { ModuleFederationPlugin } = require('webpack').container;
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
@@ -141,6 +142,20 @@ const plugins = [
   }),
 ];
 
+/*
+  new ModuleFederationPlugin({
+    shared: {
+      react: {
+        requiredVersion: packageConfig.dependencies.react,
+        singleton: true,
+      },
+      'react-dom': {
+        requiredVersion: packageConfig.dependencies['react-dom'],
+        singleton: true,
+      },
+    },
+  }),
+  */
 if (!process.env.CI) {
   plugins.push(new webpack.ProgressPlugin());
 }

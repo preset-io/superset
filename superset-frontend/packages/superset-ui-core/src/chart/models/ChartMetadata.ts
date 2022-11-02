@@ -49,6 +49,10 @@ export interface ChartMetadataConfig {
   label?: ChartLabel | null;
   labelExplanation?: string | null;
   queryObjectCount?: number;
+  /**
+   * Allows additional config to pass through constructor for a chart to meta data registry
+   */
+  extra: object;
 }
 
 export default class ChartMetadata {
@@ -90,6 +94,8 @@ export default class ChartMetadata {
 
   queryObjectCount: number;
 
+  extra: object;
+
   constructor(config: ChartMetadataConfig) {
     const {
       name,
@@ -110,6 +116,7 @@ export default class ChartMetadata {
       label = null,
       labelExplanation = null,
       queryObjectCount = 1,
+      extra,
     } = config;
 
     this.name = name;
@@ -139,6 +146,7 @@ export default class ChartMetadata {
     this.label = label;
     this.labelExplanation = labelExplanation;
     this.queryObjectCount = queryObjectCount;
+    this.extra = extra ?? {};
   }
 
   canBeAnnotationType(type: string): boolean {

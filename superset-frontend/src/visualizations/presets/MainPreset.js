@@ -49,6 +49,7 @@ import {
   TimePivotChartPlugin,
 } from '@superset-ui/legacy-preset-chart-nvd3';
 import { DeckGLChartPreset } from '@superset-ui/legacy-preset-chart-deckgl';
+import { RemoteChart } from '@superset-ui/preset-remote-chart';
 import {
   BigNumberChartPlugin,
   BigNumberTotalChartPlugin,
@@ -82,6 +83,7 @@ import { HandlebarsChartPlugin } from '@superset-ui/plugin-chart-handlebars';
 import FilterBoxChartPlugin from '../FilterBox/FilterBoxChartPlugin';
 import TimeTableChartPlugin from '../TimeTable';
 
+const REMOTE_BASE = 'https://main.d11xwhyhw9phv1.amplifyapp.com'; // 'http://localhost:3001'; //
 export default class MainPreset extends Preset {
   constructor() {
     const experimentalplugins = isFeatureEnabled(
@@ -129,6 +131,22 @@ export default class MainPreset extends Preset {
         new EchartsPieChartPlugin().configure({ key: 'pie' }),
         new PivotTableChartPlugin().configure({ key: 'pivot_table' }),
         new PivotTableChartPluginV2().configure({ key: 'pivot_table_v2' }),
+        new RemoteChart({
+          name: 'Hold your breath!',
+          description: 'This is descriptive',
+          url: `${REMOTE_BASE}/remoteEntry.js`,
+          module: './FunnelChart',
+          scope: 'RemoteCharts',
+          thumbnail:
+            'https://cdn1.iconfinder.com/data/icons/actions-alphabet-i-set-2-of-10/242/actions-I-2-9-1024.png',
+        }).configure({ key: 'aggrid' }),
+        new RemoteChart({
+          name: 'Mr Funnel',
+          description: 'This is descriptive',
+          url: `${REMOTE_BASE}/remoteEntry.js`,
+          module: './Heading',
+          scope: 'RemoteCharts',
+        }).configure({ key: 'mrfunnel' }),
         new RoseChartPlugin().configure({ key: 'rose' }),
         new SankeyChartPlugin().configure({ key: 'sankey' }),
         new SunburstChartPlugin().configure({ key: 'sunburst' }),
