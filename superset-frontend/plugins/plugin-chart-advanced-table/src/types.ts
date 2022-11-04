@@ -27,7 +27,7 @@ import {
   TimeseriesDataRecord,
 } from '@superset-ui/core';
 
-export type CccsGridQueryFormData = QueryFormData & {
+export type AdvancedTableQueryFormData = QueryFormData & {
   headerText?: string;
   setDataMask?: SetDataMaskHook;
   selectedValues?: Record<number, string>;
@@ -35,10 +35,11 @@ export type CccsGridQueryFormData = QueryFormData & {
   include_search: boolean;
   page_length: number;
   enable_grouping: boolean;
+  enable_pivot: boolean;
   column_state: ColumnState[];
 };
 
-export interface CccsGridStylesProps {
+export interface AdvancedTableStylesProps {
   height: number;
   width: number;
   headerFontSize?: keyof typeof supersetTheme.typography.sizes;
@@ -46,30 +47,31 @@ export interface CccsGridStylesProps {
 }
 
 // @ts-ignore
-export const DEFAULT_FORM_DATA: CccsGridQueryFormData = {
+export const DEFAULT_FORM_DATA: AdvancedTableQueryFormData = {
   result_type: 'post_processed',
   viz_type: 'cccs_grid',
 };
 
-export interface CccsGridChartDataResponseResult
+export interface AdvancedTableChartDataResponseResult
   extends ChartDataResponseResult {
   agGridLicenseKey: string;
 }
 
-export class CccsGridChartProps extends ChartProps {
-  declare formData: CccsGridQueryFormData;
+export class AdvancedTableChartProps extends ChartProps {
+  declare formData: AdvancedTableQueryFormData;
 
-  declare queriesData: CccsGridChartDataResponseResult[];
+  declare queriesData: AdvancedTableChartDataResponseResult[];
 }
 
-export interface CccsGridTransformedProps extends CccsGridStylesProps {
-  formData: CccsGridQueryFormData;
+export interface AdvancedTableTransformedProps
+  extends AdvancedTableStylesProps {
+  formData: AdvancedTableQueryFormData;
   setDataMask: SetDataMaskHook;
   setControlValue: HandlerFunction;
   selectedValues: Record<number, string>;
   emitFilter: boolean;
   data: TimeseriesDataRecord[];
-  columnDefs: any;
+  colDefs: any;
   rowData: any;
   tooltipShowDelay: any;
   frameworkComponents: any;
@@ -80,6 +82,7 @@ export interface CccsGridTransformedProps extends CccsGridStylesProps {
   include_search: boolean;
   page_length: number;
   enable_grouping: boolean;
+  enable_pivot: boolean;
   column_state: ColumnState[];
   // add typing here for the props you pass in from transformProps.ts!
   agGridLicenseKey: string;

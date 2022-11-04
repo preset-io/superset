@@ -78,7 +78,7 @@ import {
   GroupByFilterPlugin,
 } from 'src/filters/components';
 import { PivotTableChartPlugin as PivotTableChartPluginV2 } from '@superset-ui/plugin-chart-pivot-table';
-import { CccsGridChartPlugin } from '@superset-ui/plugin-chart-advanced-table';
+import { AdvancedTableChartPlugin } from '@superset-ui/plugin-chart-advanced-table';
 import { HandlebarsChartPlugin } from '@superset-ui/plugin-chart-handlebars';
 import FilterBoxChartPlugin from '../FilterBox/FilterBoxChartPlugin';
 import TimeTableChartPlugin from '../TimeTable';
@@ -130,7 +130,7 @@ export default class MainPreset extends Preset {
         new EchartsPieChartPlugin().configure({ key: 'pie' }),
         new PivotTableChartPlugin().configure({ key: 'pivot_table' }),
         new PivotTableChartPluginV2().configure({ key: 'pivot_table_v2' }),
-        new CccsGridChartPlugin().configure({ key: 'advanced-table' }),
+        new AdvancedTableChartPlugin().configure({ key: 'advanced-table' }),
         new RoseChartPlugin().configure({ key: 'rose' }),
         new SankeyChartPlugin().configure({ key: 'sankey' }),
         new SunburstChartPlugin().configure({ key: 'sunburst' }),

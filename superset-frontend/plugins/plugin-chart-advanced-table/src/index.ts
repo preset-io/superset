@@ -17,11 +17,11 @@
  * under the License.
  */
 // eslint-disable-next-line import/prefer-default-export
-export { default as CccsGridChartPlugin } from './plugin';
+export { default as AdvancedTableChartPlugin } from './plugin';
 /**
- * Note: this file exports the default export from CccsGrid.tsx.
+ * Note: this file exports the default export from AdvancedTable.tsx.
  * If you want to export multiple visualization modules, you will need to
  * either add additional plugin folders (similar in structure to ./plugin)
  * OR export multiple instances of `ChartPlugin` extensions in ./plugin/index.ts
- * which in turn load exports from CccsGrid.tsx
+ * which in turn load exports from AdvancedTable.tsx
  */

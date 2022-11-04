@@ -30,12 +30,13 @@ import {
   LicenseManager,
   MenuItemDef,
   GetContextMenuItemsParams,
+  ColDef,
 } from '@ag-grid-enterprise/all-modules';
 import { ensureIsArray } from '@superset-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearDataMask } from 'src/dataMask/actions';
 import { RootState } from 'src/dashboard/types';
-import { CccsGridTransformedProps } from './types';
+import { AdvancedTableTransformedProps } from './types';
 
 import CountryValueRenderer from './CountryValueRenderer';
 import Ipv4ValueRenderer from './Ipv4ValueRenderer';
@@ -62,11 +63,11 @@ const DEFAULT_COLUMN_DEF = {
   tooltipComponent: 'customTooltip',
 };
 
-export default function CccsGrid({
+export default function AdvancedTable({
   width,
   height,
   agGridLicenseKey,
-  columnDefs,
+  colDefs,
   rowData,
   formData,
   setDataMask,
@@ -78,9 +79,10 @@ export default function CccsGrid({
   include_search,
   page_length = 0,
   enable_grouping = false,
+  enable_pivot = true,
   column_state,
   filters: initialFilters = {},
-}: CccsGridTransformedProps) {
+}: AdvancedTableTransformedProps) {
   LicenseManager.setLicenseKey(agGridLicenseKey);
   const dispatch = useDispatch();
   const crossFilterValue = useSelector<RootState, any>(
@@ -90,8 +92,13 @@ export default function CccsGrid({
   const [filters, setFilters] = useState(initialFilters);
   const [searchValue, setSearchValue] = useState('');
   const [pageSize, setPageSize] = useState<number>(page_length);
+  const [columnDefs, setColumnDefs] = useState<ColDef[]>(colDefs);
 
-  const gridRef = useRef<AgGridReactType>(null);
+  const gridRef = useRef<AgGridReactType>();
+
+  useEffect(() => {
+    setColumnDefs(colDefs);
+  }, [colDefs]);
 
   const handleChange = useCallback(
     filters => {
@@ -264,8 +271,8 @@ export default function CccsGrid({
   }, []);
 
   useEffect(() => {
-    gridRef.current.columnApi.setPivotMode(true);
-  }, [gridRef.current]);
+    gridRef.current.columnApi.setPivotMode(enable_pivot);
+  }, [enable_pivot]);
 
   const gridOptions = {
     suppressColumnVirtualisation: true,
@@ -351,7 +358,7 @@ export default function CccsGrid({
           quickFilterText={searchValue}
           rowGroupPanelShow={enable_grouping ? 'always' : 'never'}
           onColumnMoved={onColumnMoved}
-          sideBar={['columns', 'filters']}
+          sideBar={true}
         />
       </div>
     </div>

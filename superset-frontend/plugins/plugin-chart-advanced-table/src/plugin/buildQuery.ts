@@ -26,7 +26,7 @@ import {
   removeDuplicates,
 } from '@superset-ui/core';
 import { BuildQuery } from '@superset-ui/core/src/chart/registries/ChartBuildQueryRegistrySingleton';
-import { CccsGridQueryFormData, DEFAULT_FORM_DATA } from '../types';
+import { AdvancedTableQueryFormData, DEFAULT_FORM_DATA } from '../types';
 
 /**
  * The buildQuery function is used to create an instance of QueryContext that's
@@ -42,7 +42,7 @@ import { CccsGridQueryFormData, DEFAULT_FORM_DATA } from '../types';
  * it is possible to define post processing operations in the QueryObject, or multiple queries
  * if a viz needs multiple different result sets.
  */
-export function getQueryMode(formData: CccsGridQueryFormData) {
+export function getQueryMode(formData: AdvancedTableQueryFormData) {
   const { query_mode: mode } = formData;
   if (mode === QueryMode.aggregate || mode === QueryMode.raw) {
     return mode;
@@ -52,8 +52,8 @@ export function getQueryMode(formData: CccsGridQueryFormData) {
   return hasRawColumns ? QueryMode.raw : QueryMode.aggregate;
 }
 
-const buildQuery: BuildQuery<CccsGridQueryFormData> = (
-  formData: CccsGridQueryFormData,
+const buildQuery: BuildQuery<AdvancedTableQueryFormData> = (
+  formData: AdvancedTableQueryFormData,
   options: any,
 ) => {
   const queryMode = getQueryMode(formData);
@@ -115,6 +115,13 @@ const buildQuery: BuildQuery<CccsGridQueryFormData> = (
 
     const queryObject = {
       ...baseQueryObject,
+      columns: [
+        ...new Set([
+          ...(formDataCopy?.columns ?? []),
+          ...(formDataCopy?.groupby ?? []),
+          ...(formDataCopy?.pivot_columns ?? []),
+        ]),
+      ],
       orderby,
       metrics,
       post_processing: postProcessing,
@@ -168,7 +175,7 @@ const buildQuery: BuildQuery<CccsGridQueryFormData> = (
 
 // Use this closure to cache changing of external filters, if we have server pagination we need reset page to 0, after
 // external filter changed
-export const cachedBuildQuery = (): BuildQuery<CccsGridQueryFormData> => {
+export const cachedBuildQuery = (): BuildQuery<AdvancedTableQueryFormData> => {
   let cachedChanges: any = {};
   const setCachedChanges = (newChanges: any) => {
     cachedChanges = { ...cachedChanges, ...newChanges };

@@ -233,12 +233,12 @@ const config: ControlPanelConfig = {
       label: t('Query'),
       expanded: true,
       controlSetRows: [
-        [
+        /*[
           {
             name: 'query_mode',
             config: queryMode,
           },
-        ],
+        ],*/
         [
           {
             name: 'groupby',
@@ -375,9 +375,38 @@ const config: ControlPanelConfig = {
                     */
                 return newState;
               },
-              visibility: isRawMode,
+              visibility: () => true,
               canCopy: true,
             } as typeof sharedControls.groupby,
+          },
+        ],
+        [
+          {
+            name: 'pivot_columns',
+            config: {
+              type: 'SelectControl',
+              label: t('Pivot Columns'),
+              description: t('Pivotable Columns'),
+              multi: true,
+              freeForm: true,
+              allowAll: true,
+              default: [],
+              canSelectAll: true,
+              valueKey: 'column_name',
+              mapStateToProps: (
+                state: ControlPanelState,
+                controlState: ControlState,
+              ) => {
+                const { controls } = state;
+                const originalMapStateToProps =
+                  sharedControls?.columns?.mapStateToProps;
+                const newState =
+                  originalMapStateToProps?.(state, controlState) ?? {};
+                return newState;
+              },
+              visibility: () => true,
+              canCopy: true,
+            },
           },
         ],
         [
@@ -460,80 +489,6 @@ const config: ControlPanelConfig = {
         ],
       ],
     },
-    // For CLDN-941: hiding away options that are not hooked up to the ag-grid, moving all to a block that
-    // will hide / show the tab based on DASHBOARD_CROSS_FILTERS being enabled since that's the only option
-    // that is working.
-    // {
-    //   label: t('CCCS Grid Options'),
-    //   expanded: true,
-    //   controlSetRows: [
-    //     [
-    //       {
-    //         name: 'bold_text',
-    //         config: {
-    //           type: 'CheckboxControl',
-    //           label: t('Bold Text'),
-    //           renderTrigger: true,
-    //           default: true,
-    //           description: t('A checkbox to make the '),
-    //         },
-    //       },
-    //     ],
-    //     isFeatureEnabled(FeatureFlag.DASHBOARD_CROSS_FILTERS)
-    //     ? [
-    //         {
-    //           name: 'table_filter',
-    //           config: {
-    //             type: 'CheckboxControl',
-    //             label: t('Enable emitting filters'),
-    //             default: false,
-    //             renderTrigger: true,
-    //             description: t('Whether to apply filter to dashboards when grid cells are clicked.'),
-    //           },
-    //         },
-    //       ] : []
-    //     ,
-    //     [
-    //       {
-    //         name: 'column_config',
-    //         config: {
-    //           type: 'ColumnConfigControl',
-    //           label: t('Customize columns'),
-    //           description: t('Further customize how to display each column'),
-    //           renderTrigger: true,
-    //           mapStateToProps(explore, control, chart) {
-    //             return {
-    //               queryResponse: chart?.queriesResponse?.[0] as ChartDataResponseResult | undefined,
-    //               emitFilter: explore?.controls?.table_filter?.value,
-    //             };
-    //           },
-    //         },
-    //       },
-    //     ],
-    //     [
-    //       {
-    //         name: 'header_font_size',
-    //         config: {
-    //           type: 'SelectControl',
-    //           label: t('Font Size'),
-    //           default: 'xl',
-    //           choices: [
-    //             // [value, label]
-    //             ['xxs', 'xx-small'],
-    //             ['xs', 'x-small'],
-    //             ['s', 'small'],
-    //             ['m', 'medium'],
-    //             ['l', 'large'],
-    //             ['xl', 'x-large'],
-    //             ['xxl', 'xx-large'],
-    //           ],
-    //           renderTrigger: true,
-    //           description: t('The size of your header font'),
-    //         },
-    //       },
-    //     ],
-    //   ],
-    // },
   ],
   // override controls that are inherited by the default configuration
   controlOverrides: {
@@ -576,6 +531,20 @@ config.controlPanelSections.push({
           default: false,
           description: t(
             'Whether to enable row grouping (this will only take affect after a save)',
+          ),
+        },
+      },
+    ],
+    [
+      {
+        name: 'enable_pivot',
+        config: {
+          type: 'CheckboxControl',
+          label: t('Enable Pivot'),
+          renderTrigger: true,
+          default: true,
+          description: t(
+            'Whether to enable pivot table functionality (this will only take affect after a save)',
           ),
         },
       },

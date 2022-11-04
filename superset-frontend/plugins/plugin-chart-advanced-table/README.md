@@ -9,9 +9,9 @@ This plugin provides CCCS Grid for Superset.
 Configure `key`, which can be any `string`, and register the plugin. This `key` will be used to lookup this chart throughout the app.
 
 ```js
-import CccsGridChartPlugin from '@superset-ui/plugin-chart-cccs-grid';
+import AdvancedTableChartPlugin from '@superset-ui/plugin-chart-cccs-grid';
 
-new CccsGridChartPlugin().configure({ key: 'cccs-grid' }).register();
+new AdvancedTableChartPlugin().configure({ key: 'cccs-grid' }).register();
 ```
 
 Then use it via `SuperChart`. See [storybook](https://apache-superset.github.io/superset-ui/?selectedKind=plugin-chart-cccs-grid) for more details.
@@ -35,7 +35,7 @@ Then use it via `SuperChart`. See [storybook](https://apache-superset.github.io/
 ├── README.md
 ├── tsconfig.json
 ├── src
-│   ├── CccsGrid.tsx
+│   ├── AdvancedTable.tsx
 │   ├── images
 │   │   └── thumbnail.png
 │   ├── index.ts

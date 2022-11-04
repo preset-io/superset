@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { CccsGridChartPlugin } from '../src';
+import { AdvancedTableChartPlugin } from '../src';
 
 /**
  * The example tests in this file act as a starting point, and
@@ -28,6 +28,6 @@ import { CccsGridChartPlugin } from '../src';
  */
 describe('@superset-ui/plugin-chart-cccs-grid', () => {
   it('exists', () => {
-    expect(CccsGridChartPlugin).toBeDefined();
+    expect(AdvancedTableChartPlugin).toBeDefined();
   });
 });

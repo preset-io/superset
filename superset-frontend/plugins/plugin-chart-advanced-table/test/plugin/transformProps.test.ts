@@ -1,9 +1,12 @@
-import { CccsGridQueryFormData, CccsGridChartProps } from '../../src/types';
+import {
+  AdvancedTableQueryFormData,
+  AdvancedTableChartProps,
+} from '../../src/types';
 import { supersetTheme } from '@superset-ui/core';
 import transformProps from '../../src/plugin/transformProps';
 
-describe('CccsGrid tranformProps', () => {
-  const formData: CccsGridQueryFormData = {
+describe('AdvancedTable tranformProps', () => {
+  const formData: AdvancedTableQueryFormData = {
     colorScheme: 'bnbColors',
     datasource: '3__table',
     granularity_sqla: 'ds',
@@ -16,10 +19,11 @@ describe('CccsGrid tranformProps', () => {
     include_search: false,
     page_length: 0,
     enable_grouping: false,
+    enable_pivot: false,
     viz_type: 'my_chart',
     column_state: [],
   };
-  const chartProps = new CccsGridChartProps({
+  const chartProps = new AdvancedTableChartProps({
     formData,
     width: 800,
     height: 600,

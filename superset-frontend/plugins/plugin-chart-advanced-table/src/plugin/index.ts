@@ -21,12 +21,12 @@ import buildQuery from './buildQuery';
 import controlPanel from './controlPanel';
 import transformProps from './transformProps';
 import thumbnail from '../images/thumbnail.png';
-import { CccsGridQueryFormData, CccsGridChartProps } from '../types';
+import { AdvancedTableQueryFormData, AdvancedTableChartProps } from '../types';
 import example1 from '../images/Table1.png';
 
-export default class CccsGridChartPlugin extends ChartPlugin<
-  CccsGridQueryFormData,
-  CccsGridChartProps
+export default class AdvancedTableChartPlugin extends ChartPlugin<
+  AdvancedTableQueryFormData,
+  AdvancedTableChartProps
 > {
   /**
    * The constructor is used to pass relevant metadata and callbacks that get
@@ -40,11 +40,13 @@ export default class CccsGridChartPlugin extends ChartPlugin<
    */
   constructor() {
     const metadata = new ChartMetadata({
-      description: t('Hogwarts Table: An AG Grid control for Hogwarts data.'),
-      name: t('Hogwarts Table'),
+      description: t(
+        'Advanced Table with grouping, filtering, and pivot capabilities',
+      ),
+      name: t('Advanced Table'),
       category: t('Table'),
       tags: [
-        t('Hogwarts'),
+        t('Pivot'),
         t('Table'),
         t('Grid'),
         t('Popular'),
@@ -59,7 +61,7 @@ export default class CccsGridChartPlugin extends ChartPlugin<
     super({
       buildQuery,
       controlPanel,
-      loadChart: () => import('../CccsGrid'),
+      loadChart: () => import('../AdvancedTable'),
       metadata,
       transformProps,
     });

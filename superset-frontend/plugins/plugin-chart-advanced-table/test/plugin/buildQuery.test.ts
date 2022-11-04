@@ -1,8 +1,8 @@
 import buildQuery from '../../src/plugin/buildQuery';
-import { CccsGridQueryFormData } from '../../src/types';
+import { AdvancedTableQueryFormData } from '../../src/types';
 
-describe('CccsGrid buildQuery', () => {
-  const formData: CccsGridQueryFormData = {
+describe('AdvancedTable buildQuery', () => {
+  const formData: AdvancedTableQueryFormData = {
     datasource: '5__table',
     granularity_sqla: 'ds',
     series: 'foo',
@@ -10,6 +10,7 @@ describe('CccsGrid buildQuery', () => {
     include_search: false,
     page_length: 0,
     enable_grouping: false,
+    enable_pivot: false,
     viz_type: 'my_chart',
     column_state: [],
   };

@@ -28,12 +28,12 @@ import {
   TimeseriesDataRecord,
 } from '@superset-ui/core';
 import {
-  CccsGridChartProps,
-  CccsGridQueryFormData,
+  AdvancedTableChartProps,
+  AdvancedTableQueryFormData,
   DEFAULT_FORM_DATA,
 } from '../types';
 
-export default function transformProps(chartProps: CccsGridChartProps) {
+export default function transformProps(chartProps: AdvancedTableChartProps) {
   /**
    * This function is called after a successful response has been
    * received from the chart data endpoint, and is used to transform
@@ -41,7 +41,7 @@ export default function transformProps(chartProps: CccsGridChartProps) {
    *
    * The transformProps function is also quite useful to return
    * additional/modified props to your data viz component. The formData
-   * can also be accessed from your CccsGrid.tsx file, but
+   * can also be accessed from your AdvancedTable.tsx file, but
    * doing supplying custom props here is often handy for integrating third
    * party libraries that rely on specific props.
    *
@@ -80,8 +80,9 @@ export default function transformProps(chartProps: CccsGridChartProps) {
     query_mode,
     include_search,
     enable_grouping,
+    enable_pivot,
     column_state,
-  }: CccsGridQueryFormData = { ...DEFAULT_FORM_DATA, ...formData };
+  }: AdvancedTableQueryFormData = { ...DEFAULT_FORM_DATA, ...formData };
   const data = queriesData[0].data as TimeseriesDataRecord[];
   const agGridLicenseKey = queriesData[0].agGridLicenseKey as String;
 
@@ -174,23 +175,57 @@ export default function transformProps(chartProps: CccsGridChartProps) {
     );
   };
 
-  let columnDefs: Column[] = [];
+  let colDefs: Column[] = [];
+  const columnLookup = {};
 
-  if (query_mode === QueryMode.raw) {
-    columnDefs = formData.columns.map((column: any) => {
+  const createSimpleColumn = (column: any) => ({
+    field: column,
+  });
+
+  formData.columns.map((column: any) => {
+    const columnType = columnTypeMap[column];
+    const columnAdvancedType = columnAdvancedTypeMap[column];
+    const columnHeader = columnVerboseNameMap[column]
+      ? columnVerboseNameMap[column]
+      : column;
+    const sortDirection =
+      column in sortingColumnMap
+        ? sortingColumnMap[column].sortDirection
+          ? 'asc'
+          : 'desc'
+        : null;
+    const sortIndex =
+      column in sortingColumnMap ? sortingColumnMap[column].sortIndex : null;
+    const cellRenderer =
+      columnAdvancedType in rendererMap
+        ? rendererMap[columnAdvancedType]
+        : columnType in rendererMap
+        ? rendererMap[columnType]
+        : undefined;
+    const isSortable = true;
+    const columnDef = createSimpleColumn(column);
+
+    // field: column,
+    // headerName: columnHeader,
+    // cellRenderer,
+    //  sortable: isSortable,
+    //  sort: sortDirection,
+    if (columnType === 'FLOAT64') {
+      columnDef.aggFunc = 'sum';
+    }
+    //  sortIndex,
+
+    columnLookup[column] = columnDef;
+    return columnDef;
+  });
+
+  if (formData.groupby) {
+    formData.groupby.map((column: any) => {
       const columnType = columnTypeMap[column];
       const columnAdvancedType = columnAdvancedTypeMap[column];
       const columnHeader = columnVerboseNameMap[column]
         ? columnVerboseNameMap[column]
         : column;
-      const sortDirection =
-        column in sortingColumnMap
-          ? sortingColumnMap[column].sortDirection
-            ? 'asc'
-            : 'desc'
-          : null;
-      const sortIndex =
-        column in sortingColumnMap ? sortingColumnMap[column].sortIndex : null;
       const cellRenderer =
         columnAdvancedType in rendererMap
           ? rendererMap[columnAdvancedType]
@@ -198,86 +233,77 @@ export default function transformProps(chartProps: CccsGridChartProps) {
           ? rendererMap[columnType]
           : undefined;
       const isSortable = true;
-      const enableRowGroup = true;
-      return {
-        field: column,
-        headerName: columnHeader,
-        cellRenderer,
-        sortable: isSortable,
-        sort: sortDirection,
-        sortIndex,
-        enableRowGroup,
-      };
+      const columnDef = columnLookup[column] ?? createSimpleColumn(column);
+      columnDef.rowGroup = true;
+      columnDef.enableRowGroup = true;
+      columnLookup[column] = columnDef;
     });
-  } else {
-    if (formData.groupby) {
-      const groupByColumnDefs = formData.groupby.map((column: any) => {
-        const columnType = columnTypeMap[column];
-        const columnAdvancedType = columnAdvancedTypeMap[column];
-        const columnHeader = columnVerboseNameMap[column]
-          ? columnVerboseNameMap[column]
-          : column;
-        const cellRenderer =
-          columnAdvancedType in rendererMap
-            ? rendererMap[columnAdvancedType]
-            : columnType in rendererMap
-            ? rendererMap[columnType]
-            : undefined;
-        const isSortable = true;
-        const enableRowGroup = true;
-        return {
-          field: column,
-          headerName: columnHeader,
-          cellRenderer,
-          sortable: isSortable,
-          enableRowGroup,
-        };
-      });
-      columnDefs = columnDefs.concat(groupByColumnDefs);
-    }
-
-    if (formData.metrics) {
-      const metricsColumnDefs = formData.metrics
-        .map(getMetricLabel)
-        .map((metric: any) => {
-          const metricHeader = metricVerboseNameMap[metric]
-            ? metricVerboseNameMap[metric]
-            : metric;
-          return {
-            field: metric,
-            headerName: metricHeader,
-            sortable: true,
-            enableRowGroup: true,
-          };
-        });
-      columnDefs = columnDefs.concat(metricsColumnDefs);
-    }
-
-    if (formData.percent_metrics) {
-      const percentMetricsColumnDefs = formData.percent_metrics
-        .map(getMetricLabel)
-        .map((metric: any) => {
-          const metricHeader = metricVerboseNameMap[metric]
-            ? metricVerboseNameMap[metric]
-            : metric;
-          return {
-            field: `%${metric}`,
-            headerName: `%${metricHeader}`,
-            sortable: true,
-            valueFormatter: percentMetricValueFormatter,
-          };
-        });
-      columnDefs = columnDefs.concat(percentMetricsColumnDefs);
-    }
+    // columnDefs = columnDefs.concat(groupByColumnDefs);
   }
 
+  if (formData.pivot_columns) {
+    formData.pivot_columns.map((column: any) => {
+      const columnType = columnTypeMap[column];
+      const columnAdvancedType = columnAdvancedTypeMap[column];
+      const columnHeader = columnVerboseNameMap[column]
+        ? columnVerboseNameMap[column]
+        : column;
+      const cellRenderer =
+        columnAdvancedType in rendererMap
+          ? rendererMap[columnAdvancedType]
+          : columnType in rendererMap
+          ? rendererMap[columnType]
+          : undefined;
+      const isSortable = true;
+      const columnDef = columnLookup[column] ?? createSimpleColumn(column);
+      columnDef.enablePivot = true;
+      columnDef.pivot = true;
+      columnLookup[column] = columnDef;
+    });
+    // columnDefs = columnDefs.concat(pivotColumnDefs);
+  }
+  /*
+  if (formData.metrics) {
+    const metricsColumnDefs = formData.metrics
+      .map(getMetricLabel)
+      .map((metric: any) => {
+        const metricHeader = metricVerboseNameMap[metric]
+          ? metricVerboseNameMap[metric]
+          : metric;
+        return {
+          field: metric,
+          headerName: metricHeader,
+          sortable: true,
+        };
+      });
+    columnDefs = columnDefs.concat(metricsColumnDefs);
+  }
+
+  if (formData.percent_metrics) {
+    const percentMetricsColumnDefs = formData.percent_metrics
+      .map(getMetricLabel)
+      .map((metric: any) => {
+        const metricHeader = metricVerboseNameMap[metric]
+          ? metricVerboseNameMap[metric]
+          : metric;
+        return {
+          field: `%${metric}`,
+          headerName: `%${metricHeader}`,
+          sortable: true,
+          valueFormatter: percentMetricValueFormatter,
+        };
+      });
+    columnDefs = columnDefs.concat(percentMetricsColumnDefs);
+  }
+*/
+  colDefs = Object.values(columnLookup);
   return {
     formData,
     setDataMask,
     setControlValue,
     width,
     height,
-    columnDefs,
+    colDefs,
     rowData: data,
     // and now your control data, manipulated as needed, and passed through as props!
     boldText,
@@ -287,6 +313,7 @@ export default function transformProps(chartProps: CccsGridChartProps) {
     include_search,
     page_length,
     enable_grouping,
+    enable_pivot,
     column_state,
     agGridLicenseKey,
   };
