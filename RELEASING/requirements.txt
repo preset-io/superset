@@ -17,3 +17,5 @@
 
 cherrytree
 jinja2
+gitpython>=3.1.27 # not directly required, pinned by Snyk to avoid a vulnerability
+pyjwt>=2.4.0 # not directly required, pinned by Snyk to avoid a vulnerability
