@@ -180,6 +180,8 @@ export default function transformProps(chartProps: AdvancedTableChartProps) {
 
   const createSimpleColumn = (column: any) => ({
     field: column,
+    sortable: true,
+    sort: 'desc',
   });
 
   formData.columns.map((column: any) => {
