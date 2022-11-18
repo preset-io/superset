@@ -98,7 +98,7 @@ class TestPrestoDbEngineSpec(TestDbEngineSpec):
             ).strip(),
             {},
         )
-        assert result == ["a", "d"]
+        assert result == {"a", "d"}
 
     def verify_presto_column(self, column, expected_results):
         inspector = mock.Mock()
