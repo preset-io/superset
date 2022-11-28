@@ -16,22 +16,19 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { t } from '@superset-ui/core';
-import { ControlSetRow } from '../types';
+import { ITableColumn } from './types';
 
-export const legacySortBy: ControlSetRow[] = [
-  ['legacy_order_by'],
-  [
-    {
-      name: 'order_desc',
-      config: {
-        type: 'CheckboxControl',
-        label: t('Sort descending'),
-        default: true,
-        description: t(
-          'Whether to sort descending or ascending. Takes effect only when "Sort by" is set',
-        ),
-      },
-    },
-  ],
+export const exampleColumns: ITableColumn[] = [
+  {
+    name: 'name',
+    type: 'STRING',
+  },
+  {
+    name: 'height_in_inches',
+    type: 'NUMBER',
+  },
+  {
+    name: 'birth_date',
+    type: 'DATE',
+  },
 ];

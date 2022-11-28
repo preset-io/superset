@@ -16,19 +16,34 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 import React, { useState, useEffect, useRef, ReactElement } from 'react';
 import { Table as AntTable, ConfigProvider } from 'antd';
-import type { ColumnsType, TableProps as AntTableProps } from 'antd/es/table';
-import { t, useTheme } from '@superset-ui/core';
+import {
+  ColumnType,
+  ColumnGroupType,
+  TableProps as AntTableProps,
+} from 'antd/es/table';
+import { PaginationProps } from 'antd/es/pagination';
+import { Key } from 'antd/lib/table/interface';
+import { t, useTheme, logging } from '@superset-ui/core';
 import Loading from 'src/components/Loading';
 import styled, { StyledComponent } from '@emotion/styled';
 import InteractiveTableUtils from './utils/InteractiveTableUtils';
+import VirtualTable from './VirtualTable';
 
 export const SUPERSET_TABLE_COLUMN = 'superset/table-column';
 export interface TableDataType {
   key: React.Key;
 }
+
+export interface TablePaginationConfig extends PaginationProps {
+  extra?: object;
+}
+
+export type ColumnsType<RecordType = unknown> = (
+  | ColumnGroupType<RecordType>
+  | ColumnType<RecordType>
+)[];
 
 export enum SelectionType {
   'DISABLED' = 'disabled',
@@ -58,6 +73,32 @@ export interface Locale {
   triggerAsc: string;
   cancelSort: string;
 }
+
+export type SortOrder = 'descend' | 'ascend' | null;
+export interface SorterResult<RecordType> {
+  column?: ColumnType<RecordType>;
+  order?: SortOrder;
+  field?: Key | Key[];
+  columnKey?: Key;
+}
+
+export enum ETableAction {
+  PAGINATE = 'paginate',
+  SORT = 'sort',
+  FILTER = 'filter',
+}
+
+export interface TableCurrentDataSource<RecordType> {
+  currentDataSource: RecordType[];
+  action: ETableAction;
+}
+
+export type OnChangeFunction = (
+  pagination: TablePaginationConfig,
+  filters: Record<string, (Key | boolean)[] | null>,
+  sorter: SorterResult<any> | SorterResult<any>[],
+  extra: TableCurrentDataSource<any>,
+) => void;
 
 export interface TableProps extends AntTableProps<TableProps> {
   /**
@@ -101,6 +142,10 @@ export interface TableProps extends AntTableProps<TableProps> {
    */
   reorderable?: boolean;
   /**
+   * Controls if pagination is active or disabled.
+   */
+  usePagination?: boolean;
+  /**
    * Default number of rows table will display per page of data.
    */
   defaultPageSize?: number;
@@ -126,6 +171,27 @@ export interface TableProps extends AntTableProps<TableProps> {
    * when the number of rows exceeds the visible space.
    */
   height?: number;
+  /**
+   * Sets the table to use react-window for scroll virtualization in cases where
+   * there are unknown amount of columns, or many, many rows
+   */
+  virtualize?: boolean;
+  /**
+   * Used to override page controls total record count when using server-side paging.
+   */
+  recordCount?: number;
+  /**
+   * Invoked when the tables sorting, paging, or filtering is changed.
+   */
+  onChange?: OnChangeFunction;
+}
+
+interface IPaginationOptions {
+  hideOnSinglePage: boolean;
+  pageSize: number;
+  pageSizeOptions: string[];
+  onShowSizeChange: Function;
+  total?: number;
 }
 
 export enum TableSize {
@@ -134,30 +200,56 @@ export enum TableSize {
 }
 
 const defaultRowSelection: React.Key[] = [];
+
 // This accounts for the tables header and pagination if user gives table instance a height. this is a temp solution
-const HEIGHT_OFFSET = 108;
+export const HEIGHT_OFFSET = 108;
 
-const StyledTable: StyledComponent<any> = styled(AntTable)<any>`
-  ${({ theme, height }) => `
-  .ant-table-body {
-    overflow: scroll;
-    height: ${height ? `${height - HEIGHT_OFFSET}px` : undefined};
+const StyledTable: StyledComponent<any> = styled(AntTable)<any>(
+  ({ theme, height }) => `
+    .ant-table-body {
+      overflow: auto;
+      height: ${height ? `${height - HEIGHT_OFFSET}px` : undefined};
+    }
+
+    th.ant-table-cell {
+      font-weight: ${theme.typography.weights.bold};
+      color: ${theme.colors.grayscale.dark1};
+      user-select: none;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .ant-table-tbody > tr > td {
+      user-select: none;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      border-bottom: 1px solid ${theme.colors.grayscale.light3};
+    }
+
+    .ant-pagination-item-active {
+      border-color: ${theme.colors.primary.base};
+    }
   }
+`,
+);
 
-  th.ant-table-cell {
-    font-weight: ${theme.typography.weights.bold};
-    color: ${theme.colors.grayscale.dark1};
-    user-select: none;
+const StyledVirtualTable: StyledComponent<any> = styled(VirtualTable)<any>(
+  ({ theme }) => `
+  .virtual-table .ant-table-container:before,
+  .virtual-table .ant-table-container:after {
+    display: none;
+  }
+  .virtual-table-cell {
+    box-sizing: border-box;
+    padding: ${theme.gridUnit * 4}px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
-
-  .ant-pagination-item-active {
-    border-color: ${theme.colors.primary.base};
-  }
-  `}
-`;
+`,
+);
 
 const defaultLocale = {
   filterTitle: t('Filter menu'),
@@ -180,6 +272,7 @@ const defaultLocale = {
 };
 
 const selectionMap = {};
+const noop = () => {};
 selectionMap[SelectionType.MULTI] = 'checkbox';
 selectionMap[SelectionType.SINGLE] = 'radio';
 selectionMap[SelectionType.DISABLED] = null;
@@ -190,18 +283,22 @@ export function Table(props: TableProps) {
     columns,
     selectedRows = defaultRowSelection,
     handleRowSelection,
-    size,
+    size = TableSize.SMALL,
     selectionType = SelectionType.DISABLED,
     sticky = true,
     loading = false,
     resizable = false,
     reorderable = false,
+    usePagination = true,
     defaultPageSize = 15,
     pageSizeOptions = ['5', '15', '25', '50', '100'],
     hideData = false,
     emptyComponent,
     locale,
-    ...rest
+    height,
+    virtualize = false,
+    onChange = noop,
+    recordCount,
   } = props;
 
   const wrapperRef = useRef<HTMLDivElement | null>(null);
@@ -227,7 +324,32 @@ export function Table(props: TableProps) {
   const renderEmpty = () =>
     emptyComponent ?? <div>{mergedLocale.emptyText}</div>;
 
-  const initializeInteractiveTable = () => {
+  // Log use of experimental features
+  useEffect(() => {
+    if (reorderable === true) {
+      logging.warn(
+        'EXPERIMENTAL FEATURE ENABLED: The "reorderable" prop of Table is experimental and NOT recommended for use in production deployments.',
+      );
+    }
+    if (resizable === true) {
+      logging.warn(
+        'EXPERIMENTAL FEATURE ENABLED: The "resizable" prop of Table is experimental and NOT recommended for use in production deployments.',
+      );
+    }
+  }, [reorderable, resizable]);
+
+  useEffect(() => {
+    let updatedLocale;
+    if (locale) {
+      // This spread allows for locale to only contain a subset of locale overrides on props
+      updatedLocale = { ...defaultLocale, ...locale };
+    } else {
+      updatedLocale = { ...defaultLocale };
+    }
+    setMergedLocale(updatedLocale);
+  }, [locale]);
+
+  useEffect(() => {
     if (interactiveTableUtils.current) {
       interactiveTableUtils.current?.clearListeners();
     }
@@ -251,67 +373,68 @@ export function Table(props: TableProps) {
         );
       }
     }
-  };
 
-  // Log use of experimental features
-  useEffect(() => {
-    if (reorderable === true) {
-      // eslint-disable-next-line no-console
-      console.warn(
-        'EXPERIMENTAL FEATURE ENABLED: The "reorderable" prop of Table is experimental and NOT recommended for use in production deployments.',
-      );
-    }
-    if (resizable === true) {
-      // eslint-disable-next-line no-console
-      console.warn(
-        'EXPERIMENTAL FEATURE ENABLED: The "resizable" prop of Table is experimental and NOT recommended for use in production deployments.',
-      );
-    }
-  }, [reorderable, resizable]);
-
-  useEffect(() => {
-    let updatedLocale;
-    if (locale) {
-      // This spread allows for locale to only contain a subset of locale overrides on props
-      updatedLocale = { ...defaultLocale, ...locale };
-    } else {
-      updatedLocale = { ...defaultLocale };
-    }
-    setMergedLocale(updatedLocale);
-  }, [locale]);
-
-  useEffect(() => {
-    initializeInteractiveTable();
     return () => {
       interactiveTableUtils?.current?.clearListeners?.();
     };
+    /**
+     * We DO NOT want this effect to trigger when derivedColumns changes as it will break functionality
+     * The exclusion from the effect dependencies is intentional and should not be modified
+     */
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [wrapperRef, reorderable, resizable]);
+  }, [wrapperRef, reorderable, resizable, virtualize, interactiveTableUtils]);
 
   const theme = useTheme();
+
+  const paginationSettings: IPaginationOptions | false = usePagination
+    ? {
+        hideOnSinglePage: true,
+        pageSize,
+        pageSizeOptions,
+        onShowSizeChange: (page: number, size: number) => setPageSize(size),
+      }
+    : false;
+
+  /**
+   * When recordCount is provided it lets the user of Table control total number of pages
+   * independent from data.length.  This allows the parent component do things like server side paging
+   * where the user can be shown the total mount of data they can page through, but the component can provide
+   * data one page at a time, and respond to the onPageChange event to fetch and set new data
+   */
+  if (paginationSettings && recordCount) {
+    paginationSettings.total = recordCount;
+  }
+
+  const sharedProps = {
+    loading: { spinning: loading ?? false, indicator: <Loading /> },
+    hasData: hideData ? false : data,
+    columns: derivedColumns,
+    dataSource: hideData ? [undefined] : data,
+    size,
+    pagination: paginationSettings,
+    locale: mergedLocale,
+    showSorterTooltip: false,
+    onChange,
+    theme,
+    height,
+  };
 
   return (
     <ConfigProvider renderEmpty={renderEmpty}>
       <div ref={wrapperRef}>
-        <StyledTable
-          {...rest}
-          loading={{ spinning: loading ?? false, indicator: <Loading /> }}
-          hasData={hideData ? false : data}
-          rowSelection={selectionTypeValue ? rowSelection : undefined}
-          columns={derivedColumns}
-          dataSource={hideData ? [undefined] : data}
-          size={size}
-          sticky={sticky}
-          pagination={{
-            hideOnSinglePage: true,
-            pageSize,
-            pageSizeOptions,
-            onShowSizeChange: (page: number, size: number) => setPageSize(size),
-          }}
-          showSorterTooltip={false}
-          locale={mergedLocale}
-          theme={theme}
-        />
+        {!virtualize && (
+          <StyledTable
+            {...sharedProps}
+            rowSelection={selectionTypeValue ? rowSelection : undefined}
+            sticky={sticky}
+          />
+        )}
+        {virtualize && (
+          <StyledVirtualTable
+            {...sharedProps}
+            scroll={{ y: 300, x: '100vw' }}
+          />
+        )}
       </div>
     </ConfigProvider>
   );

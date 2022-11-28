@@ -16,22 +16,26 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import React from 'react';
+import { useSelector } from 'react-redux';
+import AsyncEsmComponent from 'src/components/AsyncEsmComponent';
+import { DashboardState, RootState } from 'src/dashboard/types';
 
-import { FeatureFlag, isFeatureEnabled, t } from '@superset-ui/core';
+const Modal = AsyncEsmComponent(() => import('./OverwriteConfirmModal'));
 
-const enableCrossFilter = isFeatureEnabled(FeatureFlag.DASHBOARD_CROSS_FILTERS);
+const OverrideConfirm = () => {
+  const overwriteConfirmMetadata = useSelector<
+    RootState,
+    DashboardState['overwriteConfirmMetadata']
+  >(({ dashboardState }) => dashboardState.overwriteConfirmMetadata);
 
-export const emitFilterControl = enableCrossFilter
-  ? [
-      {
-        name: 'emit_filter',
-        config: {
-          type: 'CheckboxControl',
-          label: t('Enable dashboard cross filters'),
-          default: false,
-          renderTrigger: true,
-          description: t('Enable dashboard cross filters'),
-        },
-      },
-    ]
-  : [];
+  return (
+    <>
+      {overwriteConfirmMetadata && (
+        <Modal overwriteConfirmMetadata={overwriteConfirmMetadata} />
+      )}
+    </>
+  );
+};
+
+export default OverrideConfirm;

@@ -16,7 +16,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 import type { ColumnsType } from 'antd/es/table';
 import { SUPERSET_TABLE_COLUMN } from 'src/components/Table';
 import { withinRange } from './utils';
@@ -71,8 +70,7 @@ export default class InteractiveTableUtils {
 
   getColumnIndex = (): number => {
     let index = -1;
-    const parent: HTMLElement | null | undefined = this.columnRef
-      ?.parentNode as HTMLElement;
+    const parent = this.columnRef?.parentNode;
     if (parent) {
       index = Array.prototype.indexOf.call(parent.children, this.columnRef);
     }
@@ -80,7 +78,7 @@ export default class InteractiveTableUtils {
   };
 
   handleColumnDragStart = (ev: DragEvent): void => {
-    const target: IInteractiveColumn = ev?.currentTarget as IInteractiveColumn;
+    const target = ev?.currentTarget as IInteractiveColumn;
     if (target) {
       this.columnRef = target;
     }
@@ -95,7 +93,7 @@ export default class InteractiveTableUtils {
     const data = ev.dataTransfer?.getData?.(SUPERSET_TABLE_COLUMN);
     if (data) {
       ev.preventDefault();
-      const parent: Element = (ev.currentTarget as HTMLElement)
+      const parent = (ev.currentTarget as HTMLElement)
         ?.parentNode as HTMLElement;
       const dropIndex = Array.prototype.indexOf.call(
         parent.children,
@@ -116,8 +114,7 @@ export default class InteractiveTableUtils {
   };
 
   handleMouseDown = (event: MouseEvent) => {
-    const target: IInteractiveColumn =
-      event?.currentTarget as IInteractiveColumn;
+    const target = event?.currentTarget as IInteractiveColumn;
     if (target) {
       this.columnRef = target;
       if (
@@ -140,8 +137,7 @@ export default class InteractiveTableUtils {
 
   handleMouseMove = (event: MouseEvent) => {
     if (this.resizable === true && !this.isDragging) {
-      const target: IInteractiveColumn =
-        event.currentTarget as IInteractiveColumn;
+      const target = event.currentTarget as IInteractiveColumn;
       if (
         event &&
         withinRange(
