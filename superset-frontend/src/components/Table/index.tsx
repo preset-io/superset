@@ -25,9 +25,8 @@ import {
 } from 'antd/es/table';
 import { PaginationProps } from 'antd/es/pagination';
 import { Key } from 'antd/lib/table/interface';
-import { t, useTheme, logging } from '@superset-ui/core';
+import { t, useTheme, logging, styled } from '@superset-ui/core';
 import Loading from 'src/components/Loading';
-import styled, { StyledComponent } from '@emotion/styled';
 import InteractiveTableUtils from './utils/InteractiveTableUtils';
 import VirtualTable from './VirtualTable';
 
@@ -202,13 +201,14 @@ export enum TableSize {
 const defaultRowSelection: React.Key[] = [];
 
 // This accounts for the tables header and pagination if user gives table instance a height. this is a temp solution
-export const HEIGHT_OFFSET = 108;
+const PAGINATION_HEIGHT = 40;
+const HEADER_HEIGHT = 68;
 
-const StyledTable: StyledComponent<any> = styled(AntTable)<any>(
+const StyledTable = styled(AntTable)<any>(
   ({ theme, height }) => `
     .ant-table-body {
       overflow: auto;
-      height: ${height ? `${height - HEIGHT_OFFSET}px` : undefined};
+      height: ${height ? `${height}px` : undefined};
     }
 
     th.ant-table-cell {
@@ -235,7 +235,7 @@ const StyledTable: StyledComponent<any> = styled(AntTable)<any>(
 `,
 );
 
-const StyledVirtualTable: StyledComponent<any> = styled(VirtualTable)<any>(
+const StyledVirtualTable = styled(VirtualTable)<any>(
   ({ theme }) => `
   .virtual-table .ant-table-container:before,
   .virtual-table .ant-table-container:after {
@@ -349,6 +349,8 @@ export function Table(props: TableProps) {
     setMergedLocale(updatedLocale);
   }, [locale]);
 
+  useEffect(() => setDerivedColumns(columns), [columns]);
+
   useEffect(() => {
     if (interactiveTableUtils.current) {
       interactiveTableUtils.current?.clearListeners();
@@ -405,6 +407,16 @@ export function Table(props: TableProps) {
     paginationSettings.total = recordCount;
   }
 
+  let bodyHeight = height;
+  if (bodyHeight) {
+    bodyHeight -= HEADER_HEIGHT;
+    const hasPagination =
+      usePagination && recordCount && recordCount > pageSize;
+    if (hasPagination) {
+      bodyHeight -= PAGINATION_HEIGHT;
+    }
+  }
+
   const sharedProps = {
     loading: { spinning: loading ?? false, indicator: <Loading /> },
     hasData: hideData ? false : data,
@@ -416,7 +428,7 @@ export function Table(props: TableProps) {
     showSorterTooltip: false,
     onChange,
     theme,
-    height,
+    height: bodyHeight,
   };
 
   return (
