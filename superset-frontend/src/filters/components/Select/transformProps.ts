@@ -29,6 +29,7 @@ export default function transformProps(
     hooks,
     queriesData,
     width,
+    displaySettings,
     behaviors,
     appSection,
     filterState,
@@ -68,5 +69,7 @@ export default function transformProps(
     unsetFocusedFilter,
     setFilterActive,
     inputRef,
+    filterBarOrientation: displaySettings?.filterBarOrientation,
+    isOverflowingFilterBar: displaySettings?.isOverflowingFilterBar,
   };
 }
