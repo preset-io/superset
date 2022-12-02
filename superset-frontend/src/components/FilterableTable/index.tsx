@@ -78,7 +78,7 @@ const StyledFilterableTable = styled.div`
     overflow-y: hidden;
 
     .ReactVirtualized__Grid__innerScrollContainer {
-      border: 1px solid ${theme.colors.grayscale.light2};
+      border: 1px solid ${theme.colors.background.base};
     }
 
     .ReactVirtualized__Table__headerRow {
@@ -86,7 +86,7 @@ const StyledFilterableTable = styled.div`
       display: flex;
       flex-direction: row;
       align-items: center;
-      border: 1px solid ${theme.colors.grayscale.light2};
+      border: 1px solid ${theme.colors.background.base};
     }
 
     .ReactVirtualized__Table__row {
@@ -107,7 +107,7 @@ const StyledFilterableTable = styled.div`
     .ReactVirtualized__Table__rowColumn,
     .grid-cell {
       min-width: 0px;
-      border-right: 1px solid ${theme.colors.grayscale.light2};
+      border-right: 1px solid ${theme.colors.background.base};
       align-self: center;
       padding: ${theme.gridUnit * 3}px;
       font-size: ${theme.typography.sizes.s}px;
@@ -150,11 +150,11 @@ const StyledFilterableTable = styled.div`
     }
 
     .even-row {
-      background: ${theme.colors.grayscale.light4};
+      background: ${theme.colors.background.elevated};
     }
 
     .odd-row {
-      background: ${theme.colors.grayscale.light5};
+      background: ${theme.colors.background.light};
     }
 
     .header-style {
@@ -167,7 +167,7 @@ const StyledFilterableTable = styled.div`
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      color: ${theme.colors.grayscale.light1};
+      color: ${theme.colors.background.light};
     }
 
     .cell-text-for-measuring {

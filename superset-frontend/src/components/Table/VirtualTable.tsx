@@ -21,12 +21,11 @@ import classNames from 'classnames';
 import { useResizeDetector } from 'react-resize-detector';
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { VariableSizeGrid as Grid } from 'react-window';
-import { StyledComponent } from '@emotion/styled';
 import { useTheme, styled } from '@superset-ui/core';
 import { TablePaginationConfig } from 'antd/lib/table';
 import { TableProps, TableSize, ETableAction } from './index';
 
-const StyledCell: StyledComponent<any> = styled('div')<any>(
+const StyledCell = styled('div')<any>(
   ({ theme, height }) => `
   white-space: nowrap;
   overflow: hidden;
@@ -40,7 +39,7 @@ const StyledCell: StyledComponent<any> = styled('div')<any>(
 `,
 );
 
-const StyledTable: StyledComponent<any> = styled(AntTable)<any>(
+const StyledTable = styled(AntTable)<any>(
   ({ theme }) => `
     th.ant-table-cell {
       font-weight: ${theme.typography.weights.bold};

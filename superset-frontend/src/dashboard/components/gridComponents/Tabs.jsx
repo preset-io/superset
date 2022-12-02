@@ -90,7 +90,7 @@ const defaultProps = {
 
 const StyledTabsContainer = styled.div`
   width: 100%;
-  background-color: ${({ theme }) => theme.colors.grayscale.light5};
+  background-color: ${({ theme }) => theme.colors.background.elevated};
 
   .dashboard-component-tabs-content {
     min-height: ${({ theme }) => theme.gridUnit * 12}px;

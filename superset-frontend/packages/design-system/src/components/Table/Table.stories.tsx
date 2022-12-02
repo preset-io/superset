@@ -17,12 +17,9 @@
  * under the License.
  */
 
-import React, { useState, useEffect } from 'react';
-import addons from '@storybook/addons';
-import { DARK_MODE_EVENT_NAME } from 'storybook-dark-mode';
+import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { ColumnsType } from 'antd/es/table';
-import SupersetTheme from '../../foundations/theme/SupersetTheme';
 import { Table, TableSize, SUPERSET_TABLE_COLUMN } from './index';
 import { numericalSort, alphabeticalSort } from './sorters';
 import NumericCell, {
@@ -31,29 +28,9 @@ import NumericCell, {
   Style,
 } from './cell-renderers/NumericCell';
 
-const channel = addons.getChannel();
 export default {
   title: 'Components/Table/Examples',
   component: Table,
-  decorators: [
-    Story => {
-      // this example uses hook but you can also use class component as well
-      const [isDark, setDark] = useState(false);
-
-      useEffect(() => {
-        // listen to DARK_MODE event
-        channel.on(DARK_MODE_EVENT_NAME, setDark);
-        return () => channel.off(DARK_MODE_EVENT_NAME, setDark);
-      }, [setDark]);
-
-      // render your custom theme provider
-      return (
-        <SupersetTheme mode={isDark ? 'dark' : 'light'}>
-          <Story />
-        </SupersetTheme>
-      );
-    },
-  ],
 } as ComponentMeta<typeof Table>;
 
 // eslint-disable-next-line no-alert

@@ -36,7 +36,7 @@ const StyledNativeGraySelect = styled(Select)`
     .ant-select-selector {
       height: 36px;
       padding: 0 11px;
-      background-color: ${({ theme }) => theme.colors.grayscale.light3};
+      background-color: ${({ theme }) => theme.colors.background.elevated};
       border: none;
 
       .ant-select-selection-search-input {
@@ -46,7 +46,7 @@ const StyledNativeGraySelect = styled(Select)`
       .ant-select-selection-item,
       .ant-select-selection-placeholder {
         line-height: 35px;
-        color: ${({ theme }) => theme.colors.grayscale.dark1};
+        color: ${({ theme }) => theme.colors.text.primary};
       }
     }
   }

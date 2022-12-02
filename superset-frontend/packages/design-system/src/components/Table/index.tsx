@@ -20,7 +20,7 @@
 import React, { useState, useEffect, useRef, ReactElement } from 'react';
 import { Table as AntTable, ConfigProvider } from 'antd';
 import type { ColumnsType, TableProps as AntTableProps } from 'antd/es/table';
-import styled, { StyledComponent } from '@emotion/styled';
+import { styled } from '../../index';
 import { useTheme } from '../../foundations/theme';
 // import Loading from 'src/components/Loading';
 import InteractiveTableUtils from './utils/InteractiveTableUtils';
@@ -138,7 +138,7 @@ const defaultRowSelection: React.Key[] = [];
 // This accounts for the tables header and pagination if user gives table instance a height. this is a temp solution
 const HEIGHT_OFFSET = 108;
 
-const StyledTable: StyledComponent<any> = styled(AntTable)<any>`
+const StyledTable = styled(AntTable)<any>`
   ${({ theme, height }) => `
   .ant-table-body {
     overflow: scroll;

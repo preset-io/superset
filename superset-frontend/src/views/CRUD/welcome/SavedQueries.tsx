@@ -106,7 +106,7 @@ const QueryContainer = styled.div`
     height: ${({ theme }) => theme.gridUnit * 40}px;
     border: none !important;
     background-color: ${({ theme }) =>
-      theme.colors.grayscale.light5} !important;
+      theme.colors.background.elevated} !important;
     overflow: hidden;
     padding: ${({ theme }) => theme.gridUnit * 4}px !important;
   }
@@ -324,7 +324,7 @@ const SavedQueries = ({
                         language="sql"
                         lineProps={{
                           style: {
-                            color: theme.colors.grayscale.dark2,
+                            color: theme.colors.text.primary,
                             wordBreak: 'break-all',
                             whiteSpace: 'pre-wrap',
                           },

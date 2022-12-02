@@ -117,7 +117,7 @@ export const CronPicker = styled((props: CronProps) => (
   .react-js-cron-custom-select {
     border-radius: ${({ theme }) => theme.gridUnit}px;
     background-color: ${({ theme }) =>
-      theme.colors.grayscale.light4} !important;
+      theme.colors.background.elevated} !important;
   }
   .react-js-cron-custom-select > div:first-of-type {
     border-radius: ${({ theme }) => theme.gridUnit}px;

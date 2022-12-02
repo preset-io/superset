@@ -19,4 +19,5 @@
 
 // export * from './foundations';
 export * from './components';
+export * from './foundations/theme';
 // export * from './patterns';

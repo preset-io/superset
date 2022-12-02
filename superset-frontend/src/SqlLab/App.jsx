@@ -16,13 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { createStore, compose, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import { hot } from 'react-hot-loader/root';
-import { ThemeProvider } from '@superset-ui/core';
-import { GlobalStyles } from 'src/GlobalStyles';
+// import { ThemeProvider } from '@superset-ui/core';
+import { SupersetThemeProvider, EThemeMode } from '@superset-ui/design-system';
+// import { GlobalStyles } from 'src/GlobalStyles';
 import QueryProvider from 'src/views/QueryProvider';
 import {
   initFeatureFlags,
@@ -43,7 +44,7 @@ import setupApp from '../setup/setupApp';
 
 import './main.less';
 import '../assets/stylesheets/reactable-pagination.less';
-import { theme } from '../preamble';
+// import { theme } from '../preamble';
 
 setupApp();
 setupExtensions();
@@ -136,15 +137,29 @@ if (sqlLabMenu) {
   }
 }
 
-const Application = () => (
-  <QueryProvider>
-    <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <GlobalStyles />
-        <App />
-      </ThemeProvider>
-    </Provider>
-  </QueryProvider>
-);
+const Application = () => {
+  const [themeMode, setThemeMode] = useState('light');
+
+  useEffect(() => {
+    window.addEventListener('hashchange', () => {
+      setThemeMode(themeMode === 'light' ? 'dark' : 'light');
+    });
+  }, [themeMode]);
+  /* {
+  light: { colors: { text: { primary: 'red' } } },
+  dark: { colors: { text: { primary: 'yellow' } } },
+}
+*/
+
+  return (
+    <QueryProvider>
+      <Provider store={store}>
+        <SupersetThemeProvider mode={themeMode} themeOverride={{}}>
+          <App />
+        </SupersetThemeProvider>
+      </Provider>
+    </QueryProvider>
+  );
+};
 
 export default hot(Application);

@@ -90,7 +90,6 @@ export interface MenuObjectProps extends MenuObjectChildProps {
 
 const StyledHeader = styled.header`
   ${({ theme }) => `
-      background-color: ${theme.colors.grayscale.light5};
       margin-bottom: 2px;
       &:nth-last-of-type(2) nav {
         margin-bottom: 2px;
@@ -165,15 +164,12 @@ const StyledHeader = styled.header`
         }
         .ant-menu-item-active > a {
           &:hover {
-            color: ${theme.colors.primary.base} !important;
             background-color: transparent !important;
           }
         }
       }
       .ant-menu-item a {
         &:hover {
-          color: ${theme.colors.grayscale.dark1};
-          background-color: ${theme.colors.primary.light5};
           border-bottom: none;
           margin: 0;
           &:after {

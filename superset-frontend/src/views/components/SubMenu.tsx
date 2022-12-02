@@ -67,7 +67,6 @@ const StyledHeader = styled.div`
     padding-left: 10px;
   }
   .menu {
-    background-color: ${({ theme }) => theme.colors.grayscale.light5};
     .ant-menu-horizontal {
       line-height: inherit;
       .ant-menu-item {
@@ -93,7 +92,6 @@ const StyledHeader = styled.div`
       a,
       div {
         font-size: ${({ theme }) => theme.typography.sizes.s}px;
-        color: ${({ theme }) => theme.colors.secondary.dark1};
 
         a {
           margin: 0;
@@ -155,17 +153,10 @@ const StyledHeader = styled.div`
     }
   }
   .dropdown-menu-links > div.ant-menu-submenu-title,
-  .ant-menu-submenu-open.ant-menu-submenu-active > div.ant-menu-submenu-title {
-    color: ${({ theme }) => theme.colors.primary.dark1};
-  }
 `;
 
 const styledDisabled = (theme: SupersetTheme) => css`
-  color: ${theme.colors.grayscale.base};
-  backgroundColor: ${theme.colors.grayscale.light2}};
-
   .ant-menu-item:hover {
-    color: ${theme.colors.grayscale.base};
     cursor: default;
   }
 `;

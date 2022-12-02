@@ -96,10 +96,9 @@ const scheduledQueriesConf = bootstrapData?.common?.conf?.SCHEDULED_QUERIES;
 
 const StyledToolbar = styled.div`
   padding: ${({ theme }) => theme.gridUnit * 2}px;
-  background: ${({ theme }) => theme.colors.grayscale.light5};
   display: flex;
   justify-content: space-between;
-  border: 1px solid ${({ theme }) => theme.colors.grayscale.light2};
+  border: 1px solid ${({ theme }) => theme.colors.background.elevated};
   border-top: 0;
 
   form {
@@ -131,7 +130,7 @@ const StyledSidebar = styled.div`
   padding: ${({ theme, hide }) => (hide ? 0 : theme.gridUnit * 2.5)}px;
   border-right: 1px solid
     ${({ theme, hide }) =>
-      hide ? 'transparent' : theme.colors.grayscale.light2};
+      hide ? 'transparent' : theme.colors.background.elevated};
 `;
 
 const propTypes = {

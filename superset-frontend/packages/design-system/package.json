@@ -1,5 +1,5 @@
 {
-  "name": "@superset/design-system",
+  "name": "@superset-ui/design-system",
   "version": "0.0.1",
   "description": "Design system for building Apache Superset web applications",
   "main": "src/index.js",
@@ -24,30 +24,35 @@
   "publishConfig": {
     "access": "public"
   },
-  "dependencies": {
+  "dependencies": {},
+  "peerDependencies": {
+    "antd": "4.10.3",
+    "@emotion/cache": "^11.4.0",
+    "@emotion/react": "^11.4.1",
+    "@emotion/styled": "^11.3.0",
     "@ant-design/icons": "^4.2.2",
-    "@babel/runtime": "^7.1.2",
-    "@emotion/babel-preset-css-prop": "^11.2.0",
+    "@types/lodash": "^4.14.149",
+    "@types/node": "^18.0.0",
+    "@types/react": "^18.0.25",
+    "lodash": "^4.17.11"
+  },
+  "devDependencies": {
+    "@ant-design/icons": "^4.2.2",
+    "@types/lodash": "^4.14.149",
+    "@types/node": "^18.0.0",
+    "@types/react": "^18.0.25",
+    "lodash": "^4.17.11",
+    "storybook-dark-mode": "^1.1.2",
+    "antd": "4.10.3",
     "@emotion/cache": "^11.4.0",
     "@emotion/react": "^11.4.1",
     "@emotion/styled": "^11.3.0",
     "@storybook/addons": "^6.5.13",
     "@storybook/react": "^6.4.22",
     "@types/enzyme": "^3.10.5",
-    "@types/fetch-mock": "^7.3.3",
-    "@types/lodash": "^4.14.149",
-    "@types/math-expression-evaluator": "^1.2.1",
-    "@types/node": "^18.0.0",
-    "@types/prop-types": "^15.7.2",
-    "@types/react": "^18.0.25",
-    "@types/rison": "0.0.6",
-    "@types/seedrandom": "^2.4.28",
-    "antd": "^4.9.4",
-    "lodash": "^4.17.11",
-    "storybook-dark-mode": "^1.1.2"
-  },
-  "devDependencies": {
     "@babel/core": "^7.9.0",
+    "@babel/runtime": "^7.1.2",
+    "@emotion/babel-preset-css-prop": "^11.2.0",
     "@storybook/addon-actions": "^6.5.13",
     "@storybook/addon-essentials": "^6.5.13",
     "@storybook/addon-interactions": "^6.5.13",

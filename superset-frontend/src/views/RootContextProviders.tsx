@@ -16,10 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Route } from 'react-router-dom';
-import { ThemeProvider } from '@superset-ui/core';
+import { SupersetThemeProvider } from '@superset-ui/design-system';
 import { Provider as ReduxProvider } from 'react-redux';
 import { QueryParamProvider } from 'use-query-params';
 import { DndProvider } from 'react-dnd';
@@ -27,29 +26,38 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import { store } from './store';
 import FlashProvider from '../components/FlashProvider';
-import { bootstrapData, theme } from '../preamble';
+import { bootstrapData } from '../preamble';
 import { EmbeddedUiConfigProvider } from '../components/UiConfigContext';
 import { DynamicPluginProvider } from '../components/DynamicPlugins';
 
 const common = { ...bootstrapData.common };
 
-export const RootContextProviders: React.FC = ({ children }) => (
-  <ThemeProvider theme={theme}>
-    <ReduxProvider store={store}>
-      <DndProvider backend={HTML5Backend}>
-        <FlashProvider messages={common.flash_messages}>
-          <EmbeddedUiConfigProvider>
-            <DynamicPluginProvider>
-              <QueryParamProvider
-                ReactRouterRoute={Route}
-                stringifyOptions={{ encode: false }}
-              >
-                {children}
-              </QueryParamProvider>
-            </DynamicPluginProvider>
-          </EmbeddedUiConfigProvider>
-        </FlashProvider>
-      </DndProvider>
-    </ReduxProvider>
-  </ThemeProvider>
-);
+export const RootContextProviders: React.FC = ({ children }) => {
+  const [themeMode, setThemeMode] = useState('light');
+
+  useEffect(() => {
+    window.addEventListener('hashchange', () => {
+      setThemeMode(themeMode === 'light' ? 'dark' : 'light');
+    });
+  }, [themeMode]);
+  return (
+    <SupersetThemeProvider mode={themeMode} themeOverride={{}}>
+      <ReduxProvider store={store}>
+        <DndProvider backend={HTML5Backend}>
+          <FlashProvider messages={common.flash_messages}>
+            <EmbeddedUiConfigProvider>
+              <DynamicPluginProvider>
+                <QueryParamProvider
+                  ReactRouterRoute={Route}
+                  stringifyOptions={{ encode: false }}
+                >
+                  {children}
+                </QueryParamProvider>
+              </DynamicPluginProvider>
+            </EmbeddedUiConfigProvider>
+          </FlashProvider>
+        </DndProvider>
+      </ReduxProvider>
+    </SupersetThemeProvider>
+  );
+};
