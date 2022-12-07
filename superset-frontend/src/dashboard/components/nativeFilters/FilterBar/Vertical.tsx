@@ -66,7 +66,7 @@ const Bar = styled.div<{ width: number }>`
     flex-direction: column;
     flex-grow: 1;
     width: ${width}px;
-    background: ${theme.colors.grayscale.light5};
+    background: ${theme.colors.background.elevated};
     border-right: 1px solid ${theme.colors.grayscale.light2};
     border-bottom: 1px solid ${theme.colors.grayscale.light2};
     min-height: 100%;

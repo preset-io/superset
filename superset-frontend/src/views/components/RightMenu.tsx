@@ -74,6 +74,7 @@ const styledDisabled = (theme: SupersetTheme) => css`
 `;
 
 const StyledDiv = styled.div<{ align: string }>`
+  background: ${({ theme }) => theme.colors.background.light};
   display: flex;
   flex-direction: row;
   justify-content: ${({ align }) => align};

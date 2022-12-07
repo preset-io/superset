@@ -16,6 +16,11 @@ export const generateTheme = (theme: object) => {
   const borderLight = theme?.colors?.background?.elevated ?? '#f0f0f0';
   const antdTheme = `
 
+.dashboard-component-chart-holder {
+  color: ${theme?.colors?.text?.primary} !important;
+  background-color: ${theme?.colors?.background?.elevated} !important;
+}
+
 body {
   color: ${textPrimary};
   font-family: ${
@@ -2374,7 +2379,7 @@ a.ant-btn-disabled:active {
 }
 
 .ant-tabs-content-holder {
-  background-color: ${bgLight};
+  background-color: ${bgBase};
 }
 
 .ant-carousel {
