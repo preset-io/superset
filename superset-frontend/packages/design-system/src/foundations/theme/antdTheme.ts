@@ -1508,17 +1508,18 @@ a.ant-btn-disabled:active {
 }
 
 .ant-tooltip-inner {
-  color: ${bgLight};
-  background-color: ${colorTrans75};
+  color: ${textPrimary} !important;
+  background-color: ${bgBase} !important;
   box-shadow: 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
 }
 
 .ant-tooltip-arrow-content {
-  --antd-arrow-background-color: linear-gradient(to right bottom, rgba(0, 0, 0, 0.65), ${colorTrans75});
+  --antd-arrow-background-color: ${bgBase} !important;
+
 }
 
 .ant-tooltip-blue .ant-tooltip-inner {
-  background-color: ${colorDark};
+  background-color: ${bgBase};
 }
 .ant-tooltip-blue .ant-tooltip-arrow-content::before {
   background: ${colorDark};
