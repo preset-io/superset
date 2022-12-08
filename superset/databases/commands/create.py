@@ -76,7 +76,8 @@ class CreateDatabaseCommand(BaseCommand):
             import json
 
             if ssh_tunnel_properties := self._properties.get("ssh_tunnel"):
-                logger.info("[ssh] creating ssh tunnel")
+                db.session.flush()
+                logger.info("[ssh] creating ssh tunnel for db_id: %i", database.id)
                 ssh_tunnel = SSHTunnelDAO.create(
                     {
                         **ssh_tunnel_properties,
