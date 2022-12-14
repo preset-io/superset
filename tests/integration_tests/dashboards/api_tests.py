@@ -275,10 +275,22 @@ class TestDashboardApi(SupersetTestCase, ApiOwnersTestCaseMixin, InsertChartMixi
         response = self.get_assert_metric(uri, "get_charts")
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.data.decode("utf-8"))
-        self.assertEqual(len(data["result"]), 1)
-        self.assertEqual(
-            data["result"][0]["slice_name"], dashboard.slices[0].slice_name
-        )
+        assert len(data["result"]) == 1
+        result = data["result"][0]
+        assert set(result.keys()) == {
+            "cache_timeout",
+            "certification_details",
+            "certified_by",
+            "changed_on",
+            "description",
+            "description_markeddown",
+            "form_data",
+            "id",
+            "slice_name",
+            "slice_url",
+        }
+        assert result["id"] == dashboard.slices[0].id
+        assert result["slice_name"] == dashboard.slices[0].slice_name
 
     @pytest.mark.usefixtures("create_dashboards")
     def test_get_dashboard_charts_by_slug(self):
@@ -792,6 +804,46 @@ class TestDashboardApi(SupersetTestCase, ApiOwnersTestCaseMixin, InsertChartMixi
                 ).id
             )
         self.login(username="admin")
+        argument = dashboard_ids
+        uri = f"api/v1/dashboard/?q={prison.dumps(argument)}"
+        rv = self.delete_assert_metric(uri, "bulk_delete")
+        self.assertEqual(rv.status_code, 200)
+        response = json.loads(rv.data.decode("utf-8"))
+        expected_response = {"message": f"Deleted {dashboard_count} dashboards"}
+        self.assertEqual(response, expected_response)
+        for dashboard_id in dashboard_ids:
+            model = db.session.query(Dashboard).get(dashboard_id)
+            self.assertEqual(model, None)
+
+    def test_delete_bulk_embedded_dashboards(self):
+        """
+        Dashboard API: Test delete bulk embedded
+        """
+        user = self.get_user("admin")
+        dashboard_count = 4
+        dashboard_ids = list()
+        for dashboard_name_index in range(dashboard_count):
+            dashboard_ids.append(
+                self.insert_dashboard(
+                    f"title{dashboard_name_index}",
+                    None,
+                    [user.id],
+                ).id
+            )
+        self.login(username=user.username)
+        for dashboard_id in dashboard_ids:
+            # post succeeds and returns value
+            allowed_domains = ["test.example", "embedded.example"]
+            resp = self.post_assert_metric(
+                f"api/v1/dashboard/{dashboard_id}/embedded",
+                {"allowed_domains": allowed_domains},
+                "set_embedded",
+            )
+            self.assertEqual(resp.status_code, 200)
+            result = json.loads(resp.data.decode("utf-8"))["result"]
+            self.assertIsNotNone(result["uuid"])
+            self.assertNotEqual(result["uuid"], "")
+            self.assertEqual(result["allowed_domains"], allowed_domains)
         argument = dashboard_ids
         uri = f"api/v1/dashboard/?q={prison.dumps(argument)}"
         rv = self.delete_assert_metric(uri, "bulk_delete")

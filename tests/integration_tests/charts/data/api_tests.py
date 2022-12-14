@@ -863,6 +863,56 @@ class TestGetChartDataApi(BaseTestChartDataApi):
         assert data["result"][0]["rowcount"] == 2
 
     @pytest.mark.usefixtures("load_birth_names_dashboard_with_slices")
+    def test_chart_data_get_forced(self):
+        """
+        Chart data API: Test GET endpoint with force cache parameter
+        """
+        chart = db.session.query(Slice).filter_by(slice_name="Genders").one()
+        chart.query_context = json.dumps(
+            {
+                "datasource": {"id": chart.table.id, "type": "table"},
+                "force": False,
+                "queries": [
+                    {
+                        "time_range": "1900-01-01T00:00:00 : 2000-01-01T00:00:00",
+                        "granularity": "ds",
+                        "filters": [],
+                        "extras": {
+                            "having": "",
+                            "having_druid": [],
+                            "where": "",
+                        },
+                        "applied_time_extras": {},
+                        "columns": ["gender"],
+                        "metrics": ["sum__num"],
+                        "orderby": [["sum__num", False]],
+                        "annotation_layers": [],
+                        "row_limit": 50000,
+                        "timeseries_limit": 0,
+                        "order_desc": True,
+                        "url_params": {},
+                        "custom_params": {},
+                        "custom_form_data": {},
+                    }
+                ],
+                "result_format": "json",
+                "result_type": "full",
+            }
+        )
+
+        self.get_assert_metric(f"api/v1/chart/{chart.id}/data/?force=true", "get_data")
+
+        # should burst cache
+        rv = self.get_assert_metric(
+            f"api/v1/chart/{chart.id}/data/?force=true", "get_data"
+        )
+        assert rv.json["result"][0]["is_cached"] is None
+
+        # should get response from the cache
+        rv = self.get_assert_metric(f"api/v1/chart/{chart.id}/data/", "get_data")
+        assert rv.json["result"][0]["is_cached"]
+
+    @pytest.mark.usefixtures("load_birth_names_dashboard_with_slices")
     @with_feature_flags(GLOBAL_ASYNC_QUERIES=True)
     @mock.patch("superset.charts.data.api.QueryContextCacheLoader")
     def test_chart_data_cache(self, cache_loader):
@@ -1098,3 +1148,53 @@ def test_chart_cache_timeout_chart_not_found(
 
     rv = test_client.post(CHART_DATA_URI, json=physical_query_context)
     assert rv.json["result"][0]["cache_timeout"] == 1010
+
+
+@pytest.mark.parametrize(
+    "status_code,extras",
+    [
+        (200, {"where": "1 = 1"}),
+        (200, {"having": "count(*) > 0"}),
+        (400, {"where": "col1 in (select distinct col1 from physical_dataset)"}),
+        (400, {"having": "count(*) > (select count(*) from physical_dataset)"}),
+    ],
+)
+@with_feature_flags(ALLOW_ADHOC_SUBQUERY=False)
+@pytest.mark.usefixtures("load_birth_names_dashboard_with_slices")
+def test_chart_data_subquery_not_allowed(
+    test_client,
+    login_as_admin,
+    physical_dataset,
+    physical_query_context,
+    status_code,
+    extras,
+):
+    physical_query_context["queries"][0]["extras"] = extras
+    rv = test_client.post(CHART_DATA_URI, json=physical_query_context)
+
+    assert rv.status_code == status_code
+
+
+@pytest.mark.parametrize(
+    "status_code,extras",
+    [
+        (200, {"where": "1 = 1"}),
+        (200, {"having": "count(*) > 0"}),
+        (200, {"where": "col1 in (select distinct col1 from physical_dataset)"}),
+        (200, {"having": "count(*) > (select count(*) from physical_dataset)"}),
+    ],
+)
+@with_feature_flags(ALLOW_ADHOC_SUBQUERY=True)
+@pytest.mark.usefixtures("load_birth_names_dashboard_with_slices")
+def test_chart_data_subquery_allowed(
+    test_client,
+    login_as_admin,
+    physical_dataset,
+    physical_query_context,
+    status_code,
+    extras,
+):
+    physical_query_context["queries"][0]["extras"] = extras
+    rv = test_client.post(CHART_DATA_URI, json=physical_query_context)
+
+    assert rv.status_code == status_code

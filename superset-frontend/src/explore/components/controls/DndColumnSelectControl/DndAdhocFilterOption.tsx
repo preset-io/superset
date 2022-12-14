@@ -17,10 +17,12 @@
  * under the License.
  */
 import React from 'react';
+import { t } from '@superset-ui/core';
 import { DndItemType } from 'src/explore/components/DndItemType';
 import AdhocFilterPopoverTrigger from 'src/explore/components/controls/FilterControl/AdhocFilterPopoverTrigger';
 import AdhocFilter from 'src/explore/components/controls/FilterControl/AdhocFilter';
 import { OptionSortType } from 'src/explore/types';
+import { useGetTimeRangeLabel } from 'src/explore/components/controls/FilterControl/utils';
 import OptionWrapper from './OptionWrapper';
 
 export interface DndAdhocFilterOptionProps {
@@ -44,6 +46,8 @@ export default function DndAdhocFilterOption({
   partitionColumn,
   index,
 }: DndAdhocFilterOptionProps) {
+  const { actualTimeRange, title } = useGetTimeRangeLabel(adhocFilter);
+
   return (
     <AdhocFilterPopoverTrigger
       key={index}
@@ -56,13 +60,18 @@ export default function DndAdhocFilterOption({
       <OptionWrapper
         key={index}
         index={index}
-        label={adhocFilter.getDefaultLabel()}
-        tooltipTitle={adhocFilter.getTooltipTitle()}
+        label={actualTimeRange ?? adhocFilter.getDefaultLabel()}
+        tooltipTitle={title ?? adhocFilter.getTooltipTitle()}
         clickClose={onClickClose}
         onShiftOptions={onShiftOptions}
         type={DndItemType.FilterOption}
         withCaret
         isExtra={adhocFilter.isExtra}
+        datasourceWarningMessage={
+          adhocFilter.datasourceWarning
+            ? t('This filter might be incompatible with current dataset')
+            : undefined
+        }
       />
     </AdhocFilterPopoverTrigger>
   );

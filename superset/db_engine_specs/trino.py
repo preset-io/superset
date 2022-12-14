@@ -17,7 +17,9 @@
 from __future__ import annotations
 
 import logging
-from typing import Any, Dict, Optional, TYPE_CHECKING
+import re
+from datetime import datetime
+from typing import Any, Dict, Optional, Type, TYPE_CHECKING
 
 import simplejson as json
 from flask import current_app
@@ -27,6 +29,7 @@ from sqlalchemy.orm import Session
 from superset.constants import USER_AGENT
 from superset.databases.utils import make_url_safe
 from superset.db_engine_specs.base import BaseEngineSpec
+from superset.db_engine_specs.exceptions import SupersetDBAPIConnectionError
 from superset.db_engine_specs.presto import PrestoBaseEngineSpec
 from superset.models.sql_lab import Query
 from superset.utils import core as utils
@@ -45,6 +48,29 @@ logger = logging.getLogger(__name__)
 class TrinoEngineSpec(PrestoBaseEngineSpec):
     engine = "trino"
     engine_name = "Trino"
+
+    @classmethod
+    def convert_dttm(
+        cls, target_type: str, dttm: datetime, db_extra: Optional[Dict[str, Any]] = None
+    ) -> Optional[str]:
+        """
+        Convert a Python `datetime` object to a SQL expression.
+        :param target_type: The target type of expression
+        :param dttm: The datetime object
+        :param db_extra: The database extra object
+        :return: The SQL expression
+        Superset only defines time zone naive `datetime` objects, though this method
+        handles both time zone naive and aware conversions.
+        """
+        tt = target_type.upper()
+        if tt == utils.TemporalType.DATE:
+            return f"DATE '{dttm.date().isoformat()}'"
+        if re.sub(r"\(\d\)", "", tt) in (
+            utils.TemporalType.TIMESTAMP,
+            utils.TemporalType.TIMESTAMP_WITH_TIME_ZONE,
+        ):
+            return f"""TIMESTAMP '{dttm.isoformat(timespec="microseconds", sep=" ")}'"""
+        return None
 
     @classmethod
     def extra_table_metadata(
@@ -220,3 +246,12 @@ class TrinoEngineSpec(PrestoBaseEngineSpec):
         except json.JSONDecodeError as ex:
             logger.error(ex, exc_info=True)
             raise ex
+
+    @classmethod
+    def get_dbapi_exception_mapping(cls) -> Dict[Type[Exception], Type[Exception]]:
+        # pylint: disable=import-outside-toplevel
+        from requests import exceptions as requests_exceptions
+
+        return {
+            requests_exceptions.ConnectionError: SupersetDBAPIConnectionError,
+        }
