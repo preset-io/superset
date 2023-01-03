@@ -1231,7 +1231,7 @@ const DatabaseModal: FunctionComponent<DatabaseModalProps> = ({
         onClick={() => {
           setLoading(true);
           fetchAndSetDB();
-          window.location.href = '/tablemodelview/list#create';
+          window.location.href = '/dataset/add/';
         }}
       >
         {t('CREATE DATASET')}
