@@ -159,8 +159,8 @@ class AlertCommand(BaseCommand):
                 df = self._report_schedule.database.get_df(sql=limited_rendered_sql)
                 stop = default_timer()
                 logger.info(
-                    "Query for %s took %.2f ms",
-                    self._report_schedule.name,
+                    "Query for [id:%s] took %.2f ms",
+                    self._report_schedule.id,
                     (stop - start) * 1000.0,
                 )
                 return df
