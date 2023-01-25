@@ -25,6 +25,7 @@ class GuestTokenUser(TypedDict, total=False):
     username: str
     first_name: str
     last_name: str
+    email: Optional[str]
 
 
 class GuestTokenResourceType(Enum):
@@ -82,6 +83,7 @@ class GuestUser(AnonymousUserMixin):
         self.username = user.get("username", "guest_user")
         self.first_name = user.get("first_name", "Guest")
         self.last_name = user.get("last_name", "User")
+        self.email = user.get("email", "")
         self.roles = roles
         self.resources = token["resources"]
         self.rls = token.get("rls_rules", [])

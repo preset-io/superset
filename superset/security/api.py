@@ -47,6 +47,7 @@ class UserSchema(PermissiveSchema):
     username = fields.String()
     first_name = fields.String()
     last_name = fields.String()
+    email = fields.String()
 
 
 class ResourceSchema(PermissiveSchema):

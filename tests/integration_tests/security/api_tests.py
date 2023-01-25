@@ -111,6 +111,28 @@ class TestSecurityGuestTokenApi(SupersetTestCase):
         self.assertEqual(user, decoded_token["user"])
         self.assertEqual(resource, decoded_token["resources"][0])
 
+        user = {
+            "username": "bob",
+            "first_name": "Bob",
+            "last_name": "Also Bob",
+            "email": "bob@test.com",
+        }
+        params = {"user": user, "resources": [resource], "rls": [rls_rule]}
+        response = self.client.post(
+            self.uri, data=json.dumps(params), content_type="application/json"
+        )
+
+        self.assert200(response)
+        token = json.loads(response.data)["token"]
+        decoded_token = jwt.decode(
+            token,
+            self.app.config["GUEST_TOKEN_JWT_SECRET"],
+            audience=get_url_host(),
+            algorithms=["HS256"],
+        )
+        self.assertEqual(user, decoded_token["user"])
+        self.assertEqual(resource, decoded_token["resources"][0])
+
     @pytest.mark.usefixtures("load_birth_names_dashboard_with_slices")
     def test_post_guest_token_bad_resources(self):
         self.login(username="admin")
