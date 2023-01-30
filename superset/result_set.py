@@ -71,7 +71,12 @@ def stringify_values(array: np.ndarray) -> np.ndarray:
                 # pandas <NA> type cannot be converted to string
                 obj[pd.isna(obj)] = None
             else:
-                obj[...] = stringify(obj)
+                try:
+                    # for simple string conversions
+                    # this handles odd character types better
+                    obj[...] = obj.astype(str)  # type: ignore
+                except ValueError:
+                    obj[...] = stringify(obj)  # type: ignore
 
     return result
 
