@@ -455,19 +455,17 @@ const DashboardBuilder: FC<DashboardBuilderProps> = () => {
                 >
                   <StickyPanel ref={containerRef} width={filterBarWidth}>
                     <ErrorBoundary>
-                      {!isReport && (
-                        <FilterBar
-                          focusedFilterId={focusedFilterId}
-                          orientation={FilterBarOrientation.VERTICAL}
-                          verticalConfig={{
-                            filtersOpen: dashboardFiltersOpen,
-                            toggleFiltersBar: toggleDashboardFiltersOpen,
-                            width: filterBarWidth,
-                            height: filterBarHeight,
-                            offset: filterBarOffset,
-                          }}
-                        />
-                      )}
+                      <FilterBar
+                        focusedFilterId={focusedFilterId}
+                        orientation={FilterBarOrientation.VERTICAL}
+                        verticalConfig={{
+                          filtersOpen: dashboardFiltersOpen,
+                          toggleFiltersBar: toggleDashboardFiltersOpen,
+                          width: filterBarWidth,
+                          height: filterBarHeight,
+                          offset: filterBarOffset,
+                        }}
+                      />
                     </ErrorBoundary>
                   </StickyPanel>
                 </FiltersPanel>
