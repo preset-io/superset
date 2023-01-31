@@ -87,10 +87,13 @@ def test_post(
     db.session.commit()
 
 
-def test_post_access_denied(test_client, login_as, dashboard_id: int):
-    login_as("gamma")
+@patch("superset.security.SupersetSecurityManager.raise_for_dashboard_access")
+def test_post_access_denied(
+    mock_raise_for_dashboard_access, test_client, login_as_admin, dashboard_id: int
+):
+    mock_raise_for_dashboard_access.side_effect = DashboardAccessDeniedError()
     resp = test_client.post(f"api/v1/dashboard/{dashboard_id}/permalink", json=STATE)
-    assert resp.status_code == 404
+    assert resp.status_code == 403
 
 
 def test_post_invalid_schema(test_client, login_as_admin, dashboard_id: int):
