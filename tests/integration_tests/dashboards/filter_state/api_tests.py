@@ -90,15 +90,18 @@ def test_post_bad_request_non_json_string(
     assert resp.status_code == 400
 
 
-def test_post_access_denied(test_client, login_as, dashboard_id: int):
-    login_as("gamma")
+@patch("superset.security.SupersetSecurityManager.raise_for_dashboard_access")
+def test_post_access_denied(
+    mock_raise_for_dashboard_access, test_client, login_as_admin, dashboard_id: int
+):
+    mock_raise_for_dashboard_access.side_effect = DashboardAccessDeniedError()
     payload = {
         "value": INITIAL_VALUE,
     }
     resp = test_client.post(
         f"api/v1/dashboard/{dashboard_id}/filter_state", json=payload
     )
-    assert resp.status_code == 404
+    assert resp.status_code == 403
 
 
 def test_post_same_key_for_same_tab_id(test_client, login_as_admin, dashboard_id: int):
@@ -243,7 +246,21 @@ def test_put_bad_request_non_json_string(
     assert resp.status_code == 400
 
 
-def test_put_access_denied(test_client, login_as, dashboard_id: int):
+@patch("superset.security.SupersetSecurityManager.raise_for_dashboard_access")
+def test_put_access_denied(
+    mock_raise_for_dashboard_access, test_client, login_as_admin, dashboard_id: int
+):
+    mock_raise_for_dashboard_access.side_effect = DashboardAccessDeniedError()
+    resp = test_client.put(
+        f"api/v1/dashboard/{dashboard_id}/filter_state/{KEY}",
+        json={
+            "value": UPDATED_VALUE,
+        },
+    )
+    assert resp.status_code == 403
+
+
+def test_put_not_owner(test_client, login_as, dashboard_id: int):
     login_as("gamma")
     resp = test_client.put(
         f"api/v1/dashboard/{dashboard_id}/filter_state/{KEY}",
@@ -251,7 +268,7 @@ def test_put_access_denied(test_client, login_as, dashboard_id: int):
             "value": UPDATED_VALUE,
         },
     )
-    assert resp.status_code == 404
+    assert resp.status_code == 403
 
 
 def test_get_key_not_found(test_client, login_as_admin, dashboard_id: int):
@@ -271,10 +288,13 @@ def test_get_dashboard_filter_state(test_client, login_as_admin, dashboard_id: i
     assert INITIAL_VALUE == data.get("value")
 
 
-def test_get_access_denied(test_client, login_as, dashboard_id):
-    login_as("gamma")
+@patch("superset.security.SupersetSecurityManager.raise_for_dashboard_access")
+def test_get_access_denied(
+    mock_raise_for_dashboard_access, test_client, login_as_admin, dashboard_id
+):
+    mock_raise_for_dashboard_access.side_effect = DashboardAccessDeniedError()
     resp = test_client.get(f"api/v1/dashboard/{dashboard_id}/filter_state/{KEY}")
-    assert resp.status_code == 404
+    assert resp.status_code == 403
 
 
 def test_delete(test_client, login_as_admin, dashboard_id: int):
@@ -282,13 +302,16 @@ def test_delete(test_client, login_as_admin, dashboard_id: int):
     assert resp.status_code == 200
 
 
-def test_delete_access_denied(test_client, login_as, dashboard_id: int):
-    login_as("gamma")
+@patch("superset.security.SupersetSecurityManager.raise_for_dashboard_access")
+def test_delete_access_denied(
+    mock_raise_for_dashboard_access, test_client, login_as_admin, dashboard_id: int
+):
+    mock_raise_for_dashboard_access.side_effect = DashboardAccessDeniedError()
     resp = test_client.delete(f"api/v1/dashboard/{dashboard_id}/filter_state/{KEY}")
-    assert resp.status_code == 404
+    assert resp.status_code == 403
 
 
 def test_delete_not_owner(test_client, login_as, dashboard_id: int):
     login_as("gamma")
     resp = test_client.delete(f"api/v1/dashboard/{dashboard_id}/filter_state/{KEY}")
-    assert resp.status_code == 404
+    assert resp.status_code == 403
