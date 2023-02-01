@@ -91,9 +91,9 @@ const ExtraOptions = ({
       <Collapse.Panel
         header={
           <div>
-            <h4>SQL Lab</h4>
+            <h4>{t('SQL Lab')}</h4>
             <p className="helper">
-              Adjust how this database will interact with SQL Lab.
+              {t('Adjust how this database will interact with SQL Lab.')}
             </p>
           </div>
         }
@@ -192,7 +192,7 @@ const ExtraOptions = ({
                 />
                 <InfoTooltip
                   tooltip={t(
-                    'For Presto and Postgres, shows a button to compute cost before running a query.',
+                    'For Bigquery, Presto and Postgres, shows a button to compute cost before running a query.',
                   )}
                 />
               </div>
@@ -237,7 +237,7 @@ const ExtraOptions = ({
       <Collapse.Panel
         header={
           <div>
-            <h4>Performance</h4>
+            <h4>{t('Performance')}</h4>
             <p className="helper">
               Adjust performance settings of this database.
             </p>
@@ -347,8 +347,8 @@ const ExtraOptions = ({
       <Collapse.Panel
         header={
           <div>
-            <h4>Security</h4>
-            <p className="helper">Add extra connection information.</p>
+            <h4>{t('Security')}</h4>
+            <p className="helper">{t('Add extra connection information.')}</p>
           </div>
         }
         key="3"
@@ -488,8 +488,8 @@ const ExtraOptions = ({
       <Collapse.Panel
         header={
           <div>
-            <h4>Other</h4>
-            <p className="helper">Additional settings.</p>
+            <h4>{t('Other')}</h4>
+            <p className="helper">{t('Additional settings.')}</p>
           </div>
         }
         key="4"
