@@ -74,8 +74,9 @@ import markdown as md
 import numpy as np
 import pandas as pd
 import sqlalchemy as sa
+from cryptography import x509
 from cryptography.hazmat.backends import default_backend
-from cryptography.x509 import Certificate, load_pem_x509_certificate
+from cryptography.hazmat.backends.openssl.x509 import _Certificate
 from flask import current_app, flash, g, Markup, render_template, request
 from flask_appbuilder import SQLA
 from flask_appbuilder.security.sqla.models import Role, User
@@ -1534,7 +1535,7 @@ def override_user(user: Optional[User], force: bool = True) -> Iterator[Any]:
         delattr(g, "user")
 
 
-def parse_ssl_cert(certificate: str) -> Certificate:
+def parse_ssl_cert(certificate: str) -> _Certificate:
     """
     Parses the contents of a certificate and returns a valid certificate object
     if valid.
@@ -1544,7 +1545,9 @@ def parse_ssl_cert(certificate: str) -> Certificate:
     :raises CertificateException: If certificate is not valid/unparseable
     """
     try:
-        return load_pem_x509_certificate(certificate.encode("utf-8"), default_backend())
+        return x509.load_pem_x509_certificate(
+            certificate.encode("utf-8"), default_backend()
+        )
     except ValueError as ex:
         raise CertificateException("Invalid certificate") from ex
 
