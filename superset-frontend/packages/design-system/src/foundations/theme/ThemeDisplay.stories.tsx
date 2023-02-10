@@ -17,6 +17,11 @@
  * under the License.
  */
 
-// export * from './foundations';
-export * as components from './components';
-export * as theme from './foundations/theme';
+import ThemeDisplay from './ThemeDisplay';
+
+export default {
+  title: 'Components/Theme/Theme Preview',
+  component: ThemeDisplay,
+};
+
+export const Basic = {};

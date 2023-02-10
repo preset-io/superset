@@ -1,4 +1,4 @@
-import { create } from '@storybook/theming';
+import { create } from '@storybook/theming/create';
 
 export default create({
   base: 'light',
@@ -33,5 +33,5 @@ export default create({
   brandTitle: 'Apache Superset Design System',
   brandUrl: 'https://superset.apache.org/',
   brandImage: 'https://superset.apache.org/img/superset-logo-horiz.svg',
-  brandTarget: '_self',
+  brandTarget: '_blank',
 });

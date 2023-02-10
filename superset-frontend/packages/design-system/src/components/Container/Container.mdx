@@ -1,0 +1,28 @@
+import { Canvas, Meta, Story } from '@storybook/blocks';
+
+import * as ContainerStories from './Container.stories';
+
+<Meta of={ContainerStories} title="Components/Container/Overview"/>
+
+# Container
+
+A container is simply a div element with the margin, padding, border-radius inherited from the superset theme.
+
+The container can be provided a `layer` prop to give it a specific background color from the theme.  The default `layer` values will not set 
+an explicit background color on the container and inherit from the parent element.
+
+<Canvas>
+  <Story of={ContainerStories.BaseContainer} />
+</Canvas>
+
+the option `layer={EContainerLayer.ELEVATED}` will provide a lighter color than the base
+
+<Canvas>
+  <Story of={ContainerStories.ElevatedContainer} />
+</Canvas>
+
+the option `layer={EContainerLayer.Light}` will provide the lightest color
+
+<Canvas>
+  <Story of={ContainerStories.LightContainer} />
+</Canvas>

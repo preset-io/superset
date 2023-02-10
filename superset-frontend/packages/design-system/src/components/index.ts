@@ -17,4 +17,5 @@
  * under the License.
  */
 
-export { default as TestComp } from './TestComp';
+export { default as ExampleComponent } from './ExampleComponent';
+export { default as Container } from './Container';

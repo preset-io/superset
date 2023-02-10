@@ -17,13 +17,28 @@
  * under the License.
  */
 
-import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
-import TestComp from '.';
+import Container from '.';
+import { EContainerLayer } from './IContainerProps';
 
 export default {
-  title: 'Components/TestComp/Examples',
-  component: TestComp,
-} as ComponentMeta<typeof TestComp>;
+  title: 'Components/Layout/Container/Examples',
+  component: Container,
+};
 
-export const Basic: ComponentStory<typeof TestComp> = () => <TestComp />;
+export const BaseContainer = {
+  args: {
+    layer: EContainerLayer.BASE,
+  },
+};
+
+export const ElevatedContainer = {
+  args: {
+    layer: EContainerLayer.ELEVATED,
+  },
+};
+
+export const LightContainer = {
+  args: {
+    layer: EContainerLayer.LIGHT,
+  },
+};

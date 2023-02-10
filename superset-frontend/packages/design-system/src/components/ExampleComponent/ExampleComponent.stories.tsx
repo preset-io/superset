@@ -17,6 +17,17 @@
  * under the License.
  */
 
-// export * from './foundations';
-export * as components from './components';
-export * as theme from './foundations/theme';
+import ExampleComponent from '.';
+
+export default {
+  title: 'Components/ExampleComponent/Examples',
+  component: ExampleComponent,
+};
+
+export const BasicExample = {
+  args: {
+    headline: 'Example Component',
+    tagline:
+      'This is a very simple example component to demonstrate theme usage and design system structure for components',
+  },
+};

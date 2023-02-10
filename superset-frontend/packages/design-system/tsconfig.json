@@ -2,7 +2,12 @@
   "compilerOptions": {
     "declarationDir": "lib",
     "outDir": "lib",
-    "rootDir": "src"
+    "rootDir": "src",
+    "paths": { 
+ 		  "@components/*": ["./src/components/*"],
+			"@foundation/*": ["./src/foundation/*"],
+			"@assets/*": ["./src/assets/*"]
+		}
   },
   "exclude": [
     "lib",

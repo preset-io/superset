@@ -17,11 +17,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import emotionStyled from '@emotion/styled';
 import { useTheme as useThemeBasic } from '@emotion/react';
 import createCache from '@emotion/cache';
 import { merge, cloneDeep } from 'lodash';
-import { EThemeMode } from './SupersetThemeProvider';
+import { EThemeMode } from '../../components/ThemeProvider/SupersetThemeProvider';
+import { ISupersetTheme } from './ISupersetTheme';
 
 export {
   Global,
@@ -31,32 +31,40 @@ export {
   CacheProvider as EmotionCacheProvider,
   withTheme,
 } from '@emotion/react';
+
+export { default as styled } from '@emotion/styled';
 export { default as createEmotionCache } from '@emotion/cache';
-export * from './SupersetThemeProvider';
+export * from '../../components/ThemeProvider/SupersetThemeProvider';
+export { ISupersetTheme } from './ISupersetTheme';
+/*
 declare module '@emotion/react' {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
   export interface Theme extends SupersetTheme {}
 }
+*/
 
-export function useTheme() {
+export function useTheme(): ISupersetTheme {
   const theme = useThemeBasic();
   // in the case there is no theme, useTheme returns an empty object
   if (Object.keys(theme).length === 0 && theme.constructor === Object) {
     throw new Error(
-      'useTheme() could not find a ThemeContext. The <ThemeProvider/> component is likely missing from the app.',
+      'useTheme() could not find a ThemeContext. The <SupersetThemeProvider/> component is likely missing from the app.',
     );
   }
-  return theme;
+  return theme as ISupersetTheme;
 }
 
 export const emotionCache = createCache({
   key: 'superset',
 });
 
-export const styled = emotionStyled;
+export interface IThemeOverride {
+  light?: Partial<ISupersetTheme>;
+  dark?: Partial<ISupersetTheme>;
+}
 
 const getBaseTheme = () => {
-  const base = {
+  const base: ISupersetTheme = {
     borderRadius: 4,
     colors: {
       background: {
@@ -184,12 +192,12 @@ const getBaseTheme = () => {
   return cloneDeep(base);
 };
 
-const darkTheme = {
+const darkTheme: Partial<ISupersetTheme> = {
   colors: {
     background: {
       base: 'rgb(0,0,0)',
-      elevated: 'rgb(22,22,24)',
-      light: 'rgb(33,33,36)',
+      elevated: 'rgb(44,44,46)',
+      light: 'rgb(72,72,74)',
     },
     shade: {
       s25: 'rgba(255,255,255, 0.25)',
@@ -273,7 +281,10 @@ const darkTheme = {
   },
 };
 
-export const getTheme = (mode: EThemeMode, themeOverride: object) => {
+export const getTheme = (
+  mode: EThemeMode,
+  themeOverride: IThemeOverride,
+): ISupersetTheme => {
   let mergedTheme = getBaseTheme();
 
   if (mode === 'dark') {
@@ -286,11 +297,3 @@ export const getTheme = (mode: EThemeMode, themeOverride: object) => {
 
   return mergedTheme;
 };
-
-export type SupersetTheme = typeof defaultTheme;
-
-export interface SupersetThemeProps {
-  theme: SupersetTheme;
-}
-
-// export const supersetTheme = getTheme(mode);

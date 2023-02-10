@@ -1,10 +1,11 @@
-import { themes } from '@storybook/theming';
 import { MINIMAL_VIEWPORTS } from '@storybook/addon-viewport';
-import React, { useState, useEffect } from 'react';
-import { DARK_MODE_EVENT_NAME } from 'storybook-dark-mode';
-import addons from '@storybook/addons';
-import SupersetThemeProvider from '../src/foundations/theme/SupersetThemeProvider';
+import React, { useState } from 'react';
+import SupersetThemeProvider from '../src/components/ThemeProvider/SupersetThemeProvider';
 import '../src/foundations/theme/antd.css';
+import { EThemeMode } from '../src/components/ThemeProvider/SupersetThemeProvider';
+import { Switch } from 'antd';
+import Container from '../src/components/Container';
+import { EContainerLayer } from '../src/components/Container/IContainerProps';
 
 const customViewports = {
   SXGA: {
@@ -73,22 +74,37 @@ export const parameters = {
       date: /Date$/,
     },
   },
-  darkMode: {
-    // Override the default dark theme
-    dark: {
-      ...themes.dark,
-      appBg: 'rgb(25, 25, 25)',
-      brandTitle: 'Apache Superset Design System',
-      brandUrl: 'https://superset.apache.org/',
-      brandImage: 'https://superset.apache.org/img/superset-logo-horiz.svg',
-    },
-    // Override the default light theme
-    light: {
-      ...themes.normal,
-      appBg: 'rgb(245,245,245)',
-      brandTitle: 'Apache Superset Design System',
-      brandUrl: 'https://superset.apache.org/',
-      brandImage: 'https://superset.apache.org/img/superset-logo-horiz.svg',
+  paddings: {
+    values: [
+      { name: 'None', value: '0px' },
+      { name: 'Small', value: '16px' },
+      { name: 'Medium', value: '32px' },
+      { name: 'Large', value: '64px' },
+    ],
+    default: 'Medium',
+  },
+  options: {
+    storySort: {
+      order: [
+        'Welcome',
+        'How to use',
+        'Foundations',
+        [
+          'Overview',
+          'Examples',
+          'Grid',
+          'Typography',
+          'Color,',
+          'Icons',
+          'Theme',
+          '*',
+        ],
+        'Components',
+        ['Overview', 'Examples', '*'],
+        'Patterns',
+        ['Overview', 'Examples', '*'],
+        '*',
+      ],
     },
   },
   viewport: {
@@ -99,23 +115,50 @@ export const parameters = {
   },
 };
 
+const THEME_OVERRIDE = {
+  /*light: {
+    colors: {
+      background: {
+        base: 'green',
+        elevated: 'yellow',
+        light: 'red',
+      },
+    },
+  },
+  dark: {
+    colors: {
+      background: {
+        base: 'orange',
+        elevated: 'pink',
+        light: 'purple',
+      },
+    },
+  },*/
+};
+
 export const decorators = [
-  Story => {
-    const channel = addons.getChannel();
-    // this example uses hook but you can also use class component as well
-    const [isDark, setDark] = useState(false);
-
-    useEffect(() => {
-      // listen to DARK_MODE event
-      channel.on(DARK_MODE_EVENT_NAME, setDark);
-      return () => channel.off(DARK_MODE_EVENT_NAME, setDark);
-    }, [setDark]);
-
-    // render your custom theme provider
+  renderStory => {
+    const [useDarkMode, setUseDarkMode] = useState(true);
+    const onChange = checked => {
+      setUseDarkMode(checked);
+    };
     return (
-      <SupersetThemeProvider mode={isDark ? 'dark' : 'light'}>
-        <Story />
-      </SupersetThemeProvider>
+      <div>
+        <SupersetThemeProvider
+          mode={useDarkMode ? EThemeMode.DARK : EThemeMode.LIGHT}
+          themeOverride={THEME_OVERRIDE}
+        >
+           <Container layer={EContainerLayer.BASE}>
+          <Switch
+            defaultChecked
+            checkedChildren="Dark Mode"
+            unCheckedChildren="Light Mode"
+            onChange={onChange}
+          />
+          {renderStory()}
+          </Container>
+        </SupersetThemeProvider>
+      </div>
     );
   },
 ];
