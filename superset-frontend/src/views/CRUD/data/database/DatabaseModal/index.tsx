@@ -689,7 +689,7 @@ const DatabaseModal: FunctionComponent<DatabaseModalProps> = ({
   };
 
   const onSave = async () => {
-    runPostProcesses({ id: 56 }, EDbPostProcessType.CREATE);
+    runPostProcesses({ uuid: db.uuid }, EDbPostProcessType.CREATE);
     // Clone DB object
     const dbToUpdate = JSON.parse(JSON.stringify(db || {}));
 

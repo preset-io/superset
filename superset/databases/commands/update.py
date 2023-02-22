@@ -66,7 +66,8 @@ class UpdateDatabaseCommand(BaseCommand):
                 schemas = database.get_all_schema_names()
             except Exception as ex:
                 db.session.rollback()
-                raise DatabaseConnectionFailedError() from ex
+                schemas = []
+                # raise DatabaseConnectionFailedError() from ex
 
             # Update database schema permissions
             new_schemas: List[str] = []
