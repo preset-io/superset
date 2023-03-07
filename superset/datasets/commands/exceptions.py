@@ -140,6 +140,8 @@ class TableNotFoundValidationError(ValidationError):
 
 
 class OwnersNotFoundValidationError(ValidationError):
+    status = 422
+
     def __init__(self) -> None:
         super().__init__([_("Owners are invalid")], field_name="owners")
 
@@ -154,6 +156,7 @@ class DatasetInvalidError(CommandInvalidError):
 
 
 class DatasetCreateFailedError(CreateFailedError):
+    status = 422
     message = _("Dataset could not be created.")
 
 

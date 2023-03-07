@@ -49,7 +49,6 @@ class CreateDatasetCommand(CreateMixin, BaseCommand):
             dataset.fetch_metadata(commit=False)
             db.session.commit()
         except (SQLAlchemyError, DAOCreateFailedError) as ex:
-            logger.warning(ex, exc_info=True)
             db.session.rollback()
             raise DatasetCreateFailedError() from ex
         return dataset

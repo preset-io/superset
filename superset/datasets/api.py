@@ -291,25 +291,10 @@ class DatasetRestApi(BaseSupersetModelRestApi):
             500:
               $ref: '#/components/responses/500'
         """
-        try:
-            item = self.add_model_schema.load(request.json)
-        # This validates custom Schema with custom validations
-        except ValidationError as error:
-            return self.response_400(message=error.messages)
+        item = self.add_model_schema.load(request.json)
 
-        try:
-            new_model = CreateDatasetCommand(item).run()
-            return self.response(201, id=new_model.id, result=item)
-        except DatasetInvalidError as ex:
-            return self.response_422(message=ex.normalized_messages())
-        except DatasetCreateFailedError as ex:
-            logger.error(
-                "Error creating model %s: %s",
-                self.__class__.__name__,
-                str(ex),
-                exc_info=True,
-            )
-            return self.response_422(message=str(ex))
+        new_model = CreateDatasetCommand(item).run()
+        return self.response(201, id=new_model.id, result=item)
 
     @expose("/<pk>", methods=["PUT"])
     @protect()
