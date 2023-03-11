@@ -42,7 +42,6 @@ class DashboardDAO(BaseDAO):
 
     @staticmethod
     def get_by_id_or_slug(id_or_slug: Union[int, str]) -> Dashboard:
-        dashboard = Dashboard.get(id_or_slug)
         if isinstance(id_or_slug, int) or id_or_slug.isdigit():
             # we only want to apply DashboardAccessFilter if getting by id
             # since id is an int that can be easily guessable
