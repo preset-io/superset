@@ -135,6 +135,8 @@ export default function transformProps(
     showLegend,
     showValue,
     sliceId,
+    sortSeriesType,
+    sortSeriesAscending,
     timeGrainSqla,
     stack,
     tooltipTimeFormat,
@@ -184,6 +186,8 @@ export default function transformProps(
     stack,
     totalStackedValues,
     isHorizontal,
+    sortSeriesType,
+    sortSeriesAscending,
   });
   const showValueIndexes = extractShowValueIndexes(rawSeries, {
     stack,
@@ -404,7 +408,7 @@ export default function transformProps(
           forecastValue.sort((a, b) => b.data[yIndex] - a.data[yIndex]);
         }
 
-        const rows: Array<string> = [`${tooltipFormatter(xValue)}`];
+        const rows: string[] = [];
         const forecastValues: Record<string, ForecastValue> =
           extractForecastValuesFromTooltipParams(forecastValue, isHorizontal);
 
@@ -421,6 +425,10 @@ export default function transformProps(
             rows.push(`<span style="opacity: 0.7">${content}</span>`);
           }
         });
+        if (stack) {
+          rows.reverse();
+        }
+        rows.unshift(`${tooltipFormatter(xValue)}`);
         return rows.join('<br />');
       },
     },
