@@ -692,17 +692,17 @@ export const testQuery: ISaveableDatasource = {
   sql: 'SELECT *',
   columns: [
     {
-      column_name: 'Column 1',
+      name: 'Column 1',
       type: DatasourceType.Query,
       is_dttm: false,
     },
     {
-      column_name: 'Column 3',
+      name: 'Column 3',
       type: DatasourceType.Query,
       is_dttm: false,
     },
     {
-      column_name: 'Column 2',
+      name: 'Column 2',
       type: DatasourceType.Query,
       is_dttm: true,
     },
