@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-04-07 19:09+0200\n"
+"POT-Creation-Date: 2023-04-19 11:33-0300\n"
 "PO-Revision-Date: 2018-11-03 00:11+0100\n"
 "Last-Translator: Ruben Sastre <ruben.sastre@decathlon.com>\n"
 "Language: es\n"
@@ -56,12 +56,12 @@ msgid ""
 "in the GeoJSON"
 msgstr ""
 
-#: superset-frontend/src/explore/components/SaveModal.tsx:364
+#: superset-frontend/src/explore/components/SaveModal.tsx:397
 #, fuzzy
 msgid " a dashboard OR "
 msgstr "Guardar Dashboard"
 
-#: superset-frontend/src/explore/components/SaveModal.tsx:366
+#: superset-frontend/src/explore/components/SaveModal.tsx:399
 #, fuzzy
 msgid " a new one"
 msgstr "Cambiado el"
@@ -200,19 +200,19 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: superset/views/core.py:384
+#: superset/views/core.py:385
 #, python-format
 msgid ""
 "%(user)s was granted the role %(role)s that gives access to the "
 "%(datasource)s"
 msgstr "%(user)s recibió el rol %(role)s que le da acceso a %(datasource)s"
 
-#: superset/views/core.py:2672
+#: superset/views/core.py:2675
 #, python-format
 msgid "%(user)s's profile"
 msgstr "Perfil de %(user)s"
 
-#: superset/databases/commands/validate_sql.py:73 superset/views/core.py:2327
+#: superset/databases/commands/validate_sql.py:73 superset/views/core.py:2330
 #, python-format
 msgid ""
 "%(validator)s was unable to check your query.\n"
@@ -226,25 +226,25 @@ msgid "%s Error"
 msgstr "%s Error"
 
 #: superset-frontend/src/components/ImportModal/index.tsx:298
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1300
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1297
 #, fuzzy, python-format
 msgid "%s PASSWORD"
 msgstr "Contraseña de Broker"
 
 #: superset-frontend/src/components/ImportModal/index.tsx:318
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1318
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1315
 #, python-format
 msgid "%s SSH TUNNEL PASSWORD"
 msgstr ""
 
 #: superset-frontend/src/components/ImportModal/index.tsx:341
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1336
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1333
 #, python-format
 msgid "%s SSH TUNNEL PRIVATE KEY"
 msgstr ""
 
 #: superset-frontend/src/components/ImportModal/index.tsx:363
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1356
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1353
 #, python-format
 msgid "%s SSH TUNNEL PRIVATE KEY PASSWORD"
 msgstr ""
@@ -386,7 +386,7 @@ msgstr ""
 msgid ","
 msgstr ""
 
-#: superset-frontend/src/SqlLab/actions/sqlLab.js:656
+#: superset-frontend/src/SqlLab/actions/sqlLab.js:661
 msgid ""
 "-- Note: Unless you save your query, these tabs will NOT persist if you "
 "clear your cookies or change browsers.\n"
@@ -495,7 +495,7 @@ msgstr "Frecuencia de actualización"
 msgid "1 year start frequency"
 msgstr "Frecuencia de actualización"
 
-#: superset/db_engine_specs/base.py:101
+#: superset/db_engine_specs/base.py:102
 #, fuzzy
 msgid "10 minute"
 msgstr "1 minuto"
@@ -512,7 +512,7 @@ msgstr "semana"
 msgid "104 weeks ago"
 msgstr ""
 
-#: superset/db_engine_specs/base.py:102
+#: superset/db_engine_specs/base.py:103
 #, fuzzy
 msgid "15 minute"
 msgstr "1 minuto"
@@ -634,7 +634,7 @@ msgstr "30 días"
 msgid "30 days ago"
 msgstr "30 días"
 
-#: superset/db_engine_specs/base.py:103
+#: superset/db_engine_specs/base.py:104
 #, fuzzy
 msgid "30 minute"
 msgstr "30 minutos"
@@ -644,7 +644,7 @@ msgstr "30 minutos"
 msgid "30 minutes"
 msgstr "30 minutos"
 
-#: superset/db_engine_specs/base.py:98
+#: superset/db_engine_specs/base.py:99
 #, fuzzy
 msgid "30 second"
 msgstr "30 segundos"
@@ -665,7 +665,7 @@ msgstr ""
 msgid "4 weeks (freq=4W-MON)"
 msgstr ""
 
-#: superset/db_engine_specs/base.py:100
+#: superset/db_engine_specs/base.py:101
 #, fuzzy
 msgid "5 minute"
 msgstr "5 minutos"
@@ -675,7 +675,7 @@ msgstr "5 minutos"
 msgid "5 minutes"
 msgstr "5 minutos"
 
-#: superset/db_engine_specs/base.py:97
+#: superset/db_engine_specs/base.py:98
 #, fuzzy
 msgid "5 second"
 msgstr "30 segundos"
@@ -704,7 +704,7 @@ msgstr ""
 
 #: superset-frontend/packages/superset-ui-chart-controls/src/shared-controls/sharedControls.tsx:167
 #: superset-frontend/src/explore/controls.jsx:261
-#: superset/db_engine_specs/base.py:105
+#: superset/db_engine_specs/base.py:106
 #, fuzzy
 msgid "6 hour"
 msgstr "6 horas"
@@ -886,7 +886,7 @@ msgstr ""
 msgid "A report named \"%(name)s\" already exists"
 msgstr "La fuente de datos %(name)s ya existe"
 
-#: superset-frontend/src/explore/components/SaveModal.tsx:333
+#: superset-frontend/src/explore/components/SaveModal.tsx:366
 msgid "A reusable dataset will be saved with your chart."
 msgstr ""
 
@@ -984,7 +984,7 @@ msgstr ""
 msgid "Access token"
 msgstr ""
 
-#: superset/views/core.py:317
+#: superset/views/core.py:318
 msgid "Access was requested"
 msgstr "Se ha solicitado Acceso"
 
@@ -1160,7 +1160,7 @@ msgstr ""
 msgid "Add calculated temporal columns to dataset in \"Edit datasource\" modal"
 msgstr ""
 
-#: superset-frontend/src/components/Chart/ChartContextMenu.tsx:167
+#: superset-frontend/src/components/Chart/ChartContextMenu/ChartContextMenu.tsx:197
 #, fuzzy
 msgid "Add cross-filter"
 msgstr "Añadir filtro"
@@ -1243,7 +1243,7 @@ msgstr "El id del gráfico activo"
 msgid "Add the name of the dashboard"
 msgstr "Guardar e ir al Dashboard"
 
-#: superset-frontend/src/explore/components/SaveModal.tsx:351
+#: superset-frontend/src/explore/components/SaveModal.tsx:384
 msgid "Add to dashboard"
 msgstr "Añadir a un nuevo Dashboard"
 
@@ -1270,7 +1270,7 @@ msgstr[1] ""
 msgid "Additional Parameters"
 msgstr "Editar parámetros de la plantilla"
 
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1787
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1784
 msgid "Additional fields may be required"
 msgstr ""
 
@@ -1283,12 +1283,12 @@ msgstr "Información adicional"
 msgid "Additional metadata"
 msgstr "Información adicional"
 
-#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:57
+#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:54
 #, fuzzy
 msgid "Additional padding for legend."
 msgstr "Información adicional"
 
-#: superset/db_engine_specs/base.py:1847
+#: superset/db_engine_specs/base.py:1872
 #: superset/db_engine_specs/clickhouse.py:214
 #, fuzzy
 msgid "Additional parameters"
@@ -1330,7 +1330,7 @@ msgstr ""
 #: superset-frontend/src/components/Datasource/DatasourceEditor.jsx:939
 #: superset-frontend/src/dashboard/components/PropertiesModal/index.tsx:771
 #: superset-frontend/src/explore/components/controls/DateFilterControl/utils/constants.ts:34
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1811
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1808
 msgid "Advanced"
 msgstr "Avanzado"
 
@@ -1730,7 +1730,7 @@ msgstr "Se produjo un error"
 msgid "An alert named \"%(name)s\" already exists"
 msgstr "La fuente de datos %(name)s ya existe"
 
-#: superset/common/query_context_processor.py:326 superset/viz.py:1447
+#: superset/common/query_context_processor.py:326 superset/viz.py:1448
 msgid ""
 "An enclosed time range (both start and end) must be specified when using "
 "a Time Comparison."
@@ -1743,7 +1743,7 @@ msgid ""
 msgstr ""
 
 #: superset-frontend/src/components/Datasource/DatasourceEditor.jsx:791
-#: superset-frontend/src/components/Datasource/DatasourceModal.tsx:141
+#: superset-frontend/src/components/Datasource/DatasourceModal.tsx:183
 #: superset-frontend/src/components/Tags/utils.tsx:67
 #: superset-frontend/src/dashboard/components/PropertiesModal/index.tsx:127
 #: superset-frontend/src/dashboard/components/nativeFilters/FiltersConfigModal/FiltersConfigForm/ColumnSelect.tsx:109
@@ -1758,7 +1758,7 @@ msgstr "Ha ocurrido un error"
 msgid "An error occurred"
 msgstr "Se produjo un error"
 
-#: superset-frontend/src/SqlLab/components/SaveDatasetModal/index.tsx:317
+#: superset-frontend/src/SqlLab/components/SaveDatasetModal/index.tsx:323
 msgid "An error occurred saving dataset"
 msgstr "Se produjo un error al crear el origen de datos"
 
@@ -1770,7 +1770,7 @@ msgstr "Se produjo un error al crear el origen de datos"
 msgid "An error occurred while accessing the value."
 msgstr "Se produjo un error al crear el origen de datos"
 
-#: superset-frontend/src/SqlLab/actions/sqlLab.js:1368
+#: superset-frontend/src/SqlLab/actions/sqlLab.js:1373
 msgid ""
 "An error occurred while collapsing the table schema. Please contact your "
 "administrator."
@@ -1781,8 +1781,8 @@ msgstr ""
 msgid "An error occurred while creating %ss: %s"
 msgstr "Se produjo un error al obtener conjuntos de datos: %s"
 
-#: superset-frontend/src/SqlLab/actions/sqlLab.js:1529
-#: superset-frontend/src/SqlLab/actions/sqlLab.js:1551
+#: superset-frontend/src/SqlLab/actions/sqlLab.js:1534
+#: superset-frontend/src/SqlLab/actions/sqlLab.js:1556
 msgid "An error occurred while creating the data source"
 msgstr "Se produjo un error al crear el origen de datos"
 
@@ -1800,7 +1800,7 @@ msgstr "Se produjo un error al crear el origen de datos"
 msgid "An error occurred while deleting the value."
 msgstr "Se produjo un error al obtener valores de esquema: %s"
 
-#: superset-frontend/src/SqlLab/actions/sqlLab.js:1344
+#: superset-frontend/src/SqlLab/actions/sqlLab.js:1349
 msgid ""
 "An error occurred while expanding the table schema. Please contact your "
 "administrator."
@@ -1905,7 +1905,7 @@ msgstr ""
 msgid "An error occurred while fetching datasets: %s"
 msgstr "Se produjo un error al obtener conjuntos de datos: %s"
 
-#: superset-frontend/src/SqlLab/actions/sqlLab.js:1581
+#: superset-frontend/src/SqlLab/actions/sqlLab.js:1586
 #, fuzzy
 msgid "An error occurred while fetching function names."
 msgstr "Se produjo un error al recuperar el estado de la pestaña"
@@ -1924,16 +1924,16 @@ msgstr ""
 msgid "An error occurred while fetching schema values: %s"
 msgstr "Se produjo un error al obtener valores de esquema: %s"
 
-#: superset-frontend/src/SqlLab/actions/sqlLab.js:799
+#: superset-frontend/src/SqlLab/actions/sqlLab.js:804
 msgid "An error occurred while fetching tab state"
 msgstr "Se produjo un error al recuperar el estado de la pestaña"
 
-#: superset-frontend/src/SqlLab/actions/sqlLab.js:1199
-#: superset-frontend/src/SqlLab/actions/sqlLab.js:1224
+#: superset-frontend/src/SqlLab/actions/sqlLab.js:1204
+#: superset-frontend/src/SqlLab/actions/sqlLab.js:1229
 msgid "An error occurred while fetching table metadata"
 msgstr "Se produjo un error al recuperar los metadatos de la tabla"
 
-#: superset-frontend/src/SqlLab/actions/sqlLab.js:1296
+#: superset-frontend/src/SqlLab/actions/sqlLab.js:1301
 msgid ""
 "An error occurred while fetching table metadata. Please contact your "
 "administrator."
@@ -1949,7 +1949,7 @@ msgstr "Se produjo un error al obtener los valores creados por: %s"
 msgid "An error occurred while fetching user values: %s"
 msgstr "Se produjo un error al obtener valores de esquema: %s"
 
-#: superset-frontend/src/SqlLab/actions/sqlLab.js:835
+#: superset-frontend/src/SqlLab/actions/sqlLab.js:840
 #, fuzzy
 msgid ""
 "An error occurred while hiding the left bar. Please contact your "
@@ -1963,6 +1963,11 @@ msgstr ""
 #, fuzzy, python-format
 msgid "An error occurred while importing %s: %s"
 msgstr "Se produjo un error al limpiar los registros"
+
+#: superset-frontend/src/explore/components/SaveModal.tsx:135
+#, fuzzy
+msgid "An error occurred while loading dashboard information."
+msgstr "Se produjo un error al crear el origen de datos"
 
 #: superset-frontend/src/components/Chart/chartAction.js:579
 msgid "An error occurred while loading the SQL"
@@ -1982,15 +1987,15 @@ msgstr "Se produjo un error al crear el origen de datos"
 msgid "An error occurred while pruning logs "
 msgstr "Se produjo un error al limpiar los registros"
 
-#: superset-frontend/src/SqlLab/actions/sqlLab.js:892
+#: superset-frontend/src/SqlLab/actions/sqlLab.js:897
 msgid "An error occurred while removing query. Please contact your administrator."
 msgstr ""
 
-#: superset-frontend/src/SqlLab/actions/sqlLab.js:857
+#: superset-frontend/src/SqlLab/actions/sqlLab.js:862
 msgid "An error occurred while removing tab. Please contact your administrator."
 msgstr ""
 
-#: superset-frontend/src/SqlLab/actions/sqlLab.js:1396
+#: superset-frontend/src/SqlLab/actions/sqlLab.js:1401
 msgid ""
 "An error occurred while removing the table schema. Please contact your "
 "administrator."
@@ -2001,26 +2006,26 @@ msgstr ""
 msgid "An error occurred while rendering the visualization: %s"
 msgstr "Ocurrió un error al crear la visualización: %s"
 
-#: superset-frontend/src/SqlLab/actions/sqlLab.js:710
+#: superset-frontend/src/SqlLab/actions/sqlLab.js:715
 msgid ""
 "An error occurred while setting the active tab. Please contact your "
 "administrator."
 msgstr ""
 
-#: superset-frontend/src/SqlLab/actions/sqlLab.js:975
+#: superset-frontend/src/SqlLab/actions/sqlLab.js:980
 msgid ""
 "An error occurred while setting the tab autorun. Please contact your "
 "administrator."
 msgstr ""
 
-#: superset-frontend/src/SqlLab/actions/sqlLab.js:915
+#: superset-frontend/src/SqlLab/actions/sqlLab.js:920
 msgid ""
 "An error occurred while setting the tab database ID. Please contact your "
 "administrator."
 msgstr ""
 
-#: superset-frontend/src/SqlLab/actions/sqlLab.js:1004
-#: superset-frontend/src/SqlLab/actions/sqlLab.js:1128
+#: superset-frontend/src/SqlLab/actions/sqlLab.js:1009
+#: superset-frontend/src/SqlLab/actions/sqlLab.js:1133
 #, fuzzy
 msgid ""
 "An error occurred while setting the tab name. Please contact your "
@@ -2029,13 +2034,13 @@ msgstr ""
 "Se produjo un error desconocido. Por favor, contacta con tu administrador"
 " de Superset"
 
-#: superset-frontend/src/SqlLab/actions/sqlLab.js:946
+#: superset-frontend/src/SqlLab/actions/sqlLab.js:951
 msgid ""
 "An error occurred while setting the tab schema. Please contact your "
 "administrator."
 msgstr ""
 
-#: superset-frontend/src/SqlLab/actions/sqlLab.js:1154
+#: superset-frontend/src/SqlLab/actions/sqlLab.js:1159
 msgid ""
 "An error occurred while setting the tab template parameters. Please "
 "contact your administrator."
@@ -2046,14 +2051,14 @@ msgstr ""
 msgid "An error occurred while starring this chart"
 msgstr "Ocurrió un error al cargar SQL"
 
-#: superset-frontend/src/SqlLab/actions/sqlLab.js:251
-#: superset-frontend/src/SqlLab/actions/sqlLab.js:297
+#: superset-frontend/src/SqlLab/actions/sqlLab.js:256
+#: superset-frontend/src/SqlLab/actions/sqlLab.js:302
 msgid ""
 "An error occurred while storing the latest query id in the backend. "
 "Please contact your administrator if this problem persists."
 msgstr ""
 
-#: superset-frontend/src/SqlLab/actions/sqlLab.js:1095
+#: superset-frontend/src/SqlLab/actions/sqlLab.js:1100
 msgid ""
 "An error occurred while storing your query in the backend. To avoid "
 "losing your changes, please save your query using the \"Save Query\" "
@@ -2076,7 +2081,7 @@ msgstr "Se produjo un error al crear el origen de datos"
 msgid "An unexpected error occurred"
 msgstr "Se produjo un error"
 
-#: superset/views/core.py:734
+#: superset/views/core.py:737
 msgid "An unknown error occurred. Please contact your Superset administrator"
 msgstr ""
 "Se produjo un error desconocido. Por favor, contacta con tu administrador"
@@ -2288,11 +2293,11 @@ msgid ""
 "dashboard's individual charts"
 msgstr ""
 
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:953
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:950
 msgid "Any databases that allow connections via SQL Alchemy URIs can be added. "
 msgstr ""
 
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:967
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:964
 msgid ""
 "Any databases that allow connections via SQL Alchemy URIs can be added. "
 "Learn about how to connect a database driver "
@@ -2429,7 +2434,7 @@ msgstr "¿Está seguro de que desea eliminar los %s seleccionados?"
 msgid "Are you sure you want to delete the selected templates?"
 msgstr "¿Estas seguro de que quieres eliminar las plantillas seleccionadas?"
 
-#: superset-frontend/src/SqlLab/components/SaveDatasetModal/index.tsx:426
+#: superset-frontend/src/SqlLab/components/SaveDatasetModal/index.tsx:434
 #, fuzzy
 msgid "Are you sure you want to overwrite this dataset?"
 msgstr "¿Está seguro de que desea eliminar los conjuntos de datos seleccionados?"
@@ -2438,7 +2443,7 @@ msgstr "¿Está seguro de que desea eliminar los conjuntos de datos seleccionado
 msgid "Are you sure you want to proceed?"
 msgstr "¿Seguro que quieres proceder?"
 
-#: superset-frontend/src/components/Datasource/DatasourceModal.tsx:174
+#: superset-frontend/src/components/Datasource/DatasourceModal.tsx:216
 msgid "Are you sure you want to save and apply changes?"
 msgstr "¿Estas seguro de que quieres guardar y aplicar los cambios?"
 
@@ -2511,7 +2516,7 @@ msgstr "en"
 msgid "Auto Zoom"
 msgstr ""
 
-#: superset-frontend/src/SqlLab/components/SqlEditor/index.jsx:530
+#: superset-frontend/src/SqlLab/components/SqlEditor/index.jsx:531
 #, fuzzy
 msgid "Autocomplete"
 msgstr "Autocompletar filtros"
@@ -2538,7 +2543,7 @@ msgstr ""
 msgid "Average"
 msgstr "Compartir"
 
-#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:233
+#: superset-frontend/packages/superset-ui-chart-controls/src/constants.ts:71
 #, fuzzy
 msgid "Average value"
 msgstr "Iniciar en"
@@ -2578,10 +2583,10 @@ msgstr "Orden descendente"
 msgid "BOOLEAN"
 msgstr ""
 
-#: superset-frontend/src/SqlLab/components/SaveDatasetModal/index.tsx:366
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1051
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1068
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1088
+#: superset-frontend/src/SqlLab/components/SaveDatasetModal/index.tsx:373
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1048
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1065
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1085
 msgid "Back"
 msgstr ""
 
@@ -2607,7 +2612,7 @@ msgstr "Valores Nulos"
 msgid "Bad formula."
 msgstr "Formato Fecha/Hora"
 
-#: superset/viz.py:2509 superset/viz.py:2545
+#: superset/viz.py:2510 superset/viz.py:2546
 msgid "Bad spatial key"
 msgstr "Clave espacial errónea"
 
@@ -2661,12 +2666,12 @@ msgstr "Consultas Guardadas"
 msgid "Based on granularity, number of time periods to compare against"
 msgstr ""
 
-#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:237
+#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:228
 msgid "Based on what should series be ordered on the chart and legend"
 msgstr ""
 
 #: superset-frontend/src/components/Datasource/DatasourceEditor.jsx:854
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1723
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1720
 msgid "Basic"
 msgstr "Básico"
 
@@ -2698,7 +2703,7 @@ msgid "Before"
 msgstr "Intervlo de actualización"
 
 #: superset-frontend/plugins/plugin-chart-echarts/src/BigNumber/BigNumberTotal/index.ts:37
-#: superset/viz.py:1286
+#: superset/viz.py:1287
 msgid "Big Number"
 msgstr "Número Grande"
 
@@ -2707,11 +2712,11 @@ msgid "Big Number Font Size"
 msgstr ""
 
 #: superset-frontend/plugins/plugin-chart-echarts/src/BigNumber/BigNumberWithTrendline/index.ts:36
-#: superset/viz.py:1252
+#: superset/viz.py:1253
 msgid "Big Number with Trendline"
 msgstr "Número Grande con Línea de Tendencia"
 
-#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:89
+#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:86
 #: superset-frontend/plugins/plugin-chart-pivot-table/src/plugin/controlPanel.tsx:355
 #, fuzzy
 msgid "Bottom"
@@ -2774,7 +2779,7 @@ msgid "Breakdowns"
 msgstr "Creado el"
 
 #: superset-frontend/plugins/legacy-preset-chart-nvd3/src/Bubble/index.js:32
-#: superset/viz.py:1171
+#: superset/viz.py:1172
 msgid "Bubble Chart"
 msgstr "Gráfico de Burbujas"
 
@@ -2814,7 +2819,7 @@ msgid "Bulk select"
 msgstr "Selección múltiple"
 
 #: superset-frontend/plugins/legacy-preset-chart-nvd3/src/Bullet/index.js:32
-#: superset/viz.py:1222
+#: superset/viz.py:1223
 msgid "Bullet Chart"
 msgstr "Gráfico de Puntos"
 
@@ -2861,16 +2866,16 @@ msgstr ""
 msgid "CANCEL"
 msgstr "CANCELAR"
 
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1520
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1517
 #, fuzzy
 msgid "CREATE DATASET"
 msgstr "Cambiar fuente"
 
-#: superset-frontend/src/SqlLab/components/SqlEditor/index.jsx:585
+#: superset-frontend/src/SqlLab/components/SqlEditor/index.jsx:586
 msgid "CREATE TABLE AS"
 msgstr "Permitir CREATE TABLE AS"
 
-#: superset-frontend/src/SqlLab/components/SqlEditor/index.jsx:596
+#: superset-frontend/src/SqlLab/components/SqlEditor/index.jsx:597
 msgid "CREATE VIEW AS"
 msgstr "Permitir CREATE TABLE AS"
 
@@ -3003,7 +3008,7 @@ msgstr "En cache %s"
 msgid "Cached value not found"
 msgstr "Valor no encontrado en memoria caché"
 
-#: superset-frontend/packages/superset-ui-chart-controls/src/shared-controls/customControls.tsx:49
+#: superset-frontend/packages/superset-ui-chart-controls/src/shared-controls/customControls.tsx:53
 #, fuzzy
 msgid "Calculate contribution per series or row"
 msgstr "Calcular la contribución al total"
@@ -3026,7 +3031,7 @@ msgid "Calculation type"
 msgstr "Tipo de Cálculo"
 
 #: superset-frontend/plugins/legacy-plugin-chart-calendar/src/index.js:32
-#: superset/viz.py:1080
+#: superset/viz.py:1081
 msgid "Calendar Heatmap"
 msgstr "Mapa de Calor de Calendario"
 
@@ -3040,15 +3045,15 @@ msgstr ""
 msgid "Can select multiple values"
 msgstr "Limitar valores del selector"
 
-#: superset/viz.py:1810
+#: superset/viz.py:1811
 msgid "Can't have overlap between Series and Breakdowns"
 msgstr "No puede haber solapamiento entre Series y Distribuciones"
 
 #: superset-frontend/src/SqlLab/components/SaveQuery/index.tsx:206
-#: superset-frontend/src/SqlLab/components/SqlEditor/index.jsx:759
-#: superset-frontend/src/components/Datasource/ChangeDatasourceModal.tsx:263
-#: superset-frontend/src/components/Datasource/DatasourceModal.tsx:185
-#: superset-frontend/src/components/Datasource/DatasourceModal.tsx:226
+#: superset-frontend/src/SqlLab/components/SqlEditor/index.jsx:760
+#: superset-frontend/src/components/Datasource/ChangeDatasourceModal.tsx:265
+#: superset-frontend/src/components/Datasource/DatasourceModal.tsx:227
+#: superset-frontend/src/components/Datasource/DatasourceModal.tsx:268
 #: superset-frontend/src/components/Modal/Modal.tsx:262
 #: superset-frontend/src/components/ReportModal/index.tsx:220
 #: superset-frontend/src/dashboard/components/FilterBoxMigrationModal.tsx:72
@@ -3058,7 +3063,7 @@ msgstr "No puede haber solapamiento entre Series y Distribuciones"
 #: superset-frontend/src/dashboard/components/nativeFilters/FilterBar/FilterSets/Footer.tsx:76
 #: superset-frontend/src/dashboard/components/nativeFilters/FiltersConfigModal/Footer/Footer.tsx:62
 #: superset-frontend/src/explore/components/PropertiesModal/index.tsx:311
-#: superset-frontend/src/explore/components/SaveModal.tsx:379
+#: superset-frontend/src/explore/components/SaveModal.tsx:411
 #: superset-frontend/src/explore/components/controls/AnnotationLayerControl/AnnotationLayer.jsx:843
 #: superset-frontend/src/features/datasets/AddDataset/Footer/index.tsx:117
 #: superset/templates/superset/request_access.html:34
@@ -3082,7 +3087,7 @@ msgstr "No se puede eliminar una base de datos que tiene tablas adjuntas"
 msgid "Cannot have multiple credentials for the SSH Tunnel"
 msgstr ""
 
-#: superset/views/core.py:723
+#: superset/views/core.py:726
 #, python-format
 msgid ""
 "Cannot import dashboard: %(db_error)s.\n"
@@ -3102,7 +3107,6 @@ msgstr ""
 
 #: superset-frontend/plugins/legacy-plugin-chart-partition/src/index.js:30
 #: superset-frontend/plugins/legacy-plugin-chart-sankey/src/index.js:38
-#: superset-frontend/plugins/legacy-plugin-chart-treemap/src/index.js:42
 #: superset-frontend/plugins/legacy-preset-chart-nvd3/src/DistBar/index.js:47
 #: superset-frontend/plugins/plugin-chart-echarts/src/Pie/index.ts:70
 #: superset-frontend/plugins/plugin-chart-echarts/src/Tree/index.ts:41
@@ -3150,7 +3154,7 @@ msgstr ""
 msgid "Category and Value"
 msgstr "Introduce un valor"
 
-#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:229
+#: superset-frontend/packages/superset-ui-chart-controls/src/constants.ts:67
 #, fuzzy
 msgid "Category name"
 msgstr "Nombre de la consulta"
@@ -3300,7 +3304,7 @@ msgstr "No esta permitido modificar este Gráfico"
 msgid "Changing this control takes effect instantly"
 msgstr "Los aambios en este control surten efecto de inmediato"
 
-#: superset/datasets/commands/exceptions.py:181
+#: superset/datasets/commands/exceptions.py:198
 msgid "Changing this dataset is forbidden"
 msgstr "No está permitido cambiar este conjunto de datos"
 
@@ -3328,6 +3332,7 @@ msgstr "Caracter que interpreta como punto decimal."
 msgid "Character to interpret as decimal point."
 msgstr "Caracter que interpreta como punto decimal."
 
+#: superset-frontend/src/components/Chart/DrillBy/useDisplayModeToggle.tsx:50
 #: superset-frontend/src/explore/components/controls/AnnotationLayerControl/AnnotationLayer.jsx:449
 #: superset-frontend/src/features/alerts/AlertReportModal.tsx:405
 #: superset-frontend/src/features/datasets/AddDataset/EditDataset/UsageTab/index.tsx:69
@@ -3339,7 +3344,7 @@ msgstr "Caracter que interpreta como punto decimal."
 msgid "Chart"
 msgstr "Gráfico"
 
-#: superset/views/core.py:1727
+#: superset/views/core.py:1730
 #, python-format
 msgid "Chart %(id)s not found"
 msgstr "Gráfico %(id)s no encontrado"
@@ -3368,7 +3373,6 @@ msgstr "ID de gráfico"
 #: superset-frontend/plugins/legacy-plugin-chart-sankey-loop/src/controlPanel.ts:36
 #: superset-frontend/plugins/legacy-plugin-chart-sankey/src/controlPanel.ts:69
 #: superset-frontend/plugins/legacy-plugin-chart-sunburst/src/controlPanel.ts:54
-#: superset-frontend/plugins/legacy-plugin-chart-treemap/src/controlPanel.ts:43
 #: superset-frontend/plugins/legacy-preset-chart-nvd3/src/Area/controlPanel.ts:42
 #: superset-frontend/plugins/legacy-preset-chart-nvd3/src/Bar/controlPanel.ts:85
 #: superset-frontend/plugins/legacy-preset-chart-nvd3/src/Bubble/controlPanel.ts:78
@@ -3428,30 +3432,30 @@ msgstr "Fuente de datos"
 msgid "Chart Title"
 msgstr "Tipo de dato"
 
-#: superset-frontend/src/explore/actions/saveModalActions.js:127
+#: superset-frontend/src/explore/actions/saveModalActions.js:121
 #, fuzzy, python-format
 msgid "Chart [%s] has been overwritten"
 msgstr "El gráfico [{}] ha sido sobreescrito"
 
-#: superset-frontend/src/explore/actions/saveModalActions.js:124
+#: superset-frontend/src/explore/actions/saveModalActions.js:118
 #, fuzzy, python-format
 msgid "Chart [%s] has been saved"
 msgstr "El gráfico [{}] ha sido guardado"
 
-#: superset-frontend/src/explore/actions/saveModalActions.js:145
+#: superset-frontend/src/explore/actions/saveModalActions.js:139
 #, fuzzy, python-format
 msgid "Chart [%s] was added to dashboard [%s]"
 msgstr "El gráfico [{}] ha sido añadido al dashboard [{}]"
 
-#: superset/views/core.py:1077
+#: superset/views/core.py:1080
 msgid "Chart [{}] has been overwritten"
 msgstr "El gráfico [{}] ha sido sobreescrito"
 
-#: superset/views/core.py:1073
+#: superset/views/core.py:1076
 msgid "Chart [{}] has been saved"
 msgstr "El gráfico [{}] ha sido guardado"
 
-#: superset/views/core.py:1102
+#: superset/views/core.py:1105
 msgid "Chart [{}] was added to dashboard [{}]"
 msgstr "El gráfico [{}] ha sido añadido al dashboard [{}]"
 
@@ -3515,7 +3519,7 @@ msgstr "Última modificación"
 msgid "Chart last modified by"
 msgstr "Última modificación por %s"
 
-#: superset-frontend/src/explore/components/SaveModal.tsx:320
+#: superset-frontend/src/explore/components/SaveModal.tsx:353
 msgid "Chart name"
 msgstr "El Gráfico ha cambiado"
 
@@ -3630,11 +3634,11 @@ msgstr "Marcar para incluir la caja de selección de origen de tiempo"
 msgid "Child label position"
 msgstr ""
 
-#: superset/viz.py:2370
+#: superset/viz.py:2371
 msgid "Choice of [Label] must be present in [Group By]"
 msgstr "La opción de [Etiqueta] debe estar presente en [Group By]"
 
-#: superset/viz.py:2378
+#: superset/viz.py:2379
 msgid "Choice of [Point Radius] must be present in [Group By]"
 msgstr "La opción de [Radio de Puntos] debe estar presente en [Group By]"
 
@@ -3647,7 +3651,7 @@ msgstr "Seleccionar archivo"
 msgid "Choose a chart or dashboard not both"
 msgstr "Elija un gráfico o un dashboard, no ambos"
 
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:924
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:921
 #, fuzzy
 msgid "Choose a database..."
 msgstr "Selecciona una base de datos"
@@ -3697,7 +3701,7 @@ msgstr ""
 msgid "Choose chart type"
 msgstr "Tipo de dato"
 
-#: superset-frontend/src/SqlLab/components/SqlEditor/index.jsx:745
+#: superset-frontend/src/SqlLab/components/SqlEditor/index.jsx:746
 msgid "Choose one of the available databases from the panel on the left."
 msgstr ""
 
@@ -3819,13 +3823,13 @@ msgstr "CLick en el candado para poder realizar cambios."
 msgid "Click the lock to prevent further changes."
 msgstr "Click sobre el candado para prevenir futuros cambios."
 
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1955
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1952
 msgid ""
 "Click this link to switch to an alternate form that allows you to input "
 "the SQLAlchemy URL for this database manually."
 msgstr ""
 
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1771
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1768
 msgid ""
 "Click this link to switch to an alternate form that exposes only the "
 "required fields needed to connect this database."
@@ -3883,7 +3887,7 @@ msgstr "Selecciona para ordenar de forma ascendente"
 msgid "Click to sort descending"
 msgstr "Orden descendente"
 
-#: superset-frontend/src/components/Chart/DrillBy/DrillByModal.tsx:83
+#: superset-frontend/src/components/Chart/DrillBy/DrillByModal.tsx:117
 #: superset-frontend/src/components/Chart/DrillDetail/DrillDetailModal.tsx:52
 #: superset-frontend/src/components/ErrorMessage/ErrorAlert.tsx:209
 #: superset-frontend/src/dashboard/components/SliceHeaderControls/index.tsx:219
@@ -3893,7 +3897,7 @@ msgstr "Orden descendente"
 #: superset-frontend/src/explore/components/controls/MetricControl/AdhocMetricEditPopover/index.jsx:511
 #: superset-frontend/src/explore/components/controls/TimeSeriesColumnControl/index.jsx:339
 #: superset-frontend/src/explore/components/controls/ViewQueryModalFooter.tsx:36
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1109
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1106
 msgid "Close"
 msgstr "Cerrar"
 
@@ -4370,15 +4374,15 @@ msgstr ""
 msgid "Confirm overwrite"
 msgstr "Confirmar guardado"
 
-#: superset-frontend/src/components/Datasource/DatasourceModal.tsx:180
+#: superset-frontend/src/components/Datasource/DatasourceModal.tsx:222
 msgid "Confirm save"
 msgstr "Confirmar guardado"
 
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1059
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1097
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1656
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1695
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1857
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1056
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1094
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1653
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1692
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1854
 #, fuzzy
 msgid "Connect"
 msgstr "Probar Conexión"
@@ -4391,9 +4395,9 @@ msgstr ""
 msgid "Connect Google Sheets as tables to this database"
 msgstr ""
 
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1660
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1700
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1861
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1657
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1697
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1858
 #, fuzzy
 msgid "Connect a database"
 msgstr "Selecciona una base de datos"
@@ -4403,20 +4407,20 @@ msgstr "Selecciona una base de datos"
 msgid "Connect database"
 msgstr "Selecciona una base de datos"
 
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1768
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1765
 msgid "Connect this database using the dynamic form instead"
 msgstr ""
 
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1950
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1947
 msgid "Connect this database with a SQLAlchemy URI string instead"
 msgstr ""
 
-#: superset-frontend/src/components/Datasource/ChangeDatasourceModal.tsx:225
+#: superset-frontend/src/components/Datasource/ChangeDatasourceModal.tsx:227
 msgid "Connection"
 msgstr "Probar Conexión"
 
 #: superset/databases/commands/exceptions.py:107
-#: superset/databases/commands/exceptions.py:124 superset/views/core.py:1430
+#: superset/databases/commands/exceptions.py:124 superset/views/core.py:1433
 msgid "Connection failed, please check your connection settings"
 msgstr "La conexión ha fallado, por favor verifique sus ajustes de conexión"
 
@@ -4445,7 +4449,7 @@ msgstr ""
 msgid "Contribution"
 msgstr "Contribución"
 
-#: superset-frontend/packages/superset-ui-chart-controls/src/shared-controls/customControls.tsx:42
+#: superset-frontend/packages/superset-ui-chart-controls/src/shared-controls/customControls.tsx:46
 #, fuzzy
 msgid "Contribution Mode"
 msgstr "Contribución"
@@ -4501,8 +4505,8 @@ msgstr "Copiar enlace"
 msgid "Copy message"
 msgstr "Mensaje de Aviso"
 
-#: superset-frontend/src/SqlLab/actions/sqlLab.js:683
-#: superset-frontend/src/SqlLab/actions/sqlLab.js:1469
+#: superset-frontend/src/SqlLab/actions/sqlLab.js:688
+#: superset-frontend/src/SqlLab/actions/sqlLab.js:1474
 #: superset-frontend/src/SqlLab/reducers/sqlLab.js:107
 #, python-format
 msgid "Copy of %s"
@@ -4578,7 +4582,7 @@ msgstr "No se pudo encontrar el objeto de visualización"
 msgid "Could not load database driver"
 msgstr "No se ha podido cargar el controlador de la base de datos"
 
-#: superset/views/core.py:1413
+#: superset/views/core.py:1416
 #, python-format
 msgid "Could not load database driver: %(driver_name)s"
 msgstr "No se pudo cargar el controlador de base de datos: %(driver_name)s"
@@ -4631,12 +4635,12 @@ msgid "Country Field Type"
 msgstr ""
 
 #: superset-frontend/plugins/legacy-plugin-chart-country-map/src/index.js:33
-#: superset/viz.py:2044
+#: superset/viz.py:2045
 msgid "Country Map"
 msgstr "Mapa de País"
 
-#: superset-frontend/src/SqlLab/components/SqlEditor/index.jsx:767
-#: superset-frontend/src/SqlLab/components/SqlEditor/index.jsx:776
+#: superset-frontend/src/SqlLab/components/SqlEditor/index.jsx:768
+#: superset-frontend/src/SqlLab/components/SqlEditor/index.jsx:777
 #: superset-frontend/src/dashboard/components/nativeFilters/FilterBar/FilterSets/Footer.tsx:96
 #, fuzzy
 msgid "Create"
@@ -4764,11 +4768,11 @@ msgstr "Creador"
 msgid "Crimson"
 msgstr "Acción"
 
-#: superset-frontend/src/components/Chart/ChartContextMenu.tsx:122
+#: superset-frontend/src/components/Chart/ChartContextMenu/ChartContextMenu.tsx:152
 msgid "Cross-filter will be applied to all of the charts that use this dataset."
 msgstr ""
 
-#: superset-frontend/src/components/Chart/ChartContextMenu.tsx:134
+#: superset-frontend/src/components/Chart/ChartContextMenu/ChartContextMenu.tsx:164
 #, fuzzy
 msgid "Cross-filtering is not enabled for this dashboard."
 msgstr "No hay filtros en este dashboard"
@@ -4813,7 +4817,7 @@ msgid "Custom SQL ad-hoc metrics are not enabled for this dataset"
 msgstr ""
 
 #: superset/connectors/sqla/utils.py:194 superset/errors.py:145
-#: superset/models/helpers.py:129 superset/models/helpers.py:864
+#: superset/models/helpers.py:138 superset/models/helpers.py:930
 msgid "Custom SQL fields cannot contain sub-queries."
 msgstr ""
 
@@ -4917,12 +4921,12 @@ msgstr ""
 msgid "Dashboard"
 msgstr "Dashboard"
 
-#: superset-frontend/src/explore/actions/saveModalActions.js:135
+#: superset-frontend/src/explore/actions/saveModalActions.js:129
 #, fuzzy, python-format
 msgid "Dashboard [%s] just got created and chart [%s] was added to it"
 msgstr "El dashboard [{}] ha sido creado y el gráfico [{}] ha sido añadido a él"
 
-#: superset/views/core.py:1122
+#: superset/views/core.py:1125
 msgid "Dashboard [{}] just got created and chart [{}] was added to it"
 msgstr "El dashboard [{}] ha sido creado y el gráfico [{}] ha sido añadido a él"
 
@@ -5024,7 +5028,7 @@ msgstr "Datos"
 msgid "Data Table"
 msgstr "Esitar Tabla"
 
-#: superset/datasets/commands/exceptions.py:197
+#: superset/datasets/commands/exceptions.py:214
 msgid "Data URI is not allowed."
 msgstr ""
 
@@ -5038,14 +5042,14 @@ msgstr ""
 msgid "Data Zoom"
 msgstr ""
 
-#: superset/sqllab/commands/results.py:116 superset/views/core.py:2195
+#: superset/sqllab/commands/results.py:116 superset/views/core.py:2198
 msgid ""
 "Data could not be deserialized from the results backend. The storage "
 "format might have changed, rendering the old data stake. You need to re-"
 "run the original query."
 msgstr ""
 
-#: superset/sqllab/commands/results.py:75 superset/views/core.py:2148
+#: superset/sqllab/commands/results.py:75 superset/views/core.py:2151
 #, fuzzy
 msgid ""
 "Data could not be retrieved from the results backend. You need to re-run "
@@ -5126,7 +5130,7 @@ msgstr ""
 msgid "Database Connections"
 msgstr "Probar Conexión"
 
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1467
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1464
 #, fuzzy
 msgid "Database Creation Error"
 msgstr "Base de datos"
@@ -5136,9 +5140,9 @@ msgid "Database URL"
 msgstr "URL de la Base de datos"
 
 #: superset-frontend/src/features/databases/DatabaseModal/ModalHeader.tsx:122
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:827
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:849
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1150
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:824
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:846
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1147
 #, fuzzy
 msgid "Database connected"
 msgstr "El Gráfico no ha podido crearse"
@@ -5165,7 +5169,7 @@ msgstr ""
 msgid "Database does not exist"
 msgstr "La base de datos no existe"
 
-#: superset/connectors/sqla/models.py:1793 superset/models/helpers.py:1966
+#: superset/models/helpers.py:2070
 #, fuzzy
 msgid "Database does not support subqueries"
 msgstr "La base de datos no existe"
@@ -5190,7 +5194,7 @@ msgid "Database is required for alerts"
 msgstr "La base de datos es requerida para las alertas"
 
 #: superset-frontend/src/features/databases/DatabaseModal/DatabaseConnectionForm/CommonParameters.tsx:113
-#: superset/db_engine_specs/base.py:1845
+#: superset/db_engine_specs/base.py:1870
 #: superset/db_engine_specs/clickhouse.py:209
 msgid "Database name"
 msgstr "Nombre de la Fuente de Datos"
@@ -5203,7 +5207,7 @@ msgstr "La base de datos no puede cambiar"
 msgid "Database not found."
 msgstr "La base de datos no existe"
 
-#: superset/views/core.py:1179
+#: superset/views/core.py:1182
 #, fuzzy, python-format
 msgid "Database not found: %(id)s"
 msgstr "La base de datos no existe"
@@ -5217,14 +5221,14 @@ msgstr "Los parametros del Gráfico son invalidos"
 msgid "Database passwords"
 msgstr "Base de datos"
 
-#: superset/db_engine_specs/base.py:1842
+#: superset/db_engine_specs/base.py:1867
 #: superset/db_engine_specs/clickhouse.py:206
 #: superset/db_engine_specs/databricks.py:52
 #, fuzzy
 msgid "Database port"
 msgstr "Base de datos"
 
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:811
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:808
 #, fuzzy
 msgid "Database settings updated"
 msgstr "El Gráfico no ha podido guardarse"
@@ -5257,7 +5261,7 @@ msgstr "Conjunto de Datos"
 msgid "Dataset %(name)s already exists"
 msgstr "La fuente de datos %(name)s ya existe"
 
-#: superset-frontend/src/explore/components/SaveModal.tsx:331
+#: superset-frontend/src/explore/components/SaveModal.tsx:364
 #, fuzzy
 msgid "Dataset Name"
 msgstr "Nombre de la Fuente de Datos"
@@ -5272,25 +5276,25 @@ msgstr "Capas de Anotación"
 msgid "Dataset column not found."
 msgstr "La base de datos no existe"
 
-#: superset/datasets/commands/exceptions.py:157
+#: superset/datasets/commands/exceptions.py:174
 msgid "Dataset could not be created."
 msgstr "El conjunto de datos no pudo ser creado."
 
-#: superset/datasets/commands/exceptions.py:165
+#: superset/datasets/commands/exceptions.py:182
 msgid "Dataset could not be deleted."
 msgstr "El conjunto de datos no pudo ser eliminado."
 
-#: superset/datasets/commands/exceptions.py:193
+#: superset/datasets/commands/exceptions.py:210
 #, fuzzy
 msgid "Dataset could not be duplicated."
 msgstr "El conjunto de datos no pudo ser actualizado."
 
-#: superset/datasets/commands/exceptions.py:161
-#: superset/datasets/commands/exceptions.py:173
+#: superset/datasets/commands/exceptions.py:178
+#: superset/datasets/commands/exceptions.py:190
 msgid "Dataset could not be updated."
 msgstr "El conjunto de datos no pudo ser actualizado."
 
-#: superset/datasets/commands/exceptions.py:149
+#: superset/datasets/commands/exceptions.py:166
 msgid "Dataset does not exist"
 msgstr "La fuente no existe"
 
@@ -5319,7 +5323,7 @@ msgstr "La base de datos no existe"
 msgid "Dataset name"
 msgstr "Nombre de la Fuente de Datos"
 
-#: superset/datasets/commands/exceptions.py:153
+#: superset/datasets/commands/exceptions.py:170
 msgid "Dataset parameters are invalid."
 msgstr "Los parametros del conjunto de datos son inválidos."
 
@@ -5328,7 +5332,7 @@ msgstr "Los parametros del conjunto de datos son inválidos."
 msgid "Dataset schema is invalid, caused by: %(error)s"
 msgstr ""
 
-#: superset/datasets/commands/exceptions.py:169
+#: superset/datasets/commands/exceptions.py:186
 msgid "Dataset(s) could not be bulk deleted."
 msgstr "Los Gráficos no han podido eliminarse"
 
@@ -5411,7 +5415,7 @@ msgstr "Fecha/Hora"
 msgid "Datetime Format"
 msgstr "Formato FechaHora"
 
-#: superset/connectors/sqla/models.py:1237 superset/models/helpers.py:1427
+#: superset/models/helpers.py:1510
 msgid ""
 "Datetime column not provided as part table configuration and is required "
 "by this type of chart"
@@ -5423,7 +5427,7 @@ msgstr ""
 msgid "Datetime format"
 msgstr "Formato Fecha/Hora"
 
-#: superset/db_engine_specs/base.py:106
+#: superset/db_engine_specs/base.py:107
 #, fuzzy
 msgid "Day"
 msgstr "día"
@@ -5437,7 +5441,7 @@ msgstr ""
 msgid "Days %s"
 msgstr "día"
 
-#: superset/connectors/sqla/models.py:1936 superset/models/helpers.py:988
+#: superset/connectors/sqla/models.py:1267 superset/models/helpers.py:1059
 msgid "Db engine did not return all queried columns"
 msgstr ""
 
@@ -5450,47 +5454,51 @@ msgstr "Activo"
 msgid "December"
 msgstr "Diciembre"
 
-#: superset-frontend/packages/superset-ui-chart-controls/src/shared-controls/customControls.tsx:70
+#: superset-frontend/packages/superset-ui-chart-controls/src/shared-controls/customControls.tsx:89
 msgid "Decides which column to sort the base axis by."
+msgstr ""
+
+#: superset-frontend/packages/superset-ui-chart-controls/src/shared-controls/customControls.tsx:160
+msgid "Decides which measure to sort the base axis by."
 msgstr ""
 
 #: superset/views/database/forms.py:194 superset/views/database/forms.py:373
 msgid "Decimal Character"
 msgstr "Caracter Decimal"
 
-#: superset/viz.py:2743
+#: superset/viz.py:2744
 msgid "Deck.gl - 3D Grid"
 msgstr ""
 
-#: superset/viz.py:2859
+#: superset/viz.py:2860
 msgid "Deck.gl - 3D HEX"
 msgstr ""
 
-#: superset/viz.py:2899
+#: superset/viz.py:2900
 msgid "Deck.gl - Arc"
 msgstr ""
 
-#: superset/viz.py:2880
+#: superset/viz.py:2881
 msgid "Deck.gl - GeoJSON"
 msgstr ""
 
-#: superset/viz.py:2468
+#: superset/viz.py:2469
 msgid "Deck.gl - Multiple Layers"
 msgstr "Deck.gl - Capas Múltiples"
 
-#: superset/viz.py:2775
+#: superset/viz.py:2776
 msgid "Deck.gl - Paths"
 msgstr ""
 
-#: superset/viz.py:2826
+#: superset/viz.py:2827
 msgid "Deck.gl - Polygon"
 msgstr ""
 
-#: superset/viz.py:2662
+#: superset/viz.py:2663
 msgid "Deck.gl - Scatter plot"
 msgstr ""
 
-#: superset/viz.py:2714
+#: superset/viz.py:2715
 msgid "Deck.gl - Screen Grid"
 msgstr ""
 
@@ -5749,7 +5757,7 @@ msgid_plural "Deleted %(num)d dashboards"
 msgstr[0] ""
 msgstr[1] ""
 
-#: superset/datasets/api.py:783
+#: superset/datasets/api.py:791
 #, python-format
 msgid "Deleted %(num)d dataset"
 msgid_plural "Deleted %(num)d datasets"
@@ -5935,7 +5943,7 @@ msgstr ""
 msgid "Dimensions"
 msgstr "Es dimensión"
 
-#: superset/viz.py:2005
+#: superset/viz.py:2006
 msgid "Directed Force Layout"
 msgstr "Disposición Dirigida Forzado"
 
@@ -6033,7 +6041,7 @@ msgstr "Estimar costo"
 msgid "Distribution"
 msgstr "Contribución"
 
-#: superset/viz.py:1801
+#: superset/viz.py:1802
 msgid "Distribution - Bar Chart"
 msgstr "Distribución - Gráfico de Barra"
 
@@ -6131,20 +6139,20 @@ msgstr ""
 msgid "Draw split lines for minor y-axis ticks"
 msgstr ""
 
-#: superset-frontend/src/components/Chart/DrillBy/DrillByMenuItems.tsx:181
-#: superset-frontend/src/components/Chart/DrillBy/DrillByMenuItems.tsx:191
+#: superset-frontend/src/components/Chart/DrillBy/DrillByMenuItems.tsx:203
+#: superset-frontend/src/components/Chart/DrillBy/DrillByMenuItems.tsx:213
 msgid "Drill by"
 msgstr ""
 
-#: superset-frontend/src/components/Chart/DrillBy/DrillByMenuItems.tsx:172
+#: superset-frontend/src/components/Chart/DrillBy/DrillByMenuItems.tsx:194
 msgid "Drill by is not available for this data point"
 msgstr ""
 
-#: superset-frontend/src/components/Chart/DrillBy/DrillByMenuItems.tsx:170
+#: superset-frontend/src/components/Chart/DrillBy/DrillByMenuItems.tsx:192
 msgid "Drill by is not yet supported for this chart type"
 msgstr ""
 
-#: superset-frontend/src/components/Chart/DrillBy/DrillByModal.tsx:154
+#: superset-frontend/src/components/Chart/DrillBy/DrillByModal.tsx:324
 #, fuzzy, python-format
 msgid "Drill by: %s"
 msgstr "Ordenar por"
@@ -6180,7 +6188,7 @@ msgid_plural "Drop columns here or click"
 msgstr[0] ""
 msgstr[1] ""
 
-#: superset-frontend/src/explore/components/controls/DndColumnSelectControl/DndMetricSelect.tsx:335
+#: superset-frontend/src/explore/components/controls/DndColumnSelectControl/DndMetricSelect.tsx:333
 #, fuzzy
 msgid "Drop a column/metric here or click"
 msgid_plural "Drop columns/metrics here or click"
@@ -6198,7 +6206,7 @@ msgid_plural "Drop columns here"
 msgstr[0] ""
 msgstr[1] ""
 
-#: superset-frontend/src/explore/components/controls/DndColumnSelectControl/DndMetricSelect.tsx:340
+#: superset-frontend/src/explore/components/controls/DndColumnSelectControl/DndMetricSelect.tsx:338
 #, fuzzy
 msgid "Drop column or metric here"
 msgid_plural "Drop columns or metrics here"
@@ -6233,7 +6241,7 @@ msgstr "Gráfico de Puntos"
 msgid "Duplicate"
 msgstr "Duplicar pestaña"
 
-#: superset/views/datasource/views.py:122
+#: superset/views/datasource/views.py:124
 #, python-format
 msgid "Duplicate column name(s): %(columns)s"
 msgstr ""
@@ -6364,7 +6372,7 @@ msgstr "Alertas e informes"
 msgid "END (EXCLUSIVE)"
 msgstr ""
 
-#: superset-frontend/packages/superset-ui-core/src/chart/components/SuperChartCore.tsx:171
+#: superset-frontend/packages/superset-ui-core/src/chart/components/SuperChartCore.tsx:175
 #, fuzzy
 msgid "ERROR"
 msgstr "%s Error"
@@ -6444,7 +6452,7 @@ msgstr "Editar Dashboard"
 msgid "Edit Database"
 msgstr "Editar Base de Datos"
 
-#: superset-frontend/src/components/Datasource/DatasourceModal.tsx:199
+#: superset-frontend/src/components/Datasource/DatasourceModal.tsx:241
 msgid "Edit Dataset "
 msgstr "Editar Base de Datos"
 
@@ -6490,7 +6498,7 @@ msgstr "Capas de Anotación"
 msgid "Edit annotation layer properties"
 msgstr "Editar propiedades de la capa de anotación"
 
-#: superset-frontend/src/components/Chart/DrillBy/DrillByModal.tsx:74
+#: superset-frontend/src/components/Chart/DrillBy/DrillByModal.tsx:107
 #: superset-frontend/src/components/Chart/DrillDetail/DrillDetailModal.tsx:44
 #: superset-frontend/src/dashboard/components/SliceHeaderControls/index.tsx:212
 #: superset-frontend/src/dashboard/components/SliceHeaderControls/index.tsx:405
@@ -6508,7 +6516,7 @@ msgstr "Editar propiedades de gráfico"
 msgid "Edit dashboard"
 msgstr "Editar Dashboard"
 
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1700
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1697
 msgid "Edit database"
 msgstr "Editar Base de Datos"
 
@@ -6571,7 +6579,7 @@ msgstr "Editando 1 filtro:"
 msgid "Either the database is spelled incorrectly or does not exist."
 msgstr ""
 
-#: superset/db_engine_specs/mysql.py:150 superset/db_engine_specs/presto.py:654
+#: superset/db_engine_specs/mysql.py:150 superset/db_engine_specs/presto.py:676
 #: superset/db_engine_specs/redshift.py:67
 #, python-format
 msgid "Either the username \"%(username)s\" or the password is incorrect."
@@ -6644,12 +6652,12 @@ msgstr "Probar Conexión"
 msgid "Empty column"
 msgstr "Columna"
 
-#: superset/charts/data/api.py:363
+#: superset/charts/data/api.py:366
 #, fuzzy
 msgid "Empty query result"
 msgstr "¿Consulta vacía?"
 
-#: superset/connectors/sqla/models.py:1243 superset/models/helpers.py:1433
+#: superset/models/helpers.py:1516
 msgid "Empty query?"
 msgstr "¿Consulta vacía?"
 
@@ -6710,7 +6718,7 @@ msgstr ""
 msgid "Enable server side pagination of results (experimental feature)"
 msgstr ""
 
-#: superset/viz.py:2567
+#: superset/viz.py:2568
 msgid ""
 "Encountered invalid NULL spatial entry,"
 "                                        please consider filtering those "
@@ -6836,7 +6844,7 @@ msgstr ""
 msgid "Equal to (=)"
 msgstr ""
 
-#: superset-frontend/src/components/Datasource/DatasourceModal.tsx:140
+#: superset-frontend/src/components/Datasource/DatasourceModal.tsx:182
 #: superset-frontend/src/dashboard/components/PropertiesModal/index.tsx:139
 #: superset-frontend/src/dashboard/components/PropertiesModal/index.tsx:298
 #: superset-frontend/src/explore/components/EmbedCodeContent.jsx:57
@@ -6846,22 +6854,22 @@ msgstr ""
 msgid "Error"
 msgstr "%s Error"
 
-#: superset/connectors/sqla/models.py:1650 superset/models/helpers.py:1843
+#: superset/models/helpers.py:1925
 #, python-format
 msgid "Error in jinja expression in HAVING clause: %(msg)s"
 msgstr "Error en la expresión jinja en la cláusula HAVING: %(msg)s"
 
-#: superset/connectors/sqla/models.py:1145
+#: superset/connectors/sqla/models.py:1150 superset/models/helpers.py:835
 #, python-format
 msgid "Error in jinja expression in RLS filters: %(msg)s"
 msgstr "Error en la expresión jinja en los filtros RLS: %(msg)s"
 
-#: superset/connectors/sqla/models.py:1633 superset/models/helpers.py:1831
+#: superset/models/helpers.py:1907
 #, python-format
 msgid "Error in jinja expression in WHERE clause: %(msg)s"
 msgstr "Error en la expresión jinja en la cláusula WHERE: %(msg)s"
 
-#: superset/connectors/sqla/models.py:826
+#: superset/connectors/sqla/models.py:831
 #, python-format
 msgid "Error in jinja expression in fetch values predicate: %(msg)s"
 msgstr "Error en la expresión jinja en el predicado de obtener valores: %(msg)s"
@@ -6886,7 +6894,7 @@ msgstr "Error obteniendo datos"
 msgid "Error while fetching data: %s"
 msgstr "Error obteniendo datos"
 
-#: superset/connectors/sqla/models.py:953 superset/models/helpers.py:1029
+#: superset/connectors/sqla/models.py:958 superset/models/helpers.py:1107
 #, fuzzy, python-format
 msgid "Error while rendering virtual dataset query: %(msg)s"
 msgstr "Error al guardar el conjunto de datos: %s"
@@ -6896,12 +6904,12 @@ msgstr "Error al guardar el conjunto de datos: %s"
 msgid "Error: %(error)s"
 msgstr ""
 
-#: superset/views/core.py:820 superset/views/core.py:1918
+#: superset/views/core.py:823 superset/views/core.py:1921
 #, python-format
 msgid "Error: %(msg)s"
 msgstr ""
 
-#: superset/views/core.py:817
+#: superset/views/core.py:820
 #, fuzzy
 msgid "Error: permalink state not found"
 msgstr "No se encontró el estado del informe programado"
@@ -6914,7 +6922,7 @@ msgstr "Estimar costo"
 msgid "Estimate selected query cost"
 msgstr "Estimar el costo de la consulta seleccionada"
 
-#: superset-frontend/src/SqlLab/components/SqlEditor/index.jsx:621
+#: superset-frontend/src/SqlLab/components/SqlEditor/index.jsx:622
 msgid "Estimate the cost before running a query"
 msgstr "Estimar el costo antes de ejecutar una consulta"
 
@@ -6938,7 +6946,7 @@ msgstr "Nombre de Hoja"
 msgid "Event definition"
 msgstr ""
 
-#: superset/viz.py:2933
+#: superset/viz.py:2934
 msgid "Event flow"
 msgstr "Flujo de Eventos"
 
@@ -7026,7 +7034,7 @@ msgstr "Registro de ejecución"
 msgid "Execution log"
 msgstr "Registro de ejecución"
 
-#: superset-frontend/src/SqlLab/components/SaveDatasetModal/index.tsx:411
+#: superset-frontend/src/SqlLab/components/SaveDatasetModal/index.tsx:419
 #, fuzzy
 msgid "Existing dataset"
 msgstr "Cambiar fuente"
@@ -7037,7 +7045,7 @@ msgstr "Cambiar fuente"
 msgid "Exit fullscreen"
 msgstr "Alternar pantalla completa"
 
-#: superset-frontend/plugins/plugin-chart-echarts/src/constants.ts:92
+#: superset-frontend/plugins/plugin-chart-echarts/src/constants.ts:90
 #, fuzzy
 msgid "Expand"
 msgstr "y"
@@ -7087,11 +7095,11 @@ msgid "Experimental"
 msgstr ""
 
 #: superset-frontend/src/SqlLab/components/ExploreCtasResultsButton/index.tsx:91
-#: superset/views/core.py:987
+#: superset/views/core.py:990
 msgid "Explore"
 msgstr "Explorar"
 
-#: superset/views/core.py:985
+#: superset/views/core.py:988
 #, python-format
 msgid "Explore - %(table)s"
 msgstr "Explorar - %(table)s"
@@ -7260,12 +7268,12 @@ msgstr "Falla"
 msgid "Failed"
 msgstr "Falló"
 
-#: superset-frontend/src/SqlLab/actions/sqlLab.js:210
-#: superset-frontend/src/SqlLab/actions/sqlLab.js:346
+#: superset-frontend/src/SqlLab/actions/sqlLab.js:211
+#: superset-frontend/src/SqlLab/actions/sqlLab.js:351
 msgid "Failed at retrieving results"
 msgstr "Falla al recuperar los resultados"
 
-#: superset-frontend/src/SqlLab/actions/sqlLab.js:500
+#: superset-frontend/src/SqlLab/actions/sqlLab.js:505
 #, python-format
 msgid "Failed at stopping query. %s"
 msgstr ""
@@ -7279,12 +7287,21 @@ msgstr ""
 msgid "Failed to execute %(query)s"
 msgstr ""
 
+#: superset-frontend/src/components/Chart/DrillBy/DrillByModal.tsx:82
+msgid "Failed to generate chart edit URL"
+msgstr ""
+
 #: superset-frontend/src/pages/Chart/index.tsx:57
 msgid "Failed to load chart data"
 msgstr ""
 
+#: superset-frontend/src/components/Chart/DrillBy/DrillByModal.tsx:306
 #: superset-frontend/src/pages/Chart/index.tsx:69
 msgid "Failed to load chart data."
+msgstr ""
+
+#: superset-frontend/src/components/Chart/DrillBy/DrillByMenuItems.tsx:147
+msgid "Failed to load dimensions for drill by"
 msgstr ""
 
 #: superset-frontend/src/explore/components/controls/FilterControl/AdhocFilterEditPopoverSimpleTabContent/useAdvancedDataTypes.ts:70
@@ -7481,7 +7498,7 @@ msgstr "Valor del filtro (sensible a mayúsculas/minúsculas)"
 msgid "Filter value is required"
 msgstr "Fuentes de datos"
 
-#: superset/connectors/sqla/models.py:1549 superset/models/helpers.py:1754
+#: superset/models/helpers.py:1822
 msgid "Filter value list cannot be empty"
 msgstr ""
 
@@ -7497,7 +7514,7 @@ msgstr "Filtrable"
 #: superset-frontend/src/dashboard/components/nativeFilters/FilterBar/Header/index.tsx:109
 #: superset-frontend/src/explore/controls.jsx:446
 #: superset-frontend/src/visualizations/FilterBox/controlPanel.jsx:35
-#: superset/viz.py:2142
+#: superset/viz.py:2143
 msgid "Filters"
 msgstr "Filtros"
 
@@ -7535,9 +7552,9 @@ msgid ""
 " 'Europe')."
 msgstr ""
 
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1077
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1125
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1857
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1074
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1122
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1854
 msgid "Finish"
 msgstr ""
 
@@ -7664,11 +7681,11 @@ msgstr ""
 msgid "Forest Green"
 msgstr "Frecuencia de actualización"
 
-#: superset/explore/commands/get.py:87 superset/views/core.py:834
+#: superset/explore/commands/get.py:87 superset/views/core.py:837
 msgid "Form data not found in cache, reverting to chart metadata."
 msgstr ""
 
-#: superset/explore/commands/get.py:95 superset/views/core.py:840
+#: superset/explore/commands/get.py:95 superset/views/core.py:843
 msgid "Form data not found in cache, reverting to dataset metadata."
 msgstr ""
 
@@ -7920,7 +7937,7 @@ msgid "Header Row"
 msgstr "Fila de Encabezado"
 
 #: superset-frontend/plugins/legacy-plugin-chart-heatmap/src/index.js:38
-#: superset/viz.py:2249
+#: superset/viz.py:2250
 msgid "Heatmap"
 msgstr "Mapa de Calor"
 
@@ -7975,7 +7992,7 @@ msgid "Hierarchy"
 msgstr "Buscar"
 
 #: superset-frontend/plugins/legacy-plugin-chart-histogram/src/index.js:37
-#: superset/viz.py:1743
+#: superset/viz.py:1744
 msgid "Histogram"
 msgstr "Histograma"
 
@@ -7989,7 +8006,7 @@ msgstr "Inicio"
 msgid "Horizon Chart"
 msgstr "Gráficos de Horizonte"
 
-#: superset/viz.py:2310
+#: superset/viz.py:2311
 msgid "Horizon Charts"
 msgstr "Gráficos de Horizonte"
 
@@ -8010,12 +8027,12 @@ msgstr ""
 msgid "Host"
 msgstr ""
 
-#: superset/db_engine_specs/base.py:1839
+#: superset/db_engine_specs/base.py:1864
 #: superset/db_engine_specs/clickhouse.py:203
 msgid "Hostname or IP address"
 msgstr ""
 
-#: superset/db_engine_specs/base.py:104
+#: superset/db_engine_specs/base.py:105
 #, fuzzy
 msgid "Hour"
 msgstr "hora"
@@ -8205,12 +8222,12 @@ msgstr "Importar dashboards"
 msgid "Import database failed for an unknown reason"
 msgstr "Importar la base de datos falló por una razón desconocida"
 
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1912
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1909
 #, fuzzy
 msgid "Import database from file"
 msgstr "Editar Base de Datos"
 
-#: superset/datasets/commands/exceptions.py:185
+#: superset/datasets/commands/exceptions.py:202
 msgid "Import dataset failed for an unknown reason"
 msgstr "Importar el conjunto de datos falló por una razón desconocida"
 
@@ -8357,7 +8374,7 @@ msgstr "rolling_type inválido: %(type)s"
 msgid "Invalid certificate"
 msgstr "Certificado Inválido"
 
-#: superset/views/core.py:1422
+#: superset/views/core.py:1425
 msgid ""
 "Invalid connection string, a valid string usually follows:\n"
 "'DRIVER://USER:PASSWORD@DB-HOST/DATABASE-NAME'"
@@ -8390,11 +8407,11 @@ msgstr "Operador acumulativo inválido: %(operator)s"
 msgid "Invalid date/timestamp format"
 msgstr "Formato de fecha/hora inválido"
 
-#: superset/viz.py:2160
+#: superset/viz.py:2161
 msgid "Invalid filter configuration, please select a column"
 msgstr "Configuración de filtro invalido, por favor selecciona una columna"
 
-#: superset/connectors/sqla/models.py:1623 superset/models/helpers.py:1820
+#: superset/models/helpers.py:1897
 #, python-format
 msgid "Invalid filter operation type: %(op)s"
 msgstr "Tipo de operación de filtrado inválida: %(op)s"
@@ -8448,7 +8465,7 @@ msgstr "rolling_type inválido: %(type)s"
 msgid "Invalid rolling_type: %(type)s"
 msgstr "rolling_type inválido: %(type)s"
 
-#: superset/viz.py:2530
+#: superset/viz.py:2531
 #, python-format
 msgid "Invalid spatial point encountered: %s"
 msgstr "Punto espacial inválido encontrado: %s"
@@ -8839,7 +8856,7 @@ msgstr "Última modificación"
 
 #: superset-frontend/packages/superset-ui-chart-controls/src/sections/chartTitle.tsx:28
 #: superset-frontend/packages/superset-ui-chart-controls/src/shared-controls/components/ColumnConfigControl/constants.tsx:100
-#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:90
+#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:87
 #: superset-frontend/plugins/plugin-chart-pivot-table/src/plugin/controlPanel.tsx:371
 #, fuzzy
 msgid "Left"
@@ -8893,7 +8910,6 @@ msgstr "Valores Nulos"
 #: superset-frontend/plugins/legacy-plugin-chart-rose/src/index.js:34
 #: superset-frontend/plugins/legacy-plugin-chart-sankey/src/index.js:40
 #: superset-frontend/plugins/legacy-plugin-chart-sunburst/src/index.js:33
-#: superset-frontend/plugins/legacy-plugin-chart-treemap/src/index.js:43
 #: superset-frontend/plugins/legacy-plugin-chart-world-map/src/index.js:39
 #: superset-frontend/plugins/legacy-preset-chart-nvd3/src/Area/index.js:47
 #: superset-frontend/plugins/legacy-preset-chart-nvd3/src/Bubble/index.js:37
@@ -8913,7 +8929,7 @@ msgstr ""
 #: superset-frontend/plugins/legacy-plugin-chart-heatmap/src/controlPanel.tsx:289
 #: superset-frontend/plugins/legacy-plugin-chart-histogram/src/controlPanel.ts:115
 #: superset-frontend/plugins/legacy-preset-chart-nvd3/src/NVD3Controls.tsx:156
-#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:102
+#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:99
 #, fuzzy
 msgid "Legend"
 msgstr "Modificado"
@@ -8923,7 +8939,7 @@ msgstr "Modificado"
 msgid "Legend Format"
 msgstr "Formato de correo electrónico"
 
-#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:95
+#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:92
 #, fuzzy
 msgid "Legend Orientation"
 msgstr "Eliminar anotación"
@@ -8933,7 +8949,7 @@ msgstr "Eliminar anotación"
 msgid "Legend Position"
 msgstr "última partición:"
 
-#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:75
+#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:72
 msgid "Legend type"
 msgstr ""
 
@@ -9258,13 +9274,13 @@ msgstr "LUN"
 msgid "Main Datetime Column"
 msgstr "Columna principal de fecha y hora"
 
-#: superset-frontend/src/components/Chart/ChartRenderer.jsx:283
+#: superset-frontend/src/components/Chart/ChartRenderer.jsx:292
 msgid ""
 "Make sure that the controls are configured properly and the datasource "
 "contains data for the selected time range"
 msgstr ""
 
-#: superset/views/core.py:1717
+#: superset/views/core.py:1720
 msgid ""
 "Malformed request. slice_id or table_name and db_name arguments are "
 "expected"
@@ -9340,7 +9356,7 @@ msgstr "Tipo de Markup"
 msgid "MapBox"
 msgstr ""
 
-#: superset/viz.py:2322
+#: superset/viz.py:2323
 msgid "Mapbox"
 msgstr ""
 
@@ -9348,7 +9364,7 @@ msgstr ""
 msgid "March"
 msgstr "Marzo"
 
-#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:53
+#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:50
 #, fuzzy
 msgid "Margin"
 msgstr "Origen"
@@ -9434,7 +9450,7 @@ msgid ""
 "this insures that the circle respects this maximum radius."
 msgstr ""
 
-#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:232
+#: superset-frontend/packages/superset-ui-chart-controls/src/constants.ts:70
 #, fuzzy
 msgid "Maximum value"
 msgstr "Valores Nulos"
@@ -9528,9 +9544,8 @@ msgstr "Método"
 msgid "Metric"
 msgstr "Métrica"
 
-#: superset/connectors/sqla/models.py:1264
-#: superset/connectors/sqla/models.py:1847 superset/models/helpers.py:1192
-#: superset/models/helpers.py:1448
+#: superset/connectors/sqla/models.py:1178 superset/models/helpers.py:1271
+#: superset/models/helpers.py:1537
 #, python-format
 msgid "Metric '%(metric)s' does not exist"
 msgstr "La métrica '%(metric)s' no existe"
@@ -9717,11 +9732,11 @@ msgstr ""
 
 #: superset-frontend/plugins/plugin-chart-echarts/src/Pie/controlPanel.tsx:85
 #: superset-frontend/plugins/plugin-chart-echarts/src/Sunburst/controlPanel.tsx:89
-#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:155
+#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:152
 msgid "Minimum threshold in percentage points for showing labels."
 msgstr ""
 
-#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:231
+#: superset-frontend/packages/superset-ui-chart-controls/src/constants.ts:69
 #, fuzzy
 msgid "Minimum value"
 msgstr "Valores Nulos"
@@ -9744,7 +9759,7 @@ msgstr ""
 msgid "Minor Split Line"
 msgstr ""
 
-#: superset/db_engine_specs/base.py:99
+#: superset/db_engine_specs/base.py:100
 #, fuzzy
 msgid "Minute"
 msgstr "minuto"
@@ -9811,7 +9826,7 @@ msgstr "Columnas modificadas: %s"
 msgid "Monday"
 msgstr "Lunes"
 
-#: superset/db_engine_specs/base.py:108
+#: superset/db_engine_specs/base.py:109
 #, fuzzy
 msgid "Month"
 msgstr "mes"
@@ -9855,7 +9870,6 @@ msgid "Multi-Layers"
 msgstr ""
 
 #: superset-frontend/plugins/legacy-plugin-chart-sunburst/src/index.js:33
-#: superset-frontend/plugins/legacy-plugin-chart-treemap/src/index.js:44
 #: superset-frontend/plugins/plugin-chart-echarts/src/Sunburst/index.ts:49
 #: superset-frontend/plugins/plugin-chart-echarts/src/Tree/index.ts:43
 #: superset-frontend/plugins/plugin-chart-echarts/src/Treemap/index.ts:66
@@ -9915,11 +9929,11 @@ msgstr "Debe ser único"
 msgid "Must choose either a chart or a dashboard"
 msgstr "Elija un gráfico o un dashboard, no ambos"
 
-#: superset/viz.py:2346
+#: superset/viz.py:2347
 msgid "Must have a [Group By] column to have 'count' as the [Label]"
 msgstr "Debe tener una columna [Group By] para tener 'count' como [Etiqueta]"
 
-#: superset/viz.py:1752
+#: superset/viz.py:1753
 msgid "Must have at least one numeric column specified"
 msgstr "Debe especificarse al menos una columna numérica"
 
@@ -9927,7 +9941,7 @@ msgstr "Debe especificarse al menos una columna numérica"
 msgid "Must provide credentials for the SSH Tunnel"
 msgstr ""
 
-#: superset/connectors/sqla/models.py:1582 superset/models/helpers.py:1780
+#: superset/models/helpers.py:1855
 msgid "Must specify a value for filters with comparison operators"
 msgstr ""
 
@@ -9970,8 +9984,8 @@ msgstr "Métrica"
 
 #: superset-frontend/plugins/plugin-chart-echarts/src/Tree/controlPanel.tsx:73
 #: superset-frontend/src/SqlLab/components/SaveQuery/index.tsx:149
-#: superset-frontend/src/SqlLab/components/SqlEditor/index.jsx:782
-#: superset-frontend/src/components/Datasource/ChangeDatasourceModal.tsx:212
+#: superset-frontend/src/SqlLab/components/SqlEditor/index.jsx:783
+#: superset-frontend/src/components/Datasource/ChangeDatasourceModal.tsx:214
 #: superset-frontend/src/explore/components/PropertiesModal/index.tsx:354
 #: superset-frontend/src/explore/components/PropertiesModal/index.tsx:356
 #: superset-frontend/src/explore/components/controls/AnnotationLayerControl/AnnotationLayer.jsx:789
@@ -10082,7 +10096,7 @@ msgstr "Configurar ámbito de filtros"
 msgid "New header"
 msgstr "Encabezado"
 
-#: superset-frontend/src/SqlLab/components/SqlEditor/index.jsx:329
+#: superset-frontend/src/SqlLab/components/SqlEditor/index.jsx:330
 msgid "New tab"
 msgstr "Nueva pestaña"
 
@@ -10179,7 +10193,7 @@ msgstr "No hay gráficos"
 msgid "No columns"
 msgstr "Columna"
 
-#: superset-frontend/src/components/Chart/DrillBy/DrillByMenuItems.tsx:242
+#: superset-frontend/src/components/Chart/DrillBy/DrillByMenuItems.tsx:264
 #, fuzzy
 msgid "No columns found"
 msgstr "Filtros Incompatibles (%d)"
@@ -10237,7 +10251,7 @@ msgstr ""
 msgid "No description available."
 msgstr "descripción"
 
-#: superset-frontend/src/components/Chart/DrillBy/DrillByMenuItems.tsx:174
+#: superset-frontend/src/components/Chart/DrillBy/DrillByMenuItems.tsx:196
 msgid "No dimensions available for drill by"
 msgstr ""
 
@@ -10313,7 +10327,7 @@ msgstr "No se han encontrado resultados"
 msgid "No results match your filter criteria"
 msgstr ""
 
-#: superset-frontend/src/components/Chart/ChartRenderer.jsx:280
+#: superset-frontend/src/components/Chart/ChartRenderer.jsx:289
 #: superset-frontend/src/explore/components/DataTablesPane/components/useResultsPane.tsx:133
 msgid "No results were returned for this query"
 msgstr ""
@@ -10402,7 +10416,7 @@ msgid "Node size"
 msgstr "Tamaño burbuja"
 
 #: superset-frontend/packages/superset-ui-chart-controls/src/sections/advancedAnalytics.tsx:41
-#: superset-frontend/packages/superset-ui-chart-controls/src/shared-controls/customControls.tsx:45
+#: superset-frontend/packages/superset-ui-chart-controls/src/shared-controls/customControls.tsx:49
 #: superset-frontend/packages/superset-ui-chart-controls/src/shared-controls/sharedControls.tsx:187
 #: superset-frontend/packages/superset-ui-chart-controls/src/shared-controls/sharedControls.tsx:270
 #: superset-frontend/packages/superset-ui-chart-controls/src/shared-controls/sharedControls.tsx:286
@@ -10412,7 +10426,7 @@ msgstr "Tamaño burbuja"
 #: superset-frontend/plugins/legacy-preset-chart-nvd3/src/NVD3Controls.tsx:402
 #: superset-frontend/plugins/plugin-chart-echarts/src/BigNumber/BigNumberWithTrendline/controlPanel.tsx:182
 #: superset-frontend/plugins/plugin-chart-echarts/src/Tree/controlPanel.tsx:243
-#: superset-frontend/plugins/plugin-chart-echarts/src/constants.ts:84
+#: superset-frontend/plugins/plugin-chart-echarts/src/constants.ts:82
 #: superset-frontend/src/dashboard/components/nativeFilters/FilterBar/FilterSets/FiltersHeader.tsx:124
 #: superset-frontend/src/dashboard/components/nativeFilters/FilterCard/ScopeRow.tsx:82
 #: superset-frontend/src/explore/components/ExploreChartHeader/index.jsx:196
@@ -10542,7 +10556,6 @@ msgstr ""
 #: superset-frontend/plugins/legacy-plugin-chart-partition/src/controlPanel.tsx:144
 #: superset-frontend/plugins/legacy-plugin-chart-pivot-table/src/controlPanel.ts:117
 #: superset-frontend/plugins/legacy-plugin-chart-rose/src/controlPanel.tsx:67
-#: superset-frontend/plugins/legacy-plugin-chart-treemap/src/controlPanel.ts:67
 #: superset-frontend/plugins/legacy-preset-chart-nvd3/src/Pie/controlPanel.ts:68
 #: superset-frontend/plugins/plugin-chart-echarts/src/BigNumber/BigNumberTotal/controlPanel.ts:97
 #: superset-frontend/plugins/plugin-chart-echarts/src/BigNumber/BigNumberWithTrendline/controlPanel.tsx:276
@@ -10626,7 +10639,7 @@ msgstr "Periodo de tiempo"
 msgid "OCT"
 msgstr "OCT"
 
-#: superset-frontend/src/components/Datasource/DatasourceModal.tsx:184
+#: superset-frontend/src/components/Datasource/DatasourceModal.tsx:226
 #: superset-frontend/src/components/Modal/Modal.tsx:231
 #: superset-frontend/src/components/Table/index.tsx:198
 #: superset-frontend/src/explore/components/controls/AnnotationLayerControl/AnnotationLayer.jsx:865
@@ -10634,7 +10647,7 @@ msgid "OK"
 msgstr "OK"
 
 #: superset-frontend/src/components/ImportModal/index.tsx:267
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1379
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1376
 msgid "OVERWRITE"
 msgstr "SOBRESCRIBIR"
 
@@ -10689,27 +10702,27 @@ msgstr "Uno o varios controles para pivotar como columnas"
 msgid "One or many metrics to display"
 msgstr "Una o varias métricas para mostrar"
 
-#: superset/datasets/commands/exceptions.py:90
+#: superset/datasets/commands/exceptions.py:107
 msgid "One or more columns already exist"
 msgstr "Una o más columnas ya existen"
 
-#: superset/datasets/commands/exceptions.py:80
+#: superset/datasets/commands/exceptions.py:97
 msgid "One or more columns are duplicated"
 msgstr "Una o más columnas están duplicadas"
 
-#: superset/datasets/commands/exceptions.py:70
+#: superset/datasets/commands/exceptions.py:87
 msgid "One or more columns do not exist"
 msgstr "Una o más columnas no existen"
 
-#: superset/datasets/commands/exceptions.py:119
+#: superset/datasets/commands/exceptions.py:136
 msgid "One or more metrics already exist"
 msgstr "Una o más métricas ya existen"
 
-#: superset/datasets/commands/exceptions.py:109
+#: superset/datasets/commands/exceptions.py:126
 msgid "One or more metrics are duplicated"
 msgstr "Una o más métricas están duplicadas"
 
-#: superset/datasets/commands/exceptions.py:99
+#: superset/datasets/commands/exceptions.py:116
 msgid "One or more metrics do not exist"
 msgstr "Una o más métricas no existen"
 
@@ -10728,7 +10741,7 @@ msgstr "Issue 1006 - Faltan uno o más parámetros especificados en la consulta.
 msgid "One or more parameters specified in the query are missing."
 msgstr "Issue 1006 - Faltan uno o más parámetros especificados en la consulta."
 
-#: superset/views/core.py:1992
+#: superset/views/core.py:1995
 msgid ""
 "One or more required fields are missing in the request. Please try again,"
 " and if the problem persists contact your administrator."
@@ -10743,7 +10756,7 @@ msgstr "Una o más capas de anotación fallaron al cargar."
 msgid "Only SELECT statements are allowed against this database."
 msgstr "Solo las consultas `SELECT` están permitidas en esta base de datos"
 
-#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:136
+#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:133
 msgid "Only Total"
 msgstr ""
 
@@ -10763,7 +10776,7 @@ msgstr ""
 msgid "Only selected panels will be affected by this filter"
 msgstr ""
 
-#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:139
+#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:136
 msgid ""
 "Only show the total value on the stacked chart, and not show on the "
 "selected category"
@@ -10891,7 +10904,7 @@ msgstr ""
 msgid "Options"
 msgstr "%s opción(es)"
 
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:918
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:915
 msgid "Or choose from a list of other databases we support:"
 msgstr ""
 
@@ -10910,7 +10923,7 @@ msgstr ""
 msgid "Ordering"
 msgstr "Orden descendente"
 
-#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:86
+#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:83
 #, fuzzy
 msgid "Orientation"
 msgstr "Eliminar anotación"
@@ -10950,7 +10963,7 @@ msgstr ""
 
 #: superset-frontend/src/explore/components/controls/VizTypeControl/VizTypeGallery.tsx:126
 #: superset-frontend/src/features/databases/DatabaseModal/ExtraOptions.tsx:443
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:938
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:935
 #: superset-frontend/src/features/home/EmptyState.tsx:112
 #: superset/views/database/forms.py:155 superset/views/database/forms.py:161
 #, fuzzy
@@ -11040,7 +11053,7 @@ msgstr "Sobrescribir el Dashboard [%s]"
 msgid "Overwrite Duplicate Columns"
 msgstr "Manglar Columnas Duplicadas"
 
-#: superset-frontend/src/SqlLab/components/SaveDatasetModal/index.tsx:404
+#: superset-frontend/src/SqlLab/components/SaveDatasetModal/index.tsx:412
 #, fuzzy
 msgid "Overwrite existing"
 msgstr "Continuar editando"
@@ -11060,7 +11073,7 @@ msgstr ""
 msgid "Owner"
 msgstr "Propietario"
 
-#: superset-frontend/src/components/Datasource/ChangeDatasourceModal.tsx:235
+#: superset-frontend/src/components/Datasource/ChangeDatasourceModal.tsx:237
 #: superset-frontend/src/components/Datasource/DatasourceEditor.jsx:567
 #: superset-frontend/src/components/MetadataBar/ContentConfig.tsx:93
 #: superset-frontend/src/dashboard/components/PropertiesModal/PropertiesModal.test.tsx:408
@@ -11082,7 +11095,7 @@ msgid "Owners"
 msgstr "Propietarios"
 
 #: superset/commands/exceptions.py:108
-#: superset/datasets/commands/exceptions.py:144
+#: superset/datasets/commands/exceptions.py:161
 msgid "Owners are invalid"
 msgstr "Los propietarios son invalidos"
 
@@ -11126,7 +11139,7 @@ msgid "Pandas resample rule"
 msgstr "Regla de Remuestra Pandas"
 
 #: superset-frontend/plugins/legacy-plugin-chart-parallel-coordinates/src/index.js:33
-#: superset/viz.py:2219
+#: superset/viz.py:2220
 msgid "Parallel Coordinates"
 msgstr "Coordenadas Paralelas"
 
@@ -11158,7 +11171,6 @@ msgstr "Parsear Fechas"
 
 #: superset-frontend/plugins/legacy-plugin-chart-partition/src/index.js:26
 #: superset-frontend/plugins/legacy-plugin-chart-sunburst/src/index.js:26
-#: superset-frontend/plugins/legacy-plugin-chart-treemap/src/index.js:29
 #: superset-frontend/plugins/plugin-chart-echarts/src/Pie/index.ts:55
 #: superset-frontend/plugins/plugin-chart-echarts/src/Sunburst/index.ts:39
 #: superset-frontend/plugins/plugin-chart-echarts/src/Tree/index.ts:33
@@ -11171,7 +11183,7 @@ msgstr ""
 msgid "Partition Chart"
 msgstr "Partición de diagrama"
 
-#: superset/viz.py:3071
+#: superset/viz.py:3072
 msgid "Partition Diagram"
 msgstr "Partición de diagrama"
 
@@ -11192,7 +11204,7 @@ msgstr ""
 
 #: superset-frontend/src/features/databases/DatabaseModal/DatabaseConnectionForm/CommonParameters.tsx:154
 #: superset-frontend/src/features/databases/DatabaseModal/SSHTunnelForm.tsx:132
-#: superset/db_engine_specs/base.py:1838
+#: superset/db_engine_specs/base.py:1863
 #: superset/db_engine_specs/clickhouse.py:202
 #, fuzzy
 msgid "Password"
@@ -11249,12 +11261,11 @@ msgstr "Métroca de orden"
 
 #: superset-frontend/plugins/plugin-chart-echarts/src/Pie/controlPanel.tsx:81
 #: superset-frontend/plugins/plugin-chart-echarts/src/Sunburst/controlPanel.tsx:85
-#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:151
+#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:148
 msgid "Percentage threshold"
 msgstr ""
 
 #: superset-frontend/plugins/legacy-plugin-chart-sankey/src/index.js:41
-#: superset-frontend/plugins/legacy-plugin-chart-treemap/src/index.js:45
 #: superset-frontend/plugins/legacy-preset-chart-nvd3/src/Area/index.js:49
 #: superset-frontend/plugins/legacy-preset-chart-nvd3/src/Bar/index.js:43
 #: superset-frontend/plugins/legacy-preset-chart-nvd3/src/Compare/index.js:40
@@ -11326,23 +11337,23 @@ msgstr ""
 msgid "Pick a granularity in the Time section or uncheck 'Include Time'"
 msgstr "Elige una granularidad en la sección de tiempo o desmarca 'Incluir tiempo'"
 
-#: superset/viz.py:1605
+#: superset/viz.py:1606
 msgid "Pick a metric for left axis!"
 msgstr "Elige una métrica para el eje izquierdo!"
 
-#: superset/viz.py:1607
+#: superset/viz.py:1608
 msgid "Pick a metric for right axis!"
 msgstr "Elige una métrica para el eje derecho!"
 
-#: superset/viz.py:1195
+#: superset/viz.py:1196
 msgid "Pick a metric for x, y and size"
 msgstr "Elige una métrica para 'x', 'y' y 'tamaño'"
 
-#: superset/viz.py:1234
+#: superset/viz.py:1235
 msgid "Pick a metric to display"
 msgstr "Elige qué métrica mostrar"
 
-#: superset/viz.py:1260 superset/viz.py:1294
+#: superset/viz.py:1261 superset/viz.py:1295
 msgid "Pick a metric!"
 msgstr "Elige una métrica!"
 
@@ -11358,7 +11369,7 @@ msgstr ""
 msgid "Pick a set of deck.gl charts to layer on top of one another"
 msgstr ""
 
-#: superset/viz.py:1390 superset/viz.py:1653
+#: superset/viz.py:1391 superset/viz.py:1654
 msgid "Pick a time granularity for your time series"
 msgstr "Elige una granularidad de tiempo para tus series temporales."
 
@@ -11366,15 +11377,15 @@ msgstr "Elige una granularidad de tiempo para tus series temporales."
 msgid "Pick a title for you annotation."
 msgstr ""
 
-#: superset/viz.py:1815
+#: superset/viz.py:1816
 msgid "Pick at least one field for [Series]"
 msgstr "Elige al menos un campo para [Series]"
 
-#: superset/viz.py:857 superset/viz.py:1813
+#: superset/viz.py:857 superset/viz.py:1814
 msgid "Pick at least one metric"
 msgstr "Elige al menos una métrica"
 
-#: superset/viz.py:1943
+#: superset/viz.py:1944
 msgid "Pick exactly 2 columns as [Source / Target]"
 msgstr "Elige exactamente 2 columnas como [Origen / Destino]"
 
@@ -11439,7 +11450,7 @@ msgstr ""
 msgid "Pixels"
 msgstr ""
 
-#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:71
+#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:68
 msgid "Plain"
 msgstr ""
 
@@ -11459,7 +11470,7 @@ msgid ""
 msgstr ""
 
 #: superset/db_engine_specs/athena.py:56
-#: superset/db_engine_specs/bigquery.py:210
+#: superset/db_engine_specs/bigquery.py:211
 #: superset/db_engine_specs/postgres.py:161
 #: superset/db_engine_specs/snowflake.py:117
 #, python-format
@@ -11487,7 +11498,7 @@ msgstr ""
 msgid "Please choose at least one 'Group by' field"
 msgstr "Por favor elige al menos un campo en 'Group by'"
 
-#: superset/viz.py:3229
+#: superset/viz.py:3230
 #, fuzzy
 msgid "Please choose at least one groupby"
 msgstr "Por favor elige al menos un campo en 'Group by'"
@@ -11496,7 +11507,7 @@ msgstr "Por favor elige al menos un campo en 'Group by'"
 msgid "Please choose at least one metric"
 msgstr "Por favor elige al menos una métrica"
 
-#: superset/viz.py:1610
+#: superset/viz.py:1611
 msgid "Please choose different metrics on left and right axis"
 msgstr "Por favor, elige diferentes métricas en el eje izquierdo y derecho"
 
@@ -11523,7 +11534,7 @@ msgstr "Confirme"
 msgid "Please confirm the overwrite values."
 msgstr ""
 
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:624
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:621
 msgid "Please enter a SQLAlchemy URI to test"
 msgstr "Por favor, introduce un URI SQLAlchemy para probar"
 
@@ -11564,7 +11575,7 @@ msgstr ""
 msgid "Please select both a Dataset and a Chart type to proceed"
 msgstr ""
 
-#: superset/viz.py:1193
+#: superset/viz.py:1194
 msgid "Please use 3 different metric labels"
 msgstr "Por favor especifica 3 etiquetas de métrica distintas"
 
@@ -11679,7 +11690,7 @@ msgstr "informe"
 
 #: superset/db_engine_specs/mssql.py:98
 #: superset/db_engine_specs/postgres.py:135
-#: superset/db_engine_specs/presto.py:672
+#: superset/db_engine_specs/presto.py:694
 #: superset/db_engine_specs/redshift.py:77
 #, python-format
 msgid "Port %(port)s on hostname \"%(hostname)s\" refused the connection."
@@ -11771,7 +11782,7 @@ msgstr "Previsualizar: `%s`"
 msgid "Previous"
 msgstr "Anterior"
 
-#: superset-frontend/src/SqlLab/components/SqlEditor/index.jsx:346
+#: superset-frontend/src/SqlLab/components/SqlEditor/index.jsx:347
 #, fuzzy
 msgid "Previous Line"
 msgstr "Anterior"
@@ -11813,7 +11824,7 @@ msgstr ""
 msgid "Private Key Password"
 msgstr "Contraseña de Broker"
 
-#: superset-frontend/src/components/Datasource/ChangeDatasourceModal.tsx:269
+#: superset-frontend/src/components/Datasource/ChangeDatasourceModal.tsx:271
 #, fuzzy
 msgid "Proceed"
 msgstr "Creado"
@@ -11844,7 +11855,6 @@ msgstr ""
 #: superset-frontend/plugins/legacy-plugin-chart-partition/src/index.js:30
 #: superset-frontend/plugins/legacy-plugin-chart-sankey/src/index.js:42
 #: superset-frontend/plugins/legacy-plugin-chart-sunburst/src/index.js:33
-#: superset-frontend/plugins/legacy-plugin-chart-treemap/src/index.js:46
 #: superset-frontend/plugins/legacy-preset-chart-nvd3/src/Area/index.js:50
 #: superset-frontend/plugins/legacy-preset-chart-nvd3/src/Bar/index.js:44
 #: superset-frontend/plugins/plugin-chart-echarts/src/Pie/index.ts:75
@@ -11894,11 +11904,11 @@ msgstr "Pon tu código aquí"
 msgid "Python datetime string pattern"
 msgstr "Patrón datetime de Python"
 
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1530
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1527
 msgid "QUERY DATA IN SQL LAB"
 msgstr ""
 
-#: superset/db_engine_specs/base.py:109
+#: superset/db_engine_specs/base.py:110
 #, fuzzy
 msgid "Quarter"
 msgstr "consulta"
@@ -11913,8 +11923,8 @@ msgstr "Propietario del Gráfico: %s"
 msgid "Queries"
 msgstr "Series"
 
-#: superset-frontend/packages/superset-ui-chart-controls/src/sections/echartsTimeSeriesQuery.tsx:41
-#: superset-frontend/packages/superset-ui-chart-controls/src/sections/echartsTimeSeriesQuery.tsx:51
+#: superset-frontend/packages/superset-ui-chart-controls/src/sections/echartsTimeSeriesQuery.tsx:43
+#: superset-frontend/packages/superset-ui-chart-controls/src/sections/echartsTimeSeriesQuery.tsx:53
 #: superset-frontend/plugins/legacy-plugin-chart-calendar/src/controlPanel.ts:32
 #: superset-frontend/plugins/legacy-plugin-chart-chord/src/controlPanel.ts:30
 #: superset-frontend/plugins/legacy-plugin-chart-country-map/src/controlPanel.ts:33
@@ -11931,7 +11941,6 @@ msgstr "Series"
 #: superset-frontend/plugins/legacy-plugin-chart-sankey-loop/src/controlPanel.ts:26
 #: superset-frontend/plugins/legacy-plugin-chart-sankey/src/controlPanel.ts:30
 #: superset-frontend/plugins/legacy-plugin-chart-sunburst/src/controlPanel.ts:31
-#: superset-frontend/plugins/legacy-plugin-chart-treemap/src/controlPanel.ts:31
 #: superset-frontend/plugins/legacy-plugin-chart-world-map/src/controlPanel.ts:32
 #: superset-frontend/plugins/legacy-preset-chart-deckgl/src/Multi/controlPanel.js:63
 #: superset-frontend/plugins/legacy-preset-chart-deckgl/src/layers/Arc/controlPanel.ts:44
@@ -11966,7 +11975,7 @@ msgstr "Series"
 #: superset-frontend/plugins/plugin-chart-table/src/controlPanel.tsx:152
 #: superset-frontend/plugins/plugin-chart-word-cloud/src/plugin/controlPanel.ts:30
 #: superset-frontend/plugins/preset-chart-xy/src/BoxPlot/controlPanel.ts:26
-#: superset-frontend/src/SqlLab/actions/sqlLab.js:1479
+#: superset-frontend/src/SqlLab/actions/sqlLab.js:1484
 #: superset-frontend/src/explore/components/ControlPanelsContainer.test.tsx:63
 #: superset-frontend/src/explore/controlPanels/sections.tsx:94
 #: superset-frontend/src/filters/components/GroupBy/controlPanel.ts:34
@@ -12046,7 +12055,7 @@ msgstr "Previsualización de Datos"
 msgid "Query was stopped"
 msgstr "La consulta ha sido detenida."
 
-#: superset-frontend/src/SqlLab/actions/sqlLab.js:498
+#: superset-frontend/src/SqlLab/actions/sqlLab.js:503
 msgid "Query was stopped."
 msgstr "La consulta ha sido detenida."
 
@@ -12138,7 +12147,6 @@ msgstr "Mensaje de Aviso"
 #: superset-frontend/packages/superset-ui-chart-controls/src/sections/advancedAnalytics.tsx:143
 #: superset-frontend/plugins/legacy-plugin-chart-partition/src/controlPanel.tsx:335
 #: superset-frontend/plugins/legacy-plugin-chart-rose/src/controlPanel.tsx:217
-#: superset-frontend/plugins/legacy-plugin-chart-treemap/src/controlPanel.ts:53
 #: superset-frontend/plugins/legacy-preset-chart-nvd3/src/NVD3Controls.tsx:487
 #: superset-frontend/src/explore/controlPanels/sections.tsx:213
 #, fuzzy
@@ -12342,7 +12350,7 @@ msgstr ""
 msgid "Remove"
 msgstr "Eliminar"
 
-#: superset-frontend/src/components/Chart/ChartContextMenu.tsx:164
+#: superset-frontend/src/components/Chart/ChartContextMenu/ChartContextMenu.tsx:194
 #, fuzzy
 msgid "Remove cross-filter"
 msgstr "Filtro de padre"
@@ -12531,7 +12539,7 @@ msgid "Request Permissions"
 msgstr "Solicitar Permisos"
 
 #: superset/charts/data/api.py:153 superset/charts/data/api.py:243
-#: superset/charts/data/api.py:309
+#: superset/charts/data/api.py:312
 #, python-format
 msgid "Request is incorrect: %(error)s"
 msgstr "Petición incorrecta: %(error)s"
@@ -12540,7 +12548,7 @@ msgstr "Petición incorrecta: %(error)s"
 msgid "Request is not JSON"
 msgstr "La petición no es JSON"
 
-#: superset/views/datasource/views.py:75
+#: superset/views/datasource/views.py:77
 msgid "Request missing data field."
 msgstr ""
 
@@ -12617,7 +12625,7 @@ msgid "Results %s"
 msgstr "Resultados"
 
 #: superset/sql_lab.py:410 superset/sqllab/commands/results.py:59
-#: superset/views/core.py:2133
+#: superset/views/core.py:2136
 msgid "Results backend is not configured."
 msgstr ""
 
@@ -12644,12 +12652,12 @@ msgstr "latitud/longitud reversos"
 msgid "Rich Tooltip"
 msgstr ""
 
-#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:181
+#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:178
 msgid "Rich tooltip"
 msgstr ""
 
 #: superset-frontend/packages/superset-ui-chart-controls/src/shared-controls/components/ColumnConfigControl/constants.tsx:102
-#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:91
+#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:88
 #: superset-frontend/plugins/plugin-chart-pivot-table/src/plugin/controlPanel.tsx:372
 #, fuzzy
 msgid "Right"
@@ -12691,7 +12699,7 @@ msgstr ""
 msgid "Role"
 msgstr "Perfil"
 
-#: superset/views/core.py:407
+#: superset/views/core.py:408
 #, python-format
 msgid "Role %(r)s was extended to provide the access to the datasource %(ds)s"
 msgstr ""
@@ -12782,7 +12790,7 @@ msgstr ""
 msgid "Round cap"
 msgstr "Mapa de País"
 
-#: superset-frontend/packages/superset-ui-chart-controls/src/shared-controls/customControls.tsx:46
+#: superset-frontend/packages/superset-ui-chart-controls/src/shared-controls/customControls.tsx:50
 #: superset-frontend/src/dashboard/components/gridComponents/new/NewRow.jsx:31
 msgid "Row"
 msgstr "Hilera"
@@ -12862,8 +12870,8 @@ msgstr "Ejecutar una consulta para mostrar los resultados aquí"
 msgid "Run in SQL Lab"
 msgstr "Ejecutar en Laboratiorio SQL"
 
-#: superset-frontend/src/SqlLab/components/SqlEditor/index.jsx:309
-#: superset-frontend/src/SqlLab/components/SqlEditor/index.jsx:319
+#: superset-frontend/src/SqlLab/components/SqlEditor/index.jsx:310
+#: superset-frontend/src/SqlLab/components/SqlEditor/index.jsx:320
 msgid "Run query"
 msgstr "Ejecutar consulta"
 
@@ -13048,7 +13056,7 @@ msgstr ""
 msgid "Samples"
 msgstr "Ver ejemplos"
 
-#: superset/datasets/commands/exceptions.py:177
+#: superset/datasets/commands/exceptions.py:194
 #, fuzzy
 msgid "Samples for dataset could not be retrieved."
 msgstr "El conjunto de datos no pudo ser creado."
@@ -13058,7 +13066,7 @@ msgstr "El conjunto de datos no pudo ser creado."
 msgid "Samples for datasource could not be retrieved."
 msgstr "El conjunto de datos no pudo ser creado."
 
-#: superset/viz.py:1935
+#: superset/viz.py:1936
 msgid "Sankey"
 msgstr ""
 
@@ -13089,7 +13097,7 @@ msgstr "Sábado"
 #: superset-frontend/src/SqlLab/components/SaveDatasetActionButton/index.tsx:80
 #: superset-frontend/src/SqlLab/components/SaveQuery/index.tsx:199
 #: superset-frontend/src/SqlLab/components/SaveQuery/index.tsx:214
-#: superset-frontend/src/components/Datasource/DatasourceModal.tsx:246
+#: superset-frontend/src/components/Datasource/DatasourceModal.tsx:288
 #: superset-frontend/src/components/ReportModal/index.tsx:229
 #: superset-frontend/src/dashboard/components/Header/index.jsx:607
 #: superset-frontend/src/dashboard/components/Header/index.jsx:609
@@ -13103,7 +13111,7 @@ msgstr "Sábado"
 #: superset-frontend/src/explore/components/ExploreChartHeader/index.jsx:268
 #: superset-frontend/src/explore/components/ExploreChartPanel.jsx:458
 #: superset-frontend/src/explore/components/PropertiesModal/index.tsx:329
-#: superset-frontend/src/explore/components/SaveModal.tsx:415
+#: superset-frontend/src/explore/components/SaveModal.tsx:447
 #: superset-frontend/src/explore/components/controls/DatasourceControl/index.jsx:463
 #: superset-frontend/src/explore/components/controls/DndColumnSelectControl/ColumnSelectPopover.tsx:418
 #: superset-frontend/src/explore/components/controls/DndColumnSelectControl/ColumnSelectPopoverTrigger.tsx:147
@@ -13115,7 +13123,7 @@ msgstr "Sábado"
 #: superset-frontend/src/features/annotationLayers/AnnotationLayerModal.tsx:230
 #: superset-frontend/src/features/annotations/AnnotationModal.tsx:272
 #: superset-frontend/src/features/cssTemplates/CssTemplateModal.tsx:218
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1695
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1692
 #: superset-frontend/src/features/datasets/AddDataset/Header/index.tsx:52
 msgid "Save"
 msgstr "Guardar"
@@ -13125,16 +13133,16 @@ msgstr "Guardar"
 msgid "Save & Explore"
 msgstr "Guardar y Explorar"
 
-#: superset-frontend/src/explore/components/SaveModal.tsx:396
+#: superset-frontend/src/explore/components/SaveModal.tsx:428
 msgid "Save & go to dashboard"
 msgstr "Guardar e ir al Dashboard"
 
-#: superset-frontend/src/explore/components/SaveModal.tsx:395
+#: superset-frontend/src/explore/components/SaveModal.tsx:427
 #, fuzzy
 msgid "Save & go to new dashboard"
 msgstr "Guardar e ir al Dashboard"
 
-#: superset-frontend/src/explore/components/SaveModal.tsx:308
+#: superset-frontend/src/explore/components/SaveModal.tsx:341
 msgid "Save (Overwrite)"
 msgstr "Guardar (Sobrescribir)"
 
@@ -13153,16 +13161,16 @@ msgstr "Selecciona una base de datos"
 msgid "Save as dataset"
 msgstr "Selecciona una base de datos"
 
-#: superset-frontend/src/SqlLab/components/SaveDatasetModal/index.tsx:394
+#: superset-frontend/src/SqlLab/components/SaveDatasetModal/index.tsx:402
 #: superset-frontend/src/SqlLab/components/SaveQuery/index.tsx:214
 msgid "Save as new"
 msgstr "Guardar como una consulta nueva"
 
-#: superset-frontend/src/explore/components/SaveModal.tsx:412
+#: superset-frontend/src/explore/components/SaveModal.tsx:444
 msgid "Save as new chart"
 msgstr "Guardar como gráfico nuevo"
 
-#: superset-frontend/src/explore/components/SaveModal.tsx:316
+#: superset-frontend/src/explore/components/SaveModal.tsx:349
 #, fuzzy
 msgid "Save as..."
 msgstr "Guardar como..."
@@ -13176,7 +13184,7 @@ msgstr "Guardar como:"
 msgid "Save changes"
 msgstr "Descartar cambios"
 
-#: superset-frontend/src/explore/components/SaveModal.tsx:432
+#: superset-frontend/src/explore/components/SaveModal.tsx:464
 msgid "Save chart"
 msgstr "Guardar gráfico"
 
@@ -13193,7 +13201,7 @@ msgstr "Cambiar fuente"
 msgid "Save for this session"
 msgstr "Guardar para esta sesión"
 
-#: superset-frontend/src/SqlLab/components/SaveDatasetModal/index.tsx:350
+#: superset-frontend/src/SqlLab/components/SaveDatasetModal/index.tsx:356
 msgid "Save or Overwrite Dataset"
 msgstr ""
 
@@ -13213,7 +13221,7 @@ msgstr "Por favor, guarda la consulta para habilitar el compartir"
 msgid "Save this query as a virtual dataset to continue exploring"
 msgstr ""
 
-#: superset-frontend/src/explore/components/SaveModal.tsx:414
+#: superset-frontend/src/explore/components/SaveModal.tsx:446
 #, fuzzy
 msgid "Save to new dashboard"
 msgstr "Guardar e ir al Dashboard"
@@ -13315,7 +13323,7 @@ msgstr "Guardar Consulta"
 msgid "Schedule settings"
 msgstr "Configuracion"
 
-#: superset-frontend/src/SqlLab/components/SqlEditor/index.jsx:524
+#: superset-frontend/src/SqlLab/components/SqlEditor/index.jsx:525
 msgid "Schedule the query periodically"
 msgstr "Programar la consulta periódicamente"
 
@@ -13336,7 +13344,7 @@ msgid "Scheduled task executor not found"
 msgstr "No se encontró el estado del informe programado"
 
 #: superset-frontend/src/components/DatabaseSelector/index.tsx:299
-#: superset-frontend/src/components/Datasource/ChangeDatasourceModal.tsx:221
+#: superset-frontend/src/components/Datasource/ChangeDatasourceModal.tsx:223
 #: superset-frontend/src/pages/DatasetList/index.tsx:354
 #: superset-frontend/src/pages/DatasetList/index.tsx:536
 #: superset-frontend/src/pages/QueryHistoryList/index.tsx:250
@@ -13352,7 +13360,7 @@ msgstr "Esquema"
 msgid "Schema cache timeout"
 msgstr "Tiempo de espera de caché"
 
-#: superset/views/core.py:1164
+#: superset/views/core.py:1167
 #, fuzzy
 msgid "Schema undefined"
 msgstr "Indefinido"
@@ -13378,7 +13386,7 @@ msgstr ""
 msgid "Scoping"
 msgstr ""
 
-#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:70
+#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:67
 msgid "Scroll"
 msgstr ""
 
@@ -13402,7 +13410,7 @@ msgstr ""
 msgid "Search"
 msgstr "Buscar"
 
-#: superset-frontend/src/components/Datasource/ChangeDatasourceModal.tsx:294
+#: superset-frontend/src/components/Datasource/ChangeDatasourceModal.tsx:296
 msgid "Search / Filter"
 msgstr "Buscar / Filtrar"
 
@@ -13428,7 +13436,7 @@ msgstr "Buscar"
 msgid "Search by query text"
 msgstr "Buscar por texto"
 
-#: superset-frontend/src/components/Chart/DrillBy/DrillByMenuItems.tsx:207
+#: superset-frontend/src/components/Chart/DrillBy/DrillByMenuItems.tsx:229
 #, fuzzy
 msgid "Search columns"
 msgstr "%s columnas(s)"
@@ -13447,7 +13455,7 @@ msgstr "Roles de Usuario"
 msgid "Search..."
 msgstr "Buscar..."
 
-#: superset/db_engine_specs/base.py:96
+#: superset/db_engine_specs/base.py:97
 #, fuzzy
 msgid "Second"
 msgstr "30 segundos"
@@ -13520,7 +13528,7 @@ msgstr "Consultas Guardadas"
 msgid "See table schema"
 msgstr "Ver esquema de tabla"
 
-#: superset-frontend/src/explore/components/SaveModal.tsx:363
+#: superset-frontend/src/explore/components/SaveModal.tsx:396
 #: superset-frontend/src/explore/components/controls/VizTypeControl/index.tsx:131
 #, fuzzy
 msgid "Select"
@@ -13558,7 +13566,7 @@ msgstr "Selecciona un archivo de Excel para ser cargado a una base de datos."
 msgid "Select a column"
 msgstr "¿Realmente quieres borrar todo?"
 
-#: superset-frontend/src/explore/components/SaveModal.tsx:357
+#: superset-frontend/src/explore/components/SaveModal.tsx:390
 #, fuzzy
 msgid "Select a dashboard"
 msgstr "Dashboard Superset"
@@ -13582,7 +13590,7 @@ msgstr "Se ha detenido una conexión insegura a la base de datos"
 msgid "Select a database to upload the file to"
 msgstr ""
 
-#: superset-frontend/src/SqlLab/components/SqlEditor/index.jsx:744
+#: superset-frontend/src/SqlLab/components/SqlEditor/index.jsx:745
 #, fuzzy
 msgid "Select a database to write a query"
 msgstr "Selecciona tabla o introduce su nombre"
@@ -13665,7 +13673,7 @@ msgstr "Selecciona tabla o introduce su nombre"
 msgid "Select database table"
 msgstr "Eliminar base de datos"
 
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1791
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1788
 msgid ""
 "Select databases require additional fields to be completed in the "
 "Advanced tab to successfully connect the database. Learn what "
@@ -13707,7 +13715,7 @@ msgstr "%s operador(es)"
 msgid "Select or type a value"
 msgstr "Limitar valores del selector"
 
-#: superset-frontend/src/SqlLab/components/SaveDatasetModal/index.tsx:410
+#: superset-frontend/src/SqlLab/components/SaveDatasetModal/index.tsx:418
 #, fuzzy
 msgid "Select or type dataset name"
 msgstr "Selecciona tabla o introduce su nombre"
@@ -13798,7 +13806,7 @@ msgstr "Septiembre"
 msgid "Sequential"
 msgstr ""
 
-#: superset-frontend/packages/superset-ui-chart-controls/src/shared-controls/customControls.tsx:47
+#: superset-frontend/packages/superset-ui-chart-controls/src/shared-controls/customControls.tsx:51
 msgid "Series"
 msgstr "Series"
 
@@ -13817,7 +13825,7 @@ msgstr "Límite de Serie"
 msgid "Series Limit Sort Descending"
 msgstr "Orden descendente"
 
-#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:255
+#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:246
 #, fuzzy
 msgid "Series Order"
 msgstr "Series"
@@ -13910,7 +13918,7 @@ msgstr "Compartir gráfico"
 msgid "Share permalink by email"
 msgstr "Compartir gráfico"
 
-#: superset-frontend/src/SqlLab/actions/sqlLab.js:1429
+#: superset-frontend/src/SqlLab/actions/sqlLab.js:1434
 msgid "Shared query"
 msgstr "Guardar Consulta"
 
@@ -14049,7 +14057,7 @@ msgstr ""
 msgid "Show Upper Labels"
 msgstr ""
 
-#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:113
+#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:110
 #, fuzzy
 msgid "Show Value"
 msgstr "Mostrar Tabla"
@@ -14128,7 +14136,7 @@ msgstr "Mostrar Tabla"
 msgid "Show labels when the node has children."
 msgstr ""
 
-#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:42
+#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:39
 msgid "Show legend"
 msgstr ""
 
@@ -14167,7 +14175,7 @@ msgstr "Propiedades del Dashboard"
 msgid "Show rows total"
 msgstr ""
 
-#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:116
+#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:113
 msgid "Show series values on the chart"
 msgstr ""
 
@@ -14241,20 +14249,12 @@ msgstr ""
 msgid "Showing %s of %s"
 msgstr "Mostrando %s de %s"
 
-#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:184
+#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:181
 msgid "Shows a list of all series available at that point in time"
 msgstr ""
 
 #: superset-frontend/src/explore/components/controls/AnnotationLayerControl/AnnotationLayer.jsx:742
 msgid "Shows or hides markers for the time series"
-msgstr ""
-
-#: superset-frontend/plugins/legacy-plugin-chart-treemap/src/index.js:31
-msgid ""
-"Shows the composition of a dataset by segmenting a given rectangle as "
-"smaller rectangles with areas proportional to their value or contribution"
-" to the whole. Those rectangles may also, in turn, be further segmented "
-"hierarchically."
 msgstr ""
 
 #: superset-frontend/plugins/legacy-plugin-chart-paired-t-test/src/controlPanel.ts:64
@@ -14377,7 +14377,7 @@ msgstr "El dashboard no existe"
 msgid "Something went wrong."
 msgstr ""
 
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:864
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:861
 #, python-format
 msgid "Sorry there was an error fetching database information: %s"
 msgstr ""
@@ -14472,12 +14472,12 @@ msgstr "Orden descendente"
 msgid "Sort Metric"
 msgstr "Métroca de orden"
 
-#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:247
+#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:238
 #, fuzzy
 msgid "Sort Series Ascending"
 msgstr "Orden Descendente"
 
-#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:227
+#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:224
 #, fuzzy
 msgid "Sort Series By"
 msgstr "Ordenar por"
@@ -14557,7 +14557,7 @@ msgstr "Métroca de orden"
 msgid "Sort rows by"
 msgstr "Ordenar por"
 
-#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:250
+#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:241
 msgid "Sort series in ascending order"
 msgstr ""
 
@@ -14607,11 +14607,11 @@ msgstr "Especifica un esquema (si el sistema de base de datos lo soporta)."
 msgid "Specify duplicate columns as \"X.0, X.1\"."
 msgstr "Especifica columnas duplicadas como \"X.0, X.1\"."
 
-#: superset-frontend/src/SqlLab/components/SqlEditor/index.jsx:711
+#: superset-frontend/src/SqlLab/components/SqlEditor/index.jsx:712
 msgid "Specify name to CREATE TABLE AS schema in: public"
 msgstr ""
 
-#: superset-frontend/src/SqlLab/components/SqlEditor/index.jsx:710
+#: superset-frontend/src/SqlLab/components/SqlEditor/index.jsx:711
 msgid "Specify name to CREATE VIEW AS schema in: public"
 msgstr ""
 
@@ -14641,7 +14641,7 @@ msgstr "Parámetros"
 msgid "Square miles"
 msgstr "Series"
 
-#: superset-frontend/plugins/plugin-chart-echarts/src/constants.ts:85
+#: superset-frontend/plugins/plugin-chart-echarts/src/constants.ts:83
 #, fuzzy
 msgid "Stack"
 msgstr "Backend"
@@ -14656,7 +14656,7 @@ msgstr ""
 
 #: superset-frontend/plugins/plugin-chart-echarts/src/MixedTimeseries/controlPanel.tsx:161
 #: superset-frontend/plugins/plugin-chart-echarts/src/Timeseries/Area/controlPanel.tsx:115
-#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:128
+#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:125
 msgid "Stack series on top of each other"
 msgstr ""
 
@@ -14677,7 +14677,7 @@ msgstr ""
 
 #: superset-frontend/plugins/legacy-preset-chart-nvd3/src/Area/controlPanel.ts:52
 #: superset-frontend/plugins/plugin-chart-echarts/src/Timeseries/Area/controlPanel.tsx:111
-#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:124
+#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:121
 #: superset-frontend/src/explore/fixtures.tsx:58
 msgid "Stacked Style"
 msgstr ""
@@ -14815,7 +14815,7 @@ msgstr ""
 msgid "Stop"
 msgstr "Detener"
 
-#: superset-frontend/src/SqlLab/components/SqlEditor/index.jsx:337
+#: superset-frontend/src/SqlLab/components/SqlEditor/index.jsx:338
 msgid "Stop query"
 msgstr "Detener consulta"
 
@@ -14832,7 +14832,7 @@ msgstr "Detener (Ctrl + x)"
 msgid "Stopped an unsafe database connection"
 msgstr "Se ha detenido una conexión insegura a la base de datos"
 
-#: superset-frontend/plugins/plugin-chart-echarts/src/constants.ts:86
+#: superset-frontend/plugins/plugin-chart-echarts/src/constants.ts:84
 #, fuzzy
 msgid "Stream"
 msgstr "Histograma"
@@ -14901,8 +14901,8 @@ msgstr ""
 msgid "Submit"
 msgstr ""
 
-#: superset-frontend/plugins/plugin-chart-pivot-table/src/react-pivottable/TableRenderers.jsx:472
-#: superset-frontend/plugins/plugin-chart-pivot-table/src/react-pivottable/TableRenderers.jsx:678
+#: superset-frontend/plugins/plugin-chart-pivot-table/src/react-pivottable/TableRenderers.jsx:471
+#: superset-frontend/plugins/plugin-chart-pivot-table/src/react-pivottable/TableRenderers.jsx:676
 #: superset/charts/post_processing.py:161
 #: superset/charts/post_processing.py:178
 msgid "Subtotal"
@@ -14914,7 +14914,7 @@ msgstr ""
 msgid "Success"
 msgstr "Éxito"
 
-#: superset-frontend/src/components/Datasource/ChangeDatasourceModal.tsx:193
+#: superset-frontend/src/components/Datasource/ChangeDatasourceModal.tsx:195
 #, fuzzy
 msgid "Successfully changed dataset!"
 msgstr "Cambiar fuente"
@@ -14949,7 +14949,7 @@ msgstr ""
 msgid "Sum values"
 msgstr "Valores Nulos"
 
-#: superset/viz.py:1888
+#: superset/viz.py:1889
 msgid "Sunburst"
 msgstr ""
 
@@ -14995,7 +14995,7 @@ msgstr "La alerta encontró un error al ejecutar una consulta."
 msgid "Superset encountered an unexpected error."
 msgstr "Error inesperado del informe programado"
 
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:920
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:917
 #, fuzzy
 msgid "Supported databases"
 msgstr "Eliminar base de datos"
@@ -15008,7 +15008,7 @@ msgstr ""
 msgid "Swap Groups and Columns"
 msgstr ""
 
-#: superset-frontend/src/components/Datasource/ChangeDatasourceModal.tsx:254
+#: superset-frontend/src/components/Datasource/ChangeDatasourceModal.tsx:256
 #: superset-frontend/src/explore/components/controls/DatasourceControl/index.jsx:311
 #: superset-frontend/src/explore/components/controls/DatasourceControl/index.jsx:435
 #, fuzzy
@@ -15096,6 +15096,7 @@ msgstr ""
 #: superset-frontend/plugins/plugin-chart-pivot-table/src/plugin/index.ts:55
 #: superset-frontend/plugins/plugin-chart-table/src/index.ts:39
 #: superset-frontend/plugins/plugin-chart-table/src/index.ts:45
+#: superset-frontend/src/components/Chart/DrillBy/useDisplayModeToggle.tsx:56
 #: superset-frontend/src/components/TableSelector/index.tsx:290
 #: superset-frontend/src/visualizations/TimeTable/index.ts:26
 #: superset/connectors/sqla/views.py:160 superset/connectors/sqla/views.py:255
@@ -15103,7 +15104,7 @@ msgstr ""
 msgid "Table"
 msgstr "Tabla"
 
-#: superset/views/core.py:1740
+#: superset/views/core.py:1743
 #, python-format
 msgid "Table %(table)s wasn't found in the database %(db)s"
 msgstr "La tabla %(table)s no fue encontrada en la base de datos %(db)s"
@@ -15121,7 +15122,7 @@ msgstr "Nombre Tabla"
 msgid "Table View"
 msgstr "Vista de Tabla"
 
-#: superset/datasets/commands/exceptions.py:130
+#: superset/datasets/commands/exceptions.py:147
 #, python-format
 msgid ""
 "Table [%(table_name)s] could not be found, please double check your "
@@ -15239,10 +15240,6 @@ msgstr "Iniciar"
 msgid "Target Color"
 msgstr "Iniciar en"
 
-#: superset-frontend/plugins/legacy-plugin-chart-treemap/src/controlPanel.ts:57
-msgid "Target aspect ratio for treemap tiles."
-msgstr ""
-
 #: superset-frontend/plugins/plugin-chart-echarts/src/Graph/controlPanel.tsx:87
 #, fuzzy
 msgid "Target category"
@@ -15341,7 +15338,7 @@ msgid ""
 " the filters list?"
 msgstr ""
 
-#: superset/views/core.py:372
+#: superset/views/core.py:373
 msgid "The access requests seem to have been deleted"
 msgstr "Las solicitudes de acceso parecen haber sido eliminadas"
 
@@ -15478,7 +15475,7 @@ msgstr "Issue 1002 - La base de datos devolvió un error inesperado."
 msgid "The database was deleted."
 msgstr "La base de datos no han podido ser eliminada."
 
-#: superset/datasets/commands/duplicate.py:60 superset/views/core.py:2002
+#: superset/datasets/commands/duplicate.py:60 superset/views/core.py:2005
 #, fuzzy
 msgid "The database was not found."
 msgstr "La base de datos no existe"
@@ -15499,7 +15496,7 @@ msgstr ""
 msgid "The dataset associated with this chart no longer exists"
 msgstr ""
 
-#: superset-frontend/src/components/Datasource/DatasourceModal.tsx:168
+#: superset-frontend/src/components/Datasource/DatasourceModal.tsx:210
 msgid ""
 "The dataset configuration exposed here\n"
 "                affects all the charts using this dataset.\n"
@@ -15508,7 +15505,7 @@ msgid ""
 "                in undesirable ways."
 msgstr ""
 
-#: superset-frontend/src/components/Datasource/DatasourceModal.tsx:129
+#: superset-frontend/src/components/Datasource/DatasourceModal.tsx:164
 #: superset-frontend/src/pages/ChartCreation/index.tsx:261
 msgid "The dataset has been saved"
 msgstr ""
@@ -15518,7 +15515,7 @@ msgstr ""
 msgid "The dataset linked to this chart may have been deleted."
 msgstr "La fuente de datos parece haber sido eliminada"
 
-#: superset-frontend/src/SqlLab/actions/sqlLab.js:1496
+#: superset-frontend/src/SqlLab/actions/sqlLab.js:1501
 msgid "The datasource couldn't be loaded"
 msgstr "No se pudo cargar la fuente de datos"
 
@@ -15576,7 +15573,7 @@ msgstr ""
 
 #: superset/db_engine_specs/mssql.py:103
 #: superset/db_engine_specs/postgres.py:140
-#: superset/db_engine_specs/presto.py:664
+#: superset/db_engine_specs/presto.py:686
 #: superset/db_engine_specs/redshift.py:82
 #, python-format
 msgid ""
@@ -15590,7 +15587,7 @@ msgstr ""
 
 #: superset/db_engine_specs/mssql.py:93
 #: superset/db_engine_specs/postgres.py:130
-#: superset/db_engine_specs/presto.py:659
+#: superset/db_engine_specs/presto.py:681
 #: superset/db_engine_specs/redshift.py:72
 #, python-format
 msgid "The hostname \"%(hostname)s\" cannot be resolved."
@@ -15788,7 +15785,7 @@ msgstr ""
 " base de datos no están presentes en los archivos de exportación, y que "
 "deben añadirse manualmente después de la importación si se necesitan."
 
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1284
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1281
 msgid ""
 "The passwords for the databases below are needed in order to import them."
 " Please note that the \"Secure Extra\" and \"Certificate\" sections of "
@@ -15835,7 +15832,7 @@ msgstr "Los parametros del Gráfico son invalidos"
 msgid "The primary metric is used to define the arc segment sizes"
 msgstr "Métrica utilizada para definir la serie superior."
 
-#: superset/views/core.py:2212
+#: superset/views/core.py:2215
 msgid "The provided `rows` argument is not a valid integer."
 msgstr ""
 
@@ -15844,7 +15841,7 @@ msgid "The query associated with the results was deleted."
 msgstr ""
 
 #: superset/sqllab/commands/export.py:63 superset/sqllab/commands/results.py:91
-#: superset/views/core.py:2162
+#: superset/views/core.py:2165
 msgid ""
 "The query associated with these results could not be found. You need to "
 "re-run the original query."
@@ -15854,7 +15851,7 @@ msgstr ""
 msgid "The query contains one or more malformed template parameters."
 msgstr ""
 
-#: superset-frontend/src/SqlLab/actions/sqlLab.js:107
+#: superset-frontend/src/SqlLab/actions/sqlLab.js:108
 msgid "The query couldn't be loaded"
 msgstr "No se pudo cargar la consulta."
 
@@ -15915,14 +15912,14 @@ msgstr ""
 msgid "The rich tooltip shows a list of all series for that point in time"
 msgstr ""
 
-#: superset/db_engine_specs/bigquery.py:202
+#: superset/db_engine_specs/bigquery.py:203
 #, python-format
 msgid ""
 "The schema \"%(schema)s\" does not exist. A valid schema must be used to "
 "run this query."
 msgstr ""
 
-#: superset/db_engine_specs/presto.py:646
+#: superset/db_engine_specs/presto.py:668
 #, python-format
 msgid ""
 "The schema \"%(schema_name)s\" does not exist. A valid schema must be "
@@ -15938,7 +15935,8 @@ msgstr "Issue 1004 - La columna fue eliminada o renombrada en la base de datos."
 msgid "The size of the square cell, in pixels"
 msgstr ""
 
-#: superset/views/datasource/views.py:88
+#: superset/datasets/commands/exceptions.py:72
+#: superset/views/datasource/views.py:90
 msgid ""
 "The submitted URL is not considered safe, only use URLs with the same "
 "domain as Superset."
@@ -15952,14 +15950,14 @@ msgstr ""
 msgid "The submitted payload has the incorrect schema."
 msgstr ""
 
-#: superset/db_engine_specs/bigquery.py:189
+#: superset/db_engine_specs/bigquery.py:190
 #, python-format
 msgid ""
 "The table \"%(table)s\" does not exist. A valid table must be used to run"
 " this query."
 msgstr ""
 
-#: superset/db_engine_specs/presto.py:638
+#: superset/db_engine_specs/presto.py:660
 #, python-format
 msgid ""
 "The table \"%(table_name)s\" does not exist. A valid table must be used "
@@ -16161,6 +16159,11 @@ msgstr "Hubo un problema al eliminar las plantillas seleccionadas: %s"
 msgid "There was an error fetching your recent activity:"
 msgstr "Hubo un error al obtener tu actividad reciente:"
 
+#: superset-frontend/src/components/Chart/DrillBy/DrillByModal.tsx:354
+#, fuzzy
+msgid "There was an error loading the chart data"
+msgstr "Hubo un error con tu solicitud"
+
 #: superset-frontend/src/features/datasets/metadataBar/useDatasetMetadataBar.tsx:119
 #, fuzzy
 msgid "There was an error loading the dataset metadata"
@@ -16295,7 +16298,7 @@ msgstr "Ocurrió un problema al previsualizar la consulta seleccionada %s"
 msgid "There was an issue previewing the selected query. %s"
 msgstr "Hubo un problema al previsualizar la consulta seleccionada. %s"
 
-#: superset/viz.py:1992
+#: superset/viz.py:1993
 msgid ""
 "There's a loop in your Sankey, please provide a tree. Here's a faulty "
 "link: {}"
@@ -16362,8 +16365,8 @@ msgstr ""
 
 #: superset-frontend/src/dashboard/components/SliceHeader/index.tsx:244
 msgid ""
-"This chart emits/applies cross-filters to other charts that use the same "
-"dataset"
+"This chart applies cross-filters to charts whose datasets contain columns"
+" with the same name."
 msgstr ""
 
 #: superset-frontend/src/dashboard/actions/dashboardLayout.js:260
@@ -16461,7 +16464,7 @@ msgid ""
 " id to the SDK:"
 msgstr ""
 
-#: superset/views/core.py:1319
+#: superset/views/core.py:1322
 msgid ""
 "This dashboard was changed recently. Please reload dashboard to get "
 "latest version."
@@ -16472,7 +16475,7 @@ msgstr ""
 msgid "This dashboard was saved successfully."
 msgstr "Este Dashboard se guardó con éxito."
 
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1119
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1116
 msgid "This database is managed externally, and can't be edited in Superset"
 msgstr ""
 
@@ -16482,7 +16485,7 @@ msgid ""
 "table."
 msgstr ""
 
-#: superset-frontend/src/components/Datasource/DatasourceModal.tsx:240
+#: superset-frontend/src/components/Datasource/DatasourceModal.tsx:282
 msgid "This dataset is managed externally, and can't be edited in Superset"
 msgstr ""
 
@@ -16609,7 +16612,7 @@ msgstr ""
 msgid "This value should be smaller than the right target value"
 msgstr ""
 
-#: superset-frontend/src/components/Chart/ChartContextMenu.tsx:141
+#: superset-frontend/src/components/Chart/ChartContextMenu/ChartContextMenu.tsx:171
 #, fuzzy
 msgid "This visualization type does not support cross-filtering."
 msgstr "Esta visualización no está soportada."
@@ -16715,39 +16718,39 @@ msgstr "Granularidad Temporal"
 msgid "Time Series"
 msgstr "Columna de Tiempo"
 
-#: superset/viz.py:1670
+#: superset/viz.py:1671
 msgid "Time Series - Bar Chart"
 msgstr "Serie Temporal - Gráfico de Barras"
 
-#: superset/viz.py:1596
+#: superset/viz.py:1597
 msgid "Time Series - Dual Axis Line Chart"
 msgstr "Serie Temporal - Gráfico de líneas de doble eje"
 
-#: superset/viz.py:1308
+#: superset/viz.py:1309
 msgid "Time Series - Line Chart"
 msgstr "Serie Temporal - Gráfico de Líneas"
 
-#: superset/viz.py:1518
+#: superset/viz.py:1519
 msgid "Time Series - Multiple Line Charts"
 msgstr "Serie temportal - Gráfico de múltiples líneas"
 
-#: superset/viz.py:3036
+#: superset/viz.py:3037
 msgid "Time Series - Nightingale Rose Chart"
 msgstr "Serie Temporal - Gráfico de Nightingale Rose"
 
-#: superset/viz.py:2965
+#: superset/viz.py:2966
 msgid "Time Series - Paired t-test"
 msgstr "Serie Temporal - Prueba-T Emparejada"
 
-#: superset/viz.py:1725
+#: superset/viz.py:1726
 msgid "Time Series - Percent Change"
 msgstr "Serie Temporal - Cambio Porcentual"
 
-#: superset/viz.py:1679
+#: superset/viz.py:1680
 msgid "Time Series - Period Pivot"
 msgstr "Serie Temporal - Pivote de periodo"
 
-#: superset/viz.py:1733
+#: superset/viz.py:1734
 msgid "Time Series - Stacked"
 msgstr "Serie Temporal - Apiladas"
 
@@ -16775,7 +16778,7 @@ msgstr "Vista de Tabla Temporal"
 msgid "Time column"
 msgstr "Columna de Tiempo"
 
-#: superset/connectors/sqla/models.py:1392 superset/models/helpers.py:1575
+#: superset/models/helpers.py:1667
 #, python-format
 msgid "Time column \"%(col)s\" does not exist in dataset"
 msgstr ""
@@ -17071,24 +17074,24 @@ msgstr "Uno o varios controles para pivotar como columnas"
 msgid "Tools"
 msgstr "Roles"
 
-#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:216
+#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:213
 #: superset-frontend/src/explore/components/controls/TimeSeriesColumnControl/index.jsx:205
 #: superset-frontend/src/explore/components/controls/TimeSeriesColumnControl/index.jsx:211
 msgid "Tooltip"
 msgstr ""
 
-#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:204
+#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:201
 #, fuzzy
 msgid "Tooltip sort by metric"
 msgstr "Filtrar por estado"
 
-#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:194
+#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:191
 #, fuzzy
 msgid "Tooltip time format"
 msgstr "Formato Fecha/Hora"
 
 #: superset-frontend/packages/superset-ui-chart-controls/src/sections/chartTitle.tsx:29
-#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:88
+#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:85
 #: superset-frontend/plugins/plugin-chart-pivot-table/src/plugin/controlPanel.tsx:354
 #, fuzzy
 msgid "Top"
@@ -17108,19 +17111,24 @@ msgstr "Altura"
 msgid "Top to Bottom"
 msgstr ""
 
+#: superset/viz.py:1010
+#, fuzzy
+msgid "Total"
+msgstr "Totales"
+
 #: superset/charts/post_processing.py:73
 #, python-format
 msgid "Total (%(aggfunc)s)"
 msgstr ""
 
-#: superset-frontend/plugins/plugin-chart-pivot-table/src/react-pivottable/TableRenderers.jsx:497
-#: superset-frontend/plugins/plugin-chart-pivot-table/src/react-pivottable/TableRenderers.jsx:562
-#: superset-frontend/plugins/plugin-chart-pivot-table/src/react-pivottable/TableRenderers.jsx:784
+#: superset-frontend/plugins/plugin-chart-pivot-table/src/react-pivottable/TableRenderers.jsx:496
+#: superset-frontend/plugins/plugin-chart-pivot-table/src/react-pivottable/TableRenderers.jsx:561
+#: superset-frontend/plugins/plugin-chart-pivot-table/src/react-pivottable/TableRenderers.jsx:782
 #, python-format
 msgid "Total (%(aggregatorName)s)"
 msgstr ""
 
-#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:230
+#: superset-frontend/packages/superset-ui-chart-controls/src/constants.ts:68
 #, fuzzy
 msgid "Total value"
 msgstr "Valores Nulos"
@@ -17178,13 +17186,9 @@ msgid "Tree orientation"
 msgstr "Eliminar anotación"
 
 #: superset-frontend/plugins/plugin-chart-echarts/src/Treemap/index.ts:60
-#: superset/viz.py:1035
+#: superset/viz.py:1036
 msgid "Treemap"
 msgstr "Mapa de Árbol"
-
-#: superset-frontend/plugins/legacy-plugin-chart-treemap/src/index.js:40
-msgid "Treemap (legacy)"
-msgstr ""
 
 #: superset-frontend/plugins/legacy-plugin-chart-calendar/src/index.js:39
 #: superset-frontend/plugins/legacy-plugin-chart-rose/src/index.js:40
@@ -17276,8 +17280,8 @@ msgstr "Martes"
 msgid "Tukey"
 msgstr "consulta"
 
-#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:68
-#: superset-frontend/src/components/Datasource/ChangeDatasourceModal.tsx:216
+#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:65
+#: superset-frontend/src/components/Datasource/ChangeDatasourceModal.tsx:218
 #: superset-frontend/src/explore/components/controls/TimeSeriesColumnControl/index.jsx:215
 #: superset-frontend/src/explore/components/controls/TimeSeriesColumnControl/index.jsx:219
 #: superset-frontend/src/explore/components/controls/TimeSeriesColumnControl/index.jsx:272
@@ -17290,7 +17294,7 @@ msgstr "Tipo"
 
 #: superset-frontend/src/components/DeleteModal/index.tsx:92
 #: superset-frontend/src/components/ImportModal/index.tsx:397
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1405
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1402
 #, python-format
 msgid "Type \"%s\" to confirm"
 msgstr "Teclea \"%s\" para confirmar"
@@ -17349,11 +17353,11 @@ msgstr "Parámetros de URL"
 msgid "URL slug"
 msgstr "nombre para URL"
 
-#: superset-frontend/src/SqlLab/actions/sqlLab.js:622
+#: superset-frontend/src/SqlLab/actions/sqlLab.js:627
 msgid "Unable to add a new tab to the backend. Please contact your administrator."
 msgstr "No se pueden añadir nueva pestaña al back-end. Contacte al administrador."
 
-#: superset/db_engine_specs/presto.py:677
+#: superset/db_engine_specs/presto.py:699
 #, python-format
 msgid "Unable to connect to catalog named \"%(catalog_name)s\"."
 msgstr "No se puede conectar al catálogo \"%(catalog_name)s\"."
@@ -17364,7 +17368,7 @@ msgstr "No se puede conectar al catálogo \"%(catalog_name)s\"."
 msgid "Unable to connect to database \"%(database)s\"."
 msgstr "No se puede conectar a la Base de Datos: \"%(database)s\\ "
 
-#: superset/db_engine_specs/bigquery.py:177
+#: superset/db_engine_specs/bigquery.py:178
 msgid ""
 "Unable to connect. Verify that the following roles are set on the service"
 " account: \"BigQuery Data Viewer\", \"BigQuery Metadata Viewer\", "
@@ -17387,19 +17391,19 @@ msgid ""
 "table."
 msgstr ""
 
-#: superset-frontend/src/SqlLab/actions/sqlLab.js:589
+#: superset-frontend/src/SqlLab/actions/sqlLab.js:594
 msgid ""
 "Unable to migrate query editor state to backend. Superset will retry "
 "later. Please contact your administrator if this problem persists."
 msgstr ""
 
-#: superset-frontend/src/SqlLab/actions/sqlLab.js:543
+#: superset-frontend/src/SqlLab/actions/sqlLab.js:548
 msgid ""
 "Unable to migrate query state to backend. Superset will retry later. "
 "Please contact your administrator if this problem persists."
 msgstr ""
 
-#: superset-frontend/src/SqlLab/actions/sqlLab.js:525
+#: superset-frontend/src/SqlLab/actions/sqlLab.js:530
 msgid ""
 "Unable to migrate table schema state to backend. Superset will retry "
 "later. Please contact your administrator if this problem persists."
@@ -17455,7 +17459,7 @@ msgid "Unexpected error"
 msgstr "Error inesperado"
 
 #: superset/databases/commands/exceptions.py:137
-#: superset/databases/commands/exceptions.py:142 superset/views/core.py:1438
+#: superset/databases/commands/exceptions.py:142 superset/views/core.py:1441
 msgid "Unexpected error occurred, please check your logs for details"
 msgstr ""
 "Se ha producido un error inesperado, por favor verifique los registros "
@@ -17481,7 +17485,7 @@ msgstr "Error desconocido"
 msgid "Unknown MySQL server host \"%(hostname)s\"."
 msgstr "Host desconocido de MySQL: \"%(hostname)s\""
 
-#: superset/db_engine_specs/presto.py:1319
+#: superset/db_engine_specs/presto.py:1343
 msgid "Unknown Presto Error"
 msgstr "Error de Presto desconocido"
 
@@ -17489,13 +17493,13 @@ msgstr "Error de Presto desconocido"
 msgid "Unknown Status"
 msgstr "EStado desconocido"
 
-#: superset/connectors/sqla/models.py:1317 superset/models/helpers.py:1498
+#: superset/models/helpers.py:1590
 #, python-format
 msgid "Unknown column used in orderby: %(col)s"
 msgstr "Columna desconocida utilizada al ordenar: %(col)s%"
 
-#: superset-frontend/src/SqlLab/actions/sqlLab.js:402
-#: superset-frontend/src/SqlLab/actions/sqlLab.js:480
+#: superset-frontend/src/SqlLab/actions/sqlLab.js:407
+#: superset-frontend/src/SqlLab/actions/sqlLab.js:485
 msgid "Unknown error"
 msgstr "Valor desconocido"
 
@@ -17662,7 +17666,7 @@ msgstr "Usar escala logarítimica para el Eje X"
 msgid "Use a log scale for the Y-axis"
 msgstr "Usar escala logarítimica para el Eje Y"
 
-#: superset/db_engine_specs/base.py:1850
+#: superset/db_engine_specs/base.py:1875
 #: superset/db_engine_specs/clickhouse.py:211
 #: superset/db_engine_specs/databricks.py:57
 msgid "Use an encrypted connection to the database"
@@ -17680,7 +17684,7 @@ msgstr ""
 msgid "Use date formatting even when metric value is not a timestamp"
 msgstr ""
 
-#: superset-frontend/src/components/Datasource/DatasourceModal.tsx:217
+#: superset-frontend/src/components/Datasource/DatasourceModal.tsx:259
 msgid "Use legacy datasource editor"
 msgstr "Usar editor de datasource legado"
 
@@ -17782,7 +17786,7 @@ msgstr "Ver consulta"
 
 #: superset-frontend/src/features/databases/DatabaseModal/DatabaseConnectionForm/CommonParameters.tsx:133
 #: superset-frontend/src/features/databases/DatabaseModal/SSHTunnelForm.tsx:102
-#: superset/db_engine_specs/base.py:1837
+#: superset/db_engine_specs/base.py:1862
 #: superset/db_engine_specs/clickhouse.py:201
 #, fuzzy
 msgid "Username"
@@ -17967,17 +17971,17 @@ msgstr ""
 msgid "Virtual dataset"
 msgstr "Conjunto de datos virtual"
 
-#: superset/connectors/sqla/models.py:960 superset/connectors/sqla/utils.py:111
-#: superset/models/helpers.py:1036
+#: superset/connectors/sqla/models.py:965 superset/connectors/sqla/utils.py:111
+#: superset/models/helpers.py:1114
 #, fuzzy
 msgid "Virtual dataset query cannot be empty"
 msgstr "La consulta de conjunto virtual debe ser de solo lectura"
 
-#: superset/connectors/sqla/models.py:963 superset/models/helpers.py:1039
+#: superset/connectors/sqla/models.py:968 superset/models/helpers.py:1117
 msgid "Virtual dataset query cannot consist of multiple statements"
 msgstr "La consulta de conjunto virtual no puede consistir de varias consultas"
 
-#: superset/connectors/sqla/models.py:928 superset/models/helpers.py:1062
+#: superset/connectors/sqla/models.py:933 superset/models/helpers.py:1140
 msgid "Virtual dataset query must be read-only"
 msgstr "La consulta de conjunto virtual debe ser de solo lectura"
 
@@ -18118,7 +18122,7 @@ msgstr "Tipo"
 msgid "WED"
 msgstr "MIÉ"
 
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:948
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:945
 msgid "Want to add a new database?"
 msgstr ""
 
@@ -18133,7 +18137,7 @@ msgstr "Mensaje de Aviso"
 msgid "Warning Message"
 msgstr "Mensaje de Aviso"
 
-#: superset-frontend/src/components/Datasource/ChangeDatasourceModal.tsx:286
+#: superset-frontend/src/components/Datasource/ChangeDatasourceModal.tsx:288
 msgid "Warning!"
 msgstr "Mensaje de Aviso"
 
@@ -18149,13 +18153,13 @@ msgstr ""
 msgid "Was unable to check your query"
 msgstr "Etiqueta para tu consulta"
 
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1468
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1465
 msgid ""
 "We are unable to connect to your database. Click \"See more\" for "
 "database-provided information that may help troubleshoot the issue."
 msgstr ""
 
-#: superset/db_engine_specs/bigquery.py:197
+#: superset/db_engine_specs/bigquery.py:198
 #, python-format
 msgid "We can't seem to resolve column \"%(column)s\" at line %(location)s."
 msgstr ""
@@ -18166,7 +18170,7 @@ msgid "We can't seem to resolve the column \"%(column_name)s\""
 msgstr ""
 
 #: superset/db_engine_specs/postgres.py:153
-#: superset/db_engine_specs/presto.py:630
+#: superset/db_engine_specs/presto.py:652
 #, python-format
 msgid ""
 "We can't seem to resolve the column \"%(column_name)s\" at line "
@@ -18205,24 +18209,24 @@ msgstr ""
 msgid "Wednesday"
 msgstr "Miércoles"
 
-#: superset/db_engine_specs/base.py:107
+#: superset/db_engine_specs/base.py:108
 #, fuzzy
 msgid "Week"
 msgstr "semana"
 
-#: superset/db_engine_specs/base.py:113
+#: superset/db_engine_specs/base.py:114
 msgid "Week ending Saturday"
 msgstr ""
 
-#: superset/db_engine_specs/base.py:112
+#: superset/db_engine_specs/base.py:113
 msgid "Week starting Monday"
 msgstr ""
 
-#: superset/db_engine_specs/base.py:111
+#: superset/db_engine_specs/base.py:112
 msgid "Week starting Sunday"
 msgstr ""
 
-#: superset/db_engine_specs/base.py:114
+#: superset/db_engine_specs/base.py:115
 msgid "Week_ending Sunday"
 msgstr ""
 
@@ -18343,7 +18347,7 @@ msgstr ""
 msgid "When using 'Group By' you are limited to use a single metric"
 msgstr "Cuando usas 'Group By', estás limitado a una sola métrica"
 
-#: superset-frontend/plugins/plugin-chart-echarts/src/Timeseries/constants.ts:72
+#: superset-frontend/plugins/plugin-chart-echarts/src/Timeseries/constants.ts:74
 msgid "When using other than adaptive formatting, labels may overlap"
 msgstr ""
 
@@ -18403,7 +18407,7 @@ msgstr ""
 msgid "Whether to display a bar chart background in table columns"
 msgstr ""
 
-#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:45
+#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:42
 msgid "Whether to display a legend for the chart"
 msgstr ""
 
@@ -18572,7 +18576,8 @@ msgstr ""
 msgid "Whether to show the split lines on the axis"
 msgstr ""
 
-#: superset-frontend/packages/superset-ui-chart-controls/src/shared-controls/customControls.tsx:124
+#: superset-frontend/packages/superset-ui-chart-controls/src/shared-controls/customControls.tsx:143
+#: superset-frontend/packages/superset-ui-chart-controls/src/shared-controls/customControls.tsx:174
 #, fuzzy
 msgid "Whether to sort ascending or descending on the base Axis."
 msgstr "Ordenar descendente o ascendente"
@@ -18604,7 +18609,7 @@ msgstr "Ordenar descendente o ascendente"
 msgid "Whether to sort results by the selected metric in descending order."
 msgstr ""
 
-#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:207
+#: superset-frontend/plugins/plugin-chart-echarts/src/controls.tsx:204
 msgid "Whether to sort tooltip by the selected metric in descending order."
 msgstr ""
 
@@ -18672,7 +18677,7 @@ msgid "Working timeout"
 msgstr "Tiempo de espera"
 
 #: superset-frontend/plugins/legacy-plugin-chart-world-map/src/index.js:33
-#: superset/viz.py:2079
+#: superset/viz.py:2080
 msgid "World Map"
 msgstr "Mapa Mundial"
 
@@ -18748,12 +18753,14 @@ msgstr ""
 msgid "X bounds"
 msgstr ""
 
-#: superset-frontend/packages/superset-ui-chart-controls/src/shared-controls/customControls.tsx:122
+#: superset-frontend/packages/superset-ui-chart-controls/src/shared-controls/customControls.tsx:141
+#: superset-frontend/packages/superset-ui-chart-controls/src/shared-controls/customControls.tsx:172
 #, fuzzy
 msgid "X-Axis Sort Ascending"
 msgstr "Orden Descendente"
 
-#: superset-frontend/packages/superset-ui-chart-controls/src/shared-controls/customControls.tsx:69
+#: superset-frontend/packages/superset-ui-chart-controls/src/shared-controls/customControls.tsx:88
+#: superset-frontend/packages/superset-ui-chart-controls/src/shared-controls/customControls.tsx:156
 msgid "X-Axis Sort By"
 msgstr ""
 
@@ -18853,12 +18860,14 @@ msgstr ""
 msgid "Y bounds"
 msgstr ""
 
-#: superset-frontend/packages/superset-ui-chart-controls/src/shared-controls/customControls.tsx:121
+#: superset-frontend/packages/superset-ui-chart-controls/src/shared-controls/customControls.tsx:140
+#: superset-frontend/packages/superset-ui-chart-controls/src/shared-controls/customControls.tsx:171
 #, fuzzy
 msgid "Y-Axis Sort Ascending"
 msgstr "Orden Descendente"
 
-#: superset-frontend/packages/superset-ui-chart-controls/src/shared-controls/customControls.tsx:68
+#: superset-frontend/packages/superset-ui-chart-controls/src/shared-controls/customControls.tsx:87
+#: superset-frontend/packages/superset-ui-chart-controls/src/shared-controls/customControls.tsx:155
 msgid "Y-Axis Sort By"
 msgstr ""
 
@@ -18876,7 +18885,7 @@ msgstr ""
 msgid "YScale Interval"
 msgstr "Intérvalo de actualización"
 
-#: superset/db_engine_specs/base.py:110
+#: superset/db_engine_specs/base.py:111
 #, fuzzy
 msgid "Year"
 msgstr "año"
@@ -18931,7 +18940,7 @@ msgid ""
 "overwrite?"
 msgstr ""
 
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1394
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1391
 msgid ""
 "You are importing one or more databases that already exist. Overwriting "
 "might cause you to lose some of your work. Are you sure you want to "
@@ -18959,7 +18968,7 @@ msgstr ""
 "Sobreescribir puede causar que se pierdan algunos de sus trabajos. ¿Está "
 "seguro de que quiere sobrescribir?"
 
-#: superset/views/core.py:2177
+#: superset/views/core.py:2180
 msgid ""
 "You are not authorized to see this query. If you think this is an error, "
 "please reach out to your administrator."
@@ -18978,7 +18987,7 @@ msgstr ""
 msgid "You can add the components in the edit mode."
 msgstr ""
 
-#: superset-frontend/src/components/Chart/ChartContextMenu.tsx:127
+#: superset-frontend/src/components/Chart/ChartContextMenu/ChartContextMenu.tsx:157
 msgid "You can also just click on the chart to apply cross-filter."
 msgstr ""
 
@@ -19001,7 +19010,7 @@ msgstr ""
 msgid "You can preview the list of dashboards in the chart settings dropdown."
 msgstr ""
 
-#: superset-frontend/src/components/Chart/ChartContextMenu.tsx:148
+#: superset-frontend/src/components/Chart/ChartContextMenu/ChartContextMenu.tsx:178
 msgid "You can't apply cross-filter on this data point."
 msgstr ""
 
@@ -19059,7 +19068,7 @@ msgstr "No tienes permiso para acceder a la(s) fuente(s) de datos: %(name)s."
 msgid "You don't have access to this dashboard."
 msgstr "No tienes permiso para acceder a la(s) fuente(s) de datos: %(name)s."
 
-#: superset/datasets/commands/exceptions.py:189
+#: superset/datasets/commands/exceptions.py:206
 #, fuzzy
 msgid "You don't have access to this dataset."
 msgstr "No tienes permiso para acceder a la(s) fuente(s) de datos: %(name)s."
@@ -19079,17 +19088,17 @@ msgstr "¡Aún no tienes favoritos!"
 msgid "You don't have permission to modify the value."
 msgstr "No tienes permiso para aprobar esta solicitud."
 
-#: superset/security/manager.py:2267
+#: superset/security/manager.py:2266
 #, fuzzy, python-format
 msgid "You don't have the rights to alter %(resource)s"
 msgstr "No tienes los derechos para alterar este título."
 
-#: superset/views/core.py:923
+#: superset/views/core.py:926
 #, fuzzy
 msgid "You don't have the rights to alter this chart"
 msgstr "No tienes los derechos para alterar este título."
 
-#: superset/views/core.py:1097
+#: superset/views/core.py:1100
 #, fuzzy
 msgid "You don't have the rights to alter this dashboard"
 msgstr "No tienes los derechos para alterar este título."
@@ -19098,22 +19107,22 @@ msgstr "No tienes los derechos para alterar este título."
 msgid "You don't have the rights to alter this title."
 msgstr "No tienes los derechos para alterar este título."
 
-#: superset/views/core.py:929
+#: superset/views/core.py:932
 #, fuzzy
 msgid "You don't have the rights to create a chart"
 msgstr "No tienes los permisos para "
 
-#: superset/views/core.py:1113
+#: superset/views/core.py:1116
 #, fuzzy
 msgid "You don't have the rights to create a dashboard"
 msgstr "No tienes los permisos para "
 
-#: superset/views/core.py:644
+#: superset/views/core.py:647
 #, fuzzy
 msgid "You don't have the rights to download as csv"
 msgstr "No tienes los permisos para "
 
-#: superset/views/core.py:424
+#: superset/views/core.py:425
 msgid "You have no permission to approve this request"
 msgstr "No tienes permiso para aprobar esta solicitud."
 
@@ -19144,7 +19153,7 @@ msgstr ""
 msgid "You must pick a name for the new dashboard"
 msgstr "Debes elegir un nombre para el nuevo Dashboard"
 
-#: superset-frontend/src/SqlLab/components/SqlEditor/index.jsx:525
+#: superset-frontend/src/SqlLab/components/SqlEditor/index.jsx:526
 msgid "You must run the query successfully first"
 msgstr "Primero debes ejecutar la consulta exitosamente"
 
@@ -19180,34 +19189,34 @@ msgstr ""
 "Tu dashboard es demasiado grande, Por favor reduce el tamaño antes de "
 "guardar"
 
-#: superset-frontend/src/SqlLab/actions/sqlLab.js:1036
+#: superset-frontend/src/SqlLab/actions/sqlLab.js:1041
 msgid "Your query could not be saved"
 msgstr "Tu consulta no pudo ser guardada"
 
-#: superset-frontend/src/SqlLab/actions/sqlLab.js:178
+#: superset-frontend/src/SqlLab/actions/sqlLab.js:179
 msgid "Your query could not be scheduled"
 msgstr "No se pudo programar la consulta."
 
-#: superset-frontend/src/SqlLab/actions/sqlLab.js:1071
+#: superset-frontend/src/SqlLab/actions/sqlLab.js:1076
 msgid "Your query could not be updated"
 msgstr "Tu consulta no pudo ser actualizada"
 
-#: superset-frontend/src/SqlLab/actions/sqlLab.js:171
+#: superset-frontend/src/SqlLab/actions/sqlLab.js:172
 msgid ""
 "Your query has been scheduled. To see details of your query, navigate to "
 "Saved queries"
 msgstr ""
 
-#: superset-frontend/src/SqlLab/actions/sqlLab.js:1051
+#: superset-frontend/src/SqlLab/actions/sqlLab.js:1056
 #, fuzzy
 msgid "Your query was not properly saved"
 msgstr "Tu consulta fue guardada"
 
-#: superset-frontend/src/SqlLab/actions/sqlLab.js:1054
+#: superset-frontend/src/SqlLab/actions/sqlLab.js:1059
 msgid "Your query was saved"
 msgstr "Tu consulta fue guardada"
 
-#: superset-frontend/src/SqlLab/actions/sqlLab.js:1067
+#: superset-frontend/src/SqlLab/actions/sqlLab.js:1072
 msgid "Your query was updated"
 msgstr "Tu consulta fue actualizada"
 
@@ -19235,15 +19244,15 @@ msgstr ""
 msgid "[ untitled dashboard ]"
 msgstr "Editar Dashboard"
 
-#: superset/viz.py:2386
+#: superset/viz.py:2387
 msgid "[Longitude] and [Latitude] columns must be present in [Group By]"
 msgstr "Las columnas [Longitud] y [Latitud] deben estar presentes en [Group By]"
 
-#: superset/viz.py:2336
+#: superset/viz.py:2337
 msgid "[Longitude] and [Latitude] must be set"
 msgstr "Deben especificarse [Longitud] y [Latitud]"
 
-#: superset/explore/commands/get.py:121 superset/views/core.py:870
+#: superset/explore/commands/get.py:121 superset/views/core.py:873
 #, fuzzy
 msgid "[Missing Dataset]"
 msgstr "Cambiar fuente"
@@ -19258,7 +19267,7 @@ msgstr "Se ha otorgado Acceso [Superset] a la fuente de datos %(name)"
 msgid "[Untitled]"
 msgstr "%s - sin título"
 
-#: superset/connectors/base/models.py:252 superset/models/sql_lab.py:228
+#: superset/connectors/base/models.py:262 superset/models/sql_lab.py:215
 #, fuzzy
 msgid "[asc]"
 msgstr "Básico"
@@ -19271,7 +19280,7 @@ msgstr ""
 msgid "[dashboard name]"
 msgstr "[nombre del Dashboard]"
 
-#: superset/connectors/base/models.py:255 superset/models/sql_lab.py:231
+#: superset/connectors/base/models.py:265 superset/models/sql_lab.py:218
 msgid "[desc]"
 msgstr ""
 
@@ -19515,7 +19524,7 @@ msgstr ""
 msgid "count"
 msgstr "Columna"
 
-#: superset-frontend/src/explore/components/SaveModal.tsx:365
+#: superset-frontend/src/explore/components/SaveModal.tsx:398
 #, fuzzy
 msgid "create"
 msgstr "crear un "
@@ -19563,7 +19572,7 @@ msgid "dashboards"
 msgstr "Dashboards"
 
 #: superset-frontend/src/features/databases/DatabaseModal/index.tsx:543
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:712
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:709
 #: superset-frontend/src/pages/DatabaseList/index.tsx:91
 msgid "database"
 msgstr "Base de datos"
@@ -19733,11 +19742,11 @@ msgstr ""
 
 #: superset-frontend/src/features/databases/DatabaseModal/DatabaseConnectionForm/CommonParameters.tsx:112
 #: superset-frontend/src/features/databases/DatabaseModal/DatabaseConnectionForm/ValidatedInputField.tsx:29
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:657
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:654
 msgid "e.g. world_population"
 msgstr ""
 
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:655
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:652
 msgid "e.g. xy12345.us-east-2.aws"
 msgstr ""
 
@@ -19756,7 +19765,7 @@ msgstr "Nombre de la consulta"
 msgid "entries"
 msgstr "Series"
 
-#: superset/connectors/sqla/models.py:1537 superset/models/helpers.py:1742
+#: superset/models/helpers.py:1810
 #, fuzzy
 msgid "error_message"
 msgstr "Mensaje de error"
@@ -19861,8 +19870,8 @@ msgstr ""
 #: superset-frontend/src/components/ImportModal/ErrorAlert.tsx:60
 #: superset-frontend/src/explore/components/controls/AnnotationLayerControl/AnnotationLayer.jsx:125
 #: superset-frontend/src/features/databases/DatabaseModal/ModalHeader.tsx:106
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:975
-#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1800
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:972
+#: superset-frontend/src/features/databases/DatabaseModal/index.tsx:1797
 #, fuzzy
 msgid "here"
 msgstr "Compartir"
@@ -20011,7 +20020,7 @@ msgstr ""
 msgid "median"
 msgstr ""
 
-#: superset-frontend/plugins/plugin-chart-pivot-table/src/PivotTableChart.tsx:60
+#: superset-frontend/plugins/plugin-chart-pivot-table/src/PivotTableChart.tsx:62
 #: superset-frontend/src/explore/components/controls/FixedOrMetricControl/index.jsx:136
 #, fuzzy
 msgid "metric"
@@ -20178,7 +20187,7 @@ msgid ""
 " first is lower than the second value"
 msgstr ""
 
-#: superset/views/core.py:1921
+#: superset/views/core.py:1924
 #, fuzzy
 msgid "permalink state not found"
 msgstr "No se encontró el estado del informe programado"
@@ -20255,7 +20264,7 @@ msgstr "informe"
 msgid "reports"
 msgstr "informes"
 
-#: superset-frontend/plugins/plugin-chart-echarts/src/Timeseries/transformProps.ts:491
+#: superset-frontend/plugins/plugin-chart-echarts/src/Timeseries/transformProps.ts:500
 msgid "restore zoom"
 msgstr ""
 
@@ -20505,6 +20514,6 @@ msgstr "año"
 msgid "yellow"
 msgstr ""
 
-#: superset-frontend/plugins/plugin-chart-echarts/src/Timeseries/transformProps.ts:490
+#: superset-frontend/plugins/plugin-chart-echarts/src/Timeseries/transformProps.ts:499
 msgid "zoom area"
 msgstr ""
