@@ -1031,6 +1031,7 @@
       "Deactivate": [""],
       "December": [""],
       "Decides which column to sort the base axis by.": [""],
+      "Decides which measure to sort the base axis by.": [""],
       "Decimal Character": [""],
       "Deck.gl - 3D Grid": [""],
       "Deck.gl - 3D HEX": [""],
@@ -1395,8 +1396,10 @@
       "Failed at stopping query. %s": [""],
       "Failed to create report": [""],
       "Failed to execute %(query)s": [""],
+      "Failed to generate chart edit URL": [""],
       "Failed to load chart data": [""],
       "Failed to load chart data.": [""],
+      "Failed to load dimensions for drill by": [""],
       "Failed to retrieve advanced type": [""],
       "Failed to start remote query on a worker.": [""],
       "Failed to update report": [""],
@@ -2692,9 +2695,6 @@
       "Showing %s of %s": [""],
       "Shows a list of all series available at that point in time": [""],
       "Shows or hides markers for the time series": [""],
-      "Shows the composition of a dataset by segmenting a given rectangle as smaller rectangles with areas proportional to their value or contribution to the whole. Those rectangles may also, in turn, be further segmented hierarchically.": [
-        ""
-      ],
       "Significance Level": [""],
       "Simple": [""],
       "Simple ad-hoc metrics are not enabled for this dataset": [""],
@@ -2863,7 +2863,6 @@
       "Take your data points, and group them into \"bins\" to see where the densest areas of information lie": [
         ""
       ],
-      "Target aspect ratio for treemap tiles.": [""],
       "Template Name": ["템플릿 명"],
       "Template parameters": [""],
       "Templated link, it's possible to include {{ metric }} or other values coming from the controls.": [
@@ -3173,7 +3172,7 @@
       "This can be either an IP address (e.g. 127.0.0.1) or a domain name (e.g. mydatabase.com).": [
         ""
       ],
-      "This chart emits/applies cross-filters to other charts that use the same dataset": [
+      "This chart applies cross-filters to charts whose datasets contain columns with the same name.": [
         ""
       ],
       "This chart has been moved to a different filter scope.": [""],
@@ -3344,6 +3343,7 @@
       "Tooltip time format": [""],
       "Top right": [""],
       "Top to Bottom": [""],
+      "Total": [""],
       "Total (%(aggfunc)s)": [""],
       "Total (%(aggregatorName)s)": [""],
       "Total: %s": [""],
@@ -3355,7 +3355,6 @@
       "Transpose pivot": [""],
       "Tree layout": [""],
       "Treemap": ["트리맵"],
-      "Treemap (legacy)": [""],
       "Trend": [""],
       "Triangle": [""],
       "Trigger Alert If...": [""],

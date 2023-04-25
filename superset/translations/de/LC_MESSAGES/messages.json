@@ -5,7 +5,7 @@
       "22": ["22"],
       "": {
         "domain": "superset",
-        "plural_forms": "nplurals=2; plural=(n != 1);",
+        "plural_forms": "nplurals=2; plural=(n != 1)",
         "lang": "de"
       },
       "\n                This filter was inherited from the dashboard's context.\n                It won't be saved when saving the chart.\n              ": [
@@ -4416,9 +4416,6 @@
       "Shows or hides markers for the time series": [
         "Ein- oder Ausblenden von Markern für die Zeitreihe"
       ],
-      "Shows the composition of a dataset by segmenting a given rectangle as smaller rectangles with areas proportional to their value or contribution to the whole. Those rectangles may also, in turn, be further segmented hierarchically.": [
-        "Zeigt die Zusammensetzung eines Datensatzes an, indem ein bestimmtes Rechteck als kleinere Rechtecke mit Bereichen segmentiert wird, die proportional zu ihrem Wert oder Beitrag zum Ganzen sind. Diese Rechtecke können wiederum auch hierarchisch weiter segmentiert werden."
-      ],
       "Significance Level": ["Signifikanzniveau"],
       "Simple": ["Einfach"],
       "Simple ad-hoc metrics are not enabled for this dataset": [
@@ -4699,9 +4696,6 @@
       ],
       "Target": ["Ziel"],
       "Target Color": ["Zielfarbe"],
-      "Target aspect ratio for treemap tiles.": [
-        "Ziel-Seitenverhältnis für Treemap-Kacheln."
-      ],
       "Target category": ["Zielkategorie"],
       "Target value": ["Zielwert"],
       "Template Name": ["Vorlagenname"],
@@ -5214,9 +5208,6 @@
       "This can be either an IP address (e.g. 127.0.0.1) or a domain name (e.g. mydatabase.com).": [
         "Dies kann entweder eine IP-Adresse (z.B. 127.0.0.1) oder ein Domainname (z.B. mydatabase.com) sein."
       ],
-      "This chart emits/applies cross-filters to other charts that use the same dataset": [
-        "Dieses Diagramm gibt Kreuzfilter aus/wendet sie auf andere Diagramme an, die denselben Datensatz verwenden."
-      ],
       "This chart has been moved to a different filter scope.": [
         "Dieses Diagramm wurde in einen anderen Filterbereich verschoben."
       ],
@@ -5496,7 +5487,6 @@
       "Tree layout": ["Baum-Layout"],
       "Tree orientation": ["Baumausrichtung"],
       "Treemap": ["Treemap"],
-      "Treemap (legacy)": ["Kacheldiagramm (Legacy)"],
       "Trend": ["Trend"],
       "Triangle": ["Dreieck"],
       "Trigger Alert If...": ["Alarm auslösen falls..."],

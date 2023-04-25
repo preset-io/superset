@@ -420,6 +420,7 @@
         ""
       ],
       "An error occurred while importing %s: %s": [""],
+      "An error occurred while loading dashboard information.": [""],
       "An error occurred while loading the SQL": [""],
       "An error occurred while opening Explore": [""],
       "An error occurred while parsing the key.": [""],
@@ -1199,6 +1200,7 @@
       "Deactivate": [""],
       "December": [""],
       "Decides which column to sort the base axis by.": [""],
+      "Decides which measure to sort the base axis by.": [""],
       "Decimal Character": [""],
       "Deck.gl - 3D Grid": [""],
       "Deck.gl - 3D HEX": [""],
@@ -1609,8 +1611,10 @@
       "Failed at stopping query. %s": [""],
       "Failed to create report": [""],
       "Failed to execute %(query)s": [""],
+      "Failed to generate chart edit URL": [""],
       "Failed to load chart data": [""],
       "Failed to load chart data.": [""],
+      "Failed to load dimensions for drill by": [""],
       "Failed to retrieve advanced type": [""],
       "Failed to start remote query on a worker.": [""],
       "Failed to update report": [""],
@@ -3135,9 +3139,6 @@
       "Showing %s of %s": [""],
       "Shows a list of all series available at that point in time": [""],
       "Shows or hides markers for the time series": [""],
-      "Shows the composition of a dataset by segmenting a given rectangle as smaller rectangles with areas proportional to their value or contribution to the whole. Those rectangles may also, in turn, be further segmented hierarchically.": [
-        ""
-      ],
       "Significance Level": [""],
       "Simple": [""],
       "Simple ad-hoc metrics are not enabled for this dataset": [""],
@@ -3348,7 +3349,6 @@
       ],
       "Target": [""],
       "Target Color": [""],
-      "Target aspect ratio for treemap tiles.": [""],
       "Target category": [""],
       "Target value": [""],
       "Template Name": [""],
@@ -3631,6 +3631,7 @@
       "There was an error fetching tables": [""],
       "There was an error fetching the favorite status: %s": [""],
       "There was an error fetching your recent activity:": [""],
+      "There was an error loading the chart data": [""],
       "There was an error loading the dataset metadata": [""],
       "There was an error loading the schemas": [""],
       "There was an error loading the tables": [""],
@@ -3677,7 +3678,7 @@
       "This can be either an IP address (e.g. 127.0.0.1) or a domain name (e.g. mydatabase.com).": [
         ""
       ],
-      "This chart emits/applies cross-filters to other charts that use the same dataset": [
+      "This chart applies cross-filters to charts whose datasets contain columns with the same name.": [
         ""
       ],
       "This chart has been moved to a different filter scope.": [""],
@@ -3878,6 +3879,7 @@
       "Top left": [""],
       "Top right": [""],
       "Top to Bottom": [""],
+      "Total": [""],
       "Total (%(aggfunc)s)": [""],
       "Total (%(aggregatorName)s)": [""],
       "Total value": [""],
@@ -3892,7 +3894,6 @@
       "Tree layout": [""],
       "Tree orientation": [""],
       "Treemap": [""],
-      "Treemap (legacy)": [""],
       "Trend": [""],
       "Triangle": [""],
       "Trigger Alert If...": [""],
