@@ -131,6 +131,9 @@
       "A comma-separated list of schemas that files are allowed to upload to.": [
         ""
       ],
+      "A dictionary with column names and their data types if you need to change the defaults. Example: {\"user_id\":\"integer\"}": [
+        ""
+      ],
       "A full URL pointing to the location of the built plugin (could be hosted on a CDN for example)": [
         ""
       ],
@@ -195,7 +198,7 @@
       "Add Database": ["Adicionar Base de Dados"],
       "Add Log": [""],
       "Add Metric": ["Adicionar Métrica"],
-      "Add Row level security filter": [""],
+      "Add Rule": [""],
       "Add Saved Query": ["Adicionar Query"],
       "Add a Plugin": ["Adicionar Coluna"],
       "Add a new tab to create SQL Query": [""],
@@ -475,6 +478,7 @@
       "Are you sure you want to delete the selected datasets?": [""],
       "Are you sure you want to delete the selected layers?": [""],
       "Are you sure you want to delete the selected queries?": [""],
+      "Are you sure you want to delete the selected rules?": [""],
       "Are you sure you want to delete the selected tags?": [""],
       "Are you sure you want to delete the selected templates?": [""],
       "Are you sure you want to overwrite this dataset?": [""],
@@ -684,7 +688,6 @@
       "Choose a metric for right axis": [
         "Escolha uma métrica para o eixo direito"
       ],
-      "Choose a unique name": [""],
       "Choose one of the available databases from the panel on the left.": [""],
       "Choose the format for legend values": [""],
       "Choose the source of your annotations": [""],
@@ -723,7 +726,6 @@
       ],
       "Click to cancel sorting": [""],
       "Click to edit": ["clique para editar o título"],
-      "Click to edit %s in a new tab": [""],
       "Click to favorite/unfavorite": ["Clique para tornar favorito"],
       "Click to force-refresh": ["Clique para forçar atualização"],
       "Click to see difference": ["Clique para forçar atualização"],
@@ -860,6 +862,7 @@
       "Copy the name of the HTTP Path of your cluster.": [""],
       "Copy the name of the database you are trying to connect to.": [""],
       "Copy to clipboard": ["Copiar para área de transferência"],
+      "Could not connect to database: \"%(database)s\"": [""],
       "Could not determine datasource type": [""],
       "Could not fetch all saved charts": [
         "Não foi possível ligar ao servidor"
@@ -870,6 +873,7 @@
       "Could not load database driver: {}": [
         "Não foi possível ligar ao servidor"
       ],
+      "Could not resolve hostname: \"%(host)s\".": [""],
       "Count Unique Values": [""],
       "Count as Fraction of Columns": [""],
       "Count as Fraction of Rows": [""],
@@ -1007,6 +1011,7 @@
       "Db engine did not return all queried columns": [""],
       "December": [""],
       "Decides which column to sort the base axis by.": [""],
+      "Decides which measure to sort the base axis by.": [""],
       "Decimal Character": [""],
       "Deck.gl - 3D Grid": [""],
       "Deck.gl - 3D HEX": [""],
@@ -1217,7 +1222,6 @@
       "Edit Log": ["Editar"],
       "Edit Metric": ["Editar Métrica"],
       "Edit Plugin": ["Editar Coluna"],
-      "Edit Row level security filter": [""],
       "Edit Saved Query": ["Editar Query"],
       "Edit Table": ["Editar Tabela"],
       "Edit chart properties": ["Editar propriedades da visualização"],
@@ -1358,8 +1362,10 @@
       "Failed at stopping query. %s": [""],
       "Failed to create report": [""],
       "Failed to execute %(query)s": [""],
+      "Failed to generate chart edit URL": [""],
       "Failed to load chart data": [""],
       "Failed to load chart data.": [""],
+      "Failed to load dimensions for drill by": [""],
       "Failed to start remote query on a worker.": [""],
       "Failed to update report": [""],
       "Failed to verify select options: %s": [""],
@@ -1378,6 +1384,7 @@
       "Fill method": [""],
       "Filter Configuration": ["Controlo de filtro"],
       "Filter List": ["Filtros"],
+      "Filter box (deprecated)": [""],
       "Filter configuration for the filter box": [""],
       "Filter has default value": [""],
       "Filter metadata changed in dashboard. It will not be applied.": [""],
@@ -1543,6 +1550,9 @@
       "Input field supports custom rotation. e.g. 30 for 30°": [""],
       "Interpret Datetime Format Automatically": [""],
       "Interpret the datetime format automatically": [""],
+      "Invalid Connection String: Expecting String of the form 'ocient://user:pass@host:port/database'.": [
+        ""
+      ],
       "Invalid JSON": [""],
       "Invalid advanced data type: %(advanced_data_type)s": [""],
       "Invalid certificate": [""],
@@ -1569,6 +1579,7 @@
       "Invalid numpy function: %(operator)s": [""],
       "Invalid options for %(rolling_type)s: %(options)s": [""],
       "Invalid permalink key": [""],
+      "Invalid reference to column: \"%(column)s\"": [""],
       "Invalid result type: %(result_type)s": [""],
       "Invalid rolling_type: %(type)s": [""],
       "Invalid spatial point encountered: %s": [""],
@@ -1867,7 +1878,6 @@
       "No data in file": [""],
       "No database tables found": [""],
       "No databases match your search": [""],
-      "No dimensions available for drill by": [""],
       "No favorite charts yet, go click on stars!": [
         "Ainda não há dashboards favoritos, comece a clicar nas estrelas!"
       ],
@@ -2009,7 +2019,6 @@
       "Optional d3 number format string": [""],
       "Optional name of the data column.": [""],
       "Optional warning about use of this metric": [""],
-      "Optionally add a detailed description": [""],
       "Or choose from a list of other databases we support:": [""],
       "Order by entity id": [""],
       "Order results by selected columns": [""],
@@ -2082,12 +2091,6 @@
       "Pick a granularity in the Time section or uncheck 'Include Time'": [
         "Escolha uma granularidade na secção Tempo ou desmarque 'Incluir hora'"
       ],
-      "Pick a metric for left axis!": [
-        "Selecione uma métrica para o eixo esquerdo!"
-      ],
-      "Pick a metric for right axis!": [
-        "Selecione uma métrica para o eixo direito!"
-      ],
       "Pick a metric for x, y and size": [
         "Selecione uma métrica para x, y e tamanho"
       ],
@@ -2136,9 +2139,6 @@
         ""
       ],
       "Please choose at least one metric": ["Selecione pelo menos uma métrica"],
-      "Please choose different metrics on left and right axis": [
-        "Selecione métricas diferentes para o eixo esquerdo e direito"
-      ],
       "Please confirm": [""],
       "Please confirm the overwrite values.": [""],
       "Please enter a SQLAlchemy URI to test": [
@@ -2180,6 +2180,7 @@
       "Port %(port)s on hostname \"%(hostname)s\" refused the connection.": [
         ""
       ],
+      "Port out of range 0-65535": [""],
       "Position JSON": ["Posição JSON"],
       "Position of child node label on tree": [""],
       "Position of column level subtotal": [""],
@@ -2268,7 +2269,8 @@
       "Refresh frequency": [""],
       "Refresh the default values": [""],
       "Regex": [""],
-      "Regular filters add where clauses to queries if a user belongs to a role referenced in the filter. Base filters apply filters to all queries except the roles defined in the filter, and can be used to define what users can see if no RLS filters within a filter group apply to them.": [
+      "Regular": [""],
+      "Regular filters add where clauses to queries if a user belongs to a role referenced in the filter, base filters apply filters to all queries except the roles defined in the filter, and can be used to define what users can see if no RLS filters within a filter group apply to them.": [
         ""
       ],
       "Relationships between community channels": [""],
@@ -2362,13 +2364,13 @@
       "Row containing the headers to use as column names (0 is first line of data). Leave empty if there is no header row.": [
         ""
       ],
-      "Row level security filter": [""],
       "Row limit": ["Limite de linha"],
       "Rows": [""],
       "Rows per page, 0 means no pagination": [""],
       "Rows subtotal position": [""],
       "Rows to Read": ["Cargos a permitir ao utilizador"],
       "Rule": [""],
+      "Rule added": [""],
       "Run": [""],
       "Run in SQL Lab": ["Expor no SQL Lab"],
       "Run query": ["Executar query"],
@@ -2539,7 +2541,6 @@
       "Show Log": ["Mostrar totais"],
       "Show Markers": [""],
       "Show Metric": ["Mostrar Métrica"],
-      "Show Row level security filter": [""],
       "Show Saved Query": ["Mostrar Query"],
       "Show Table": ["Mostrar Tabela"],
       "Show Timestamp": [""],
@@ -2734,6 +2735,9 @@
       "Symbol of two ends of edge line": [""],
       "Sync columns from source": [""],
       "Syntax": [""],
+      "Syntax Error: %(qualifier)s input \"%(input)s\" expecting \"%(expected)s": [
+        ""
+      ],
       "TABLES": [""],
       "THU": [""],
       "TUE": [""],
@@ -3017,6 +3021,9 @@
       "The user seems to have been deleted": [
         "O utilizador parece ter sido eliminado"
       ],
+      "The user/password combination is not valid (Incorrect password for user).": [
+        ""
+      ],
       "The username \"%(username)s\" does not exist.": [""],
       "The username provided when connecting to a database is not valid.": [""],
       "The way the ticks are laid out on the X-axis": [""],
@@ -3077,7 +3084,7 @@
       "This can be either an IP address (e.g. 127.0.0.1) or a domain name (e.g. mydatabase.com).": [
         ""
       ],
-      "This chart emits/applies cross-filters to other charts that use the same dataset": [
+      "This chart applies cross-filters to charts whose datasets contain columns with the same name.": [
         ""
       ],
       "This chart has been moved to a different filter scope.": [""],
@@ -3183,9 +3190,6 @@
       "Time Comparison": ["Coluna de tempo"],
       "Time Range": ["Granularidade Temporal"],
       "Time Series - Bar Chart": ["Série Temporal - Gráfico de barras"],
-      "Time Series - Dual Axis Line Chart": [
-        "Série Temporal - Gráfico de linha de dois eixos"
-      ],
       "Time Series - Line Chart": ["Série Temporal - Gráfico de linhas"],
       "Time Series - Multiple Line Charts": [
         "Série Temporal - Gráfico de linhas"
@@ -3257,6 +3261,7 @@
       "Top left": [""],
       "Top right": [""],
       "Top to Bottom": [""],
+      "Total": [""],
       "Total (%(aggfunc)s)": [""],
       "Total (%(aggregatorName)s)": [""],
       "Total: %s": [""],
@@ -3458,9 +3463,6 @@
       "Visualize two different time series using the same x-axis. Note that each time series can be visualized differently (e.g. 1 using bars and 1 using a line).": [
         ""
       ],
-      "Visualizes 2 metrics as line plots using the same x-axis. This chart is useful for comparing metrics across the same time range.": [
-        ""
-      ],
       "Visualizes a metric across three dimensions of data in a single chart (X axis, Y axis, and bubble size). Bubbles from the same group can be showcased using bubble color.": [
         ""
       ],
@@ -3657,8 +3659,6 @@
       "Y AXIS TITLE MARGIN": [""],
       "Y AXIS TITLE POSITION": [""],
       "Y Axis": ["Eixo YY"],
-      "Y Axis 1": [""],
-      "Y Axis 2": [""],
       "Y Axis 2 Bounds": [""],
       "Y Axis Bounds": [""],
       "Y Axis Format": ["Formato do Eixo YY"],
@@ -3875,6 +3875,7 @@
       "e.g. xy12345.us-east-2.aws": [""],
       "e.g., a \"user id\" column": [""],
       "edit mode": [""],
+      "error dark": [""],
       "every": [""],
       "every day of the month": ["Código de 3 letras do país"],
       "every day of the week": [""],
@@ -3890,7 +3891,6 @@
       "for more information on how to structure your URI.": [""],
       "function type icon": [""],
       "geohash (square)": [""],
-      "green": [""],
       "heatmap: values are normalized across the entire heatmap": [""],
       "hour": ["hora"],
       "image-rendering CSS attribute of the canvas object that defines how the browser scales up the image": [
@@ -3952,6 +3952,7 @@
       "report": ["Janela de exibição"],
       "reports": ["Janela de exibição"],
       "restore zoom": [""],
+      "rowlevelsecurity": [""],
       "search by tags": [""],
       "series: Treat each series independently; overall: All series use the same scale; change: Show changes compared to the first data point in each series": [
         ""
@@ -3984,7 +3985,6 @@
       "y": [""],
       "y: values are normalized within each row": [""],
       "year": ["ano"],
-      "yellow": [""],
       "zoom area": [""]
     }
   }
