@@ -17,14 +17,14 @@
 """cross-filter-global-scoping
 
 Revision ID: 4ea966691069
-Revises: 9c2a5681ddfd
+Revises: ae58e1e58e5c
 Create Date: 2023-05-11 12:41:38.095717
 
 """
 
 # revision identifiers, used by Alembic.
 revision = "4ea966691069"
-down_revision = "9c2a5681ddfd"
+down_revision = "ae58e1e58e5c"
 
 import copy
 import json
