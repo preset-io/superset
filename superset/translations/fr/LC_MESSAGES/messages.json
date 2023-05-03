@@ -226,6 +226,7 @@
       "Add calculated temporal columns to dataset in \"Edit datasource\" modal": [
         ""
       ],
+      "Add custom scoping": [""],
       "Add delivery method": ["Ajouter méthode de livraison"],
       "Add filter": ["Ajouter un filtre"],
       "Add filter clauses to control the filter's source query,\n                    though only in the context of the autocomplete i.e., these conditions\n                    do not impact how the filter is applied to the dashboard. This is useful\n                    when you want to improve the query's performance by only scanning a subset\n                    of the underlying data or limit the available values displayed in the filter.": [
@@ -309,6 +310,7 @@
       "All": ["Tous"],
       "All Text": ["Tout texte"],
       "All charts": ["Tous les graphiques"],
+      "All charts/global scoping": [""],
       "All filters": ["Tous les filtres"],
       "All panels with this column will be affected by this filter": [
         "Les panneaux avec cette colonne seront affectés par ce filtre"
@@ -638,6 +640,12 @@
         ""
       ],
       "Bounds for the axis. When left empty, the bounds are dynamically defined based on the min/max of the data. Note that this feature will only expand the axis range. It won't narrow the data's extent.": [
+        ""
+      ],
+      "Bounds for the primary Y-axis. When left empty, the bounds are dynamically defined based on the min/max of the data. Note that this feature will only expand the axis range. It won't narrow the data's extent.": [
+        ""
+      ],
+      "Bounds for the secondary Y-axis. Only works when Independent Y-axis\n                bounds are enabled. When left empty, the bounds are dynamically defined\n                based on the min/max of the data. Note that this feature will only expand\n                the axis range. It won't narrow the data's extent.": [
         ""
       ],
       "Bubble Chart": ["Bulles"],
@@ -1431,10 +1439,6 @@
         ""
       ],
       "Drill to detail: %s": [""],
-      "Drop columns here": ["Supprimer des colonnes ici"],
-      "Drop columns or metrics here": [
-        "Supprimer des colonnes ou des métriques ici"
-      ],
       "Drop columns/metrics here or click": [
         "Supprimer des colonnes/métriques ici ou cliquer"
       ],
@@ -1611,6 +1615,7 @@
       "Excel to Database configuration": [
         "Configuration de Excel vers base de données"
       ],
+      "Excluded roles": [""],
       "Executed SQL": ["Lancer la requête SQL"],
       "Executed query": ["Lancer la requête sélectionnée"],
       "Execution ID": ["ID d'exécution"],
@@ -1894,6 +1899,10 @@
       "Inner radius of donut hole": [""],
       "Input field supports custom rotation. e.g. 30 for 30°": [""],
       "Instant filtering": ["Filtrage instantané"],
+      "Intensity Radius is the radius at which the weight is distributed": [""],
+      "Intensity is the value multiplied by the weight to obtain the final weight": [
+        ""
+      ],
       "Interval End column": ["Dernière colonne de l'intervalle"],
       "Interval start column": ["Première colonne de l'intervalle"],
       "Invalid JSON": ["JSON invalide"],
@@ -2556,6 +2565,7 @@
       "Preview: `%s`": ["Prévisualisation : `%s`"],
       "Previous": ["Précédent"],
       "Primary or secondary y-axis": [""],
+      "Primary y-axis Bounds": [""],
       "Primary y-axis format": [""],
       "Private Key": [""],
       "Profile": ["Profil"],
@@ -2871,6 +2881,7 @@
       "Search by query text": ["Texte de recherche"],
       "Search...": ["Recherche..."],
       "Second": ["Seconde"],
+      "Secondary y-axis Bounds": [""],
       "Secondary y-axis format": [""],
       "Secondary y-axis title": [""],
       "Secure Extra": ["Sécurité"],
@@ -2914,6 +2925,12 @@
         "Selectionner la date de début et la date de fin"
       ],
       "Select subject": ["Sélectionner un objet"],
+      "Select the charts to which you want to apply cross-filters in this dashboard. Deselecting a chart will exclude it from being filtered when applying cross-filters from any chart on the dashboard. You can select \"All charts\" to apply cross-filters to all charts that use the same dataset or contain the same column name in the dashboard.": [
+        ""
+      ],
+      "Select the charts to which you want to apply cross-filters when interacting with this chart. You can select \"All charts\" to apply filters to all charts that use the same dataset or contain the same column name in the dashboard.": [
+        ""
+      ],
       "Select the number of bins for the histogram": [""],
       "Select the numeric columns to draw the histogram": [""],
       "Select values in highlighted field(s) in the control panel. Then run the query by clicking on the %s button.": [
@@ -3869,6 +3886,8 @@
         ""
       ],
       "Unable to create chart without a query id.": [""],
+      "Unable to decode value": [""],
+      "Unable to encode value": [""],
       "Unable to find such a holiday: [%(holiday)s]": [
         "Impossible de trouver un tel congé : [%(holiday)s]"
       ],
@@ -3994,6 +4013,9 @@
       ],
       "User query": ["Requête utilisateur"],
       "Username": ["Nom d'utilisateur"],
+      "Uses Gaussian Kernel Density Estimation to visualize spatial distribution of data": [
+        ""
+      ],
       "Uses a gauge to showcase progress of a metric towards a target. The position of the dial represents the progress and the terminal value in the gauge represents the target value.": [
         ""
       ],

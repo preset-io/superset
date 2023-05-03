@@ -216,6 +216,7 @@
       "Add calculated temporal columns to dataset in \"Edit datasource\" modal": [
         ""
       ],
+      "Add custom scoping": [""],
       "Add delivery method": ["添加通知方法"],
       "Add filter": ["增加过滤条件"],
       "Add filter clauses to control the filter's source query,\n                    though only in the context of the autocomplete i.e., these conditions\n                    do not impact how the filter is applied to the dashboard. This is useful\n                    when you want to improve the query's performance by only scanning a subset\n                    of the underlying data or limit the available values displayed in the filter.": [
@@ -294,6 +295,7 @@
       "All": ["所有"],
       "All Text": ["所有文本"],
       "All charts": ["所有图表"],
+      "All charts/global scoping": [""],
       "All filters": ["所有过滤"],
       "All filters (%(filterCount)d)": ["所有过滤(%(filterCount)d)"],
       "All panels": ["应用于所有面板"],
@@ -1330,10 +1332,7 @@
         ""
       ],
       "Drill to detail: %s": [""],
-      "Drop columns here": ["将列拖放到此处"],
-      "Drop columns or metrics here": ["将列或指标拖放到此处"],
       "Drop columns/metrics here or click": ["将列/指标拖放到此处或单击"],
-      "Drop temporal column here": ["将时间列拖放到此处"],
       "Duplicate column name(s): %(columns)s": ["重复的列名%(columns)s"],
       "Duplicate column/metric labels: %(labels)s. Please make sure all columns and metrics have a unique label.": [
         "重复的列/指标标签：%(labels)s。请确保所有列和指标都有唯一的标签。"
@@ -1798,6 +1797,10 @@
       ],
       "Instant filtering": ["即时过滤"],
       "Intensity": ["强度"],
+      "Intensity Radius is the radius at which the weight is distributed": [""],
+      "Intensity is the value multiplied by the weight to obtain the final weight": [
+        ""
+      ],
       "Interval End column": ["间隔结束列"],
       "Interval bounds": ["区间间隔"],
       "Interval colors": ["间隔颜色"],
@@ -2852,6 +2855,12 @@
       "Select scheme": ["选择表"],
       "Select start and end date": ["选择开始和结束时间"],
       "Select subject": ["选择主题"],
+      "Select the charts to which you want to apply cross-filters in this dashboard. Deselecting a chart will exclude it from being filtered when applying cross-filters from any chart on the dashboard. You can select \"All charts\" to apply cross-filters to all charts that use the same dataset or contain the same column name in the dashboard.": [
+        ""
+      ],
+      "Select the charts to which you want to apply cross-filters when interacting with this chart. You can select \"All charts\" to apply filters to all charts that use the same dataset or contain the same column name in the dashboard.": [
+        ""
+      ],
       "Select the number of bins for the histogram": ["选择直方图的容器数"],
       "Select the numeric columns to draw the histogram": [
         "选择直方图的容器数"
@@ -3820,6 +3829,8 @@
         ""
       ],
       "Unable to create chart without a query id.": [""],
+      "Unable to decode value": [""],
+      "Unable to encode value": [""],
       "Unable to find such a holiday: [%(holiday)s]": [
         "找不到这样的假期：[{}]"
       ],
@@ -3943,6 +3954,9 @@
       ],
       "User query": ["用户查询"],
       "Username": ["用户名"],
+      "Uses Gaussian Kernel Density Estimation to visualize spatial distribution of data": [
+        ""
+      ],
       "Uses a gauge to showcase progress of a metric towards a target. The position of the dial represents the progress and the terminal value in the gauge represents the target value.": [
         "使用一个度量来展示实现目标的度量的进展"
       ],

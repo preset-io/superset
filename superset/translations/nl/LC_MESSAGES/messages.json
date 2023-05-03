@@ -232,6 +232,7 @@
       "Add calculated temporal columns to dataset in \"Edit datasource\" modal": [
         ""
       ],
+      "Add custom scoping": [""],
       "Add delivery method": ["Leveringswijze toevoegen"],
       "Add filter": ["Filter toevoegen"],
       "Add filter clauses to control the filter's source query,\n                    though only in the context of the autocomplete i.e., these conditions\n                    do not impact how the filter is applied to the dashboard. This is useful\n                    when you want to improve the query's performance by only scanning a subset\n                    of the underlying data or limit the available values displayed in the filter.": [
@@ -324,6 +325,7 @@
       "All": ["Alle"],
       "All Text": ["Alle tekst"],
       "All charts": ["Alle grafieken"],
+      "All charts/global scoping": [""],
       "All filters": ["Alle filters"],
       "All filters (%(filterCount)d)": [""],
       "All panels": [""],
@@ -680,6 +682,12 @@
         ""
       ],
       "Bounds for the axis. When left empty, the bounds are dynamically defined based on the min/max of the data. Note that this feature will only expand the axis range. It won't narrow the data's extent.": [
+        ""
+      ],
+      "Bounds for the primary Y-axis. When left empty, the bounds are dynamically defined based on the min/max of the data. Note that this feature will only expand the axis range. It won't narrow the data's extent.": [
+        ""
+      ],
+      "Bounds for the secondary Y-axis. Only works when Independent Y-axis\n                bounds are enabled. When left empty, the bounds are dynamically defined\n                based on the min/max of the data. Note that this feature will only expand\n                the axis range. It won't narrow the data's extent.": [
         ""
       ],
       "Box Plot": [""],
@@ -1508,10 +1516,7 @@
       ],
       "Drill to detail: %s": [""],
       "Drop a temporal column here or click": [""],
-      "Drop columns here": [""],
-      "Drop columns or metrics here": [""],
       "Drop columns/metrics here or click": [""],
-      "Drop temporal column here": [""],
       "Duplicate column name(s): %(columns)s": [
         "Dubbele kolomnaam (of -namen): %(columns)s"
       ],
@@ -1697,6 +1702,7 @@
       ],
       "Excel to Database configuration": ["Excel naar Database configuratie"],
       "Exclude selected values": [""],
+      "Excluded roles": [""],
       "Executed SQL": [""],
       "Executed query": ["Uitgevoerde query"],
       "Execution ID": ["Uitvoerings ID"],
@@ -2006,6 +2012,11 @@
       "Input field supports custom rotation. e.g. 30 for 30°": [""],
       "Instant filtering": ["Onmiddellijke filtering"],
       "Intensity": [""],
+      "Intensity Radius": [""],
+      "Intensity Radius is the radius at which the weight is distributed": [""],
+      "Intensity is the value multiplied by the weight to obtain the final weight": [
+        ""
+      ],
       "Interval End column": [""],
       "Interval bounds": [""],
       "Interval colors": [""],
@@ -2789,6 +2800,7 @@
       "Primary Metric": [""],
       "Primary key": [""],
       "Primary or secondary y-axis": [""],
+      "Primary y-axis Bounds": [""],
       "Primary y-axis format": [""],
       "Private Key": [""],
       "Private Key & Password": [""],
@@ -3126,6 +3138,7 @@
       "Second": ["Seconde"],
       "Secondary": [""],
       "Secondary Metric": [""],
+      "Secondary y-axis Bounds": [""],
       "Secondary y-axis format": [""],
       "Secondary y-axis title": [""],
       "Seconds %s": [""],
@@ -3172,6 +3185,12 @@
       "Select scheme": [""],
       "Select start and end date": ["Selecteer begin- en einddatum"],
       "Select subject": [""],
+      "Select the charts to which you want to apply cross-filters in this dashboard. Deselecting a chart will exclude it from being filtered when applying cross-filters from any chart on the dashboard. You can select \"All charts\" to apply cross-filters to all charts that use the same dataset or contain the same column name in the dashboard.": [
+        ""
+      ],
+      "Select the charts to which you want to apply cross-filters when interacting with this chart. You can select \"All charts\" to apply filters to all charts that use the same dataset or contain the same column name in the dashboard.": [
+        ""
+      ],
       "Select the geojson column": [""],
       "Select the number of bins for the histogram": [""],
       "Select the numeric columns to draw the histogram": [""],
@@ -4121,7 +4140,6 @@
       "To get a readable URL for your dashboard": [
         "Om een leesbare URL voor uw dashboard te krijgen"
       ],
-      "Too many columns to filter": [""],
       "Tools": [""],
       "Tooltip": [""],
       "Tooltip sort by metric": [""],
@@ -4189,6 +4207,8 @@
         ""
       ],
       "Unable to create chart without a query id.": [""],
+      "Unable to decode value": [""],
+      "Unable to encode value": [""],
       "Unable to find such a holiday: [%(holiday)s]": [
         "Niet in staat om zo’n holiday te vinden: [%(holiday)s]"
       ],
@@ -4309,6 +4329,9 @@
       ],
       "User query": ["User query"],
       "Username": ["Gebruikersnaam"],
+      "Uses Gaussian Kernel Density Estimation to visualize spatial distribution of data": [
+        ""
+      ],
       "Uses a gauge to showcase progress of a metric towards a target. The position of the dial represents the progress and the terminal value in the gauge represents the target value.": [
         ""
       ],

@@ -253,6 +253,7 @@
         ""
       ],
       "Add cross-filter": [""],
+      "Add custom scoping": [""],
       "Add delivery method": [""],
       "Add extra connection information.": [""],
       "Add filter": [""],
@@ -308,6 +309,7 @@
       "Aggregates data within the boundary of grid cells and maps the aggregated values to a dynamic color scale": [
         ""
       ],
+      "Aggregation": [""],
       "Aggregation function": [""],
       "Alert": [""],
       "Alert Triggered, In Grace Period": [""],
@@ -335,6 +337,7 @@
       "All Entities": [""],
       "All Text": [""],
       "All charts": [""],
+      "All charts/global scoping": [""],
       "All filters": [""],
       "All filters (%(filterCount)d)": [""],
       "All panels": [""],
@@ -620,6 +623,12 @@
       "Bounds for the axis. When left empty, the bounds are dynamically defined based on the min/max of the data. Note that this feature will only expand the axis range. It won't narrow the data's extent.": [
         ""
       ],
+      "Bounds for the primary Y-axis. When left empty, the bounds are dynamically defined based on the min/max of the data. Note that this feature will only expand the axis range. It won't narrow the data's extent.": [
+        ""
+      ],
+      "Bounds for the secondary Y-axis. Only works when Independent Y-axis\n                bounds are enabled. When left empty, the bounds are dynamically defined\n                based on the min/max of the data. Note that this feature will only expand\n                the axis range. It won't narrow the data's extent.": [
+        ""
+      ],
       "Box Plot": [""],
       "Breakdowns": [""],
       "Bubble Chart": [""],
@@ -893,6 +902,7 @@
       ],
       "Column containing latitude data": [""],
       "Column containing longitude data": [""],
+      "Column datatype": [""],
       "Column header tooltip": [""],
       "Column is required": [""],
       "Column label for index column(s). If None is given and Dataframe Index is True, Index Names are used.": [
@@ -1057,6 +1067,8 @@
         ""
       ],
       "Cross-filtering is not enabled for this dashboard.": [""],
+      "Cross-filtering is not enabled in this dashboard": [""],
+      "Cross-filtering scoping": [""],
       "Cross-filters": [""],
       "Cumulative": [""],
       "Currently rendered: %s": [""],
@@ -1213,6 +1225,7 @@
       "Deck.gl - 3D HEX": [""],
       "Deck.gl - Arc": [""],
       "Deck.gl - GeoJSON": [""],
+      "Deck.gl - Heatmap": [""],
       "Deck.gl - Multiple Layers": [""],
       "Deck.gl - Paths": [""],
       "Deck.gl - Polygon": [""],
@@ -1382,10 +1395,7 @@
       ],
       "Drill to detail: %s": [""],
       "Drop a temporal column here or click": [""],
-      "Drop columns here": [""],
-      "Drop columns or metrics here": [""],
       "Drop columns/metrics here or click": [""],
-      "Drop temporal column here": [""],
       "Duplicate": [""],
       "Duplicate column name(s): %(columns)s": [""],
       "Duplicate column/metric labels: %(labels)s. Please make sure all columns and metrics have a unique label.": [
@@ -1561,6 +1571,7 @@
       ],
       "Excel to Database configuration": [""],
       "Exclude selected values": [""],
+      "Excluded roles": [""],
       "Executed SQL": [""],
       "Executed query": [""],
       "Execution ID": [""],
@@ -1624,6 +1635,7 @@
       "Failed to load chart data.": [""],
       "Failed to load dimensions for drill by": [""],
       "Failed to retrieve advanced type": [""],
+      "Failed to save cross-filter scoping": [""],
       "Failed to start remote query on a worker.": [""],
       "Failed to update report": [""],
       "Failed to verify select options: %s": [""],
@@ -1863,6 +1875,11 @@
       "Input field supports custom rotation. e.g. 30 for 30°": [""],
       "Instant filtering": [""],
       "Intensity": [""],
+      "Intensity Radius": [""],
+      "Intensity Radius is the radius at which the weight is distributed": [""],
+      "Intensity is the value multiplied by the weight to obtain the final weight": [
+        ""
+      ],
       "Interpret Datetime Format Automatically": [""],
       "Interpret the datetime format automatically": [""],
       "Interval": [""],
@@ -1871,6 +1888,7 @@
       "Interval colors": [""],
       "Interval start column": [""],
       "Intervals": [""],
+      "Intesity": [""],
       "Invalid Connection String: Expecting String of the form 'ocient://user:pass@host:port/database'.": [
         ""
       ],
@@ -2621,6 +2639,7 @@
       "Primary Metric": [""],
       "Primary key": [""],
       "Primary or secondary y-axis": [""],
+      "Primary y-axis Bounds": [""],
       "Primary y-axis format": [""],
       "Private Key": [""],
       "Private Key & Password": [""],
@@ -2967,6 +2986,7 @@
       "Second": [""],
       "Secondary": [""],
       "Secondary Metric": [""],
+      "Secondary y-axis Bounds": [""],
       "Secondary y-axis format": [""],
       "Secondary y-axis title": [""],
       "Seconds %s": [""],
@@ -3025,6 +3045,12 @@
       "Select subject": [""],
       "Select table or type to search tables": [""],
       "Select the Annotation Layer you would like to use.": [""],
+      "Select the charts to which you want to apply cross-filters in this dashboard. Deselecting a chart will exclude it from being filtered when applying cross-filters from any chart on the dashboard. You can select \"All charts\" to apply cross-filters to all charts that use the same dataset or contain the same column name in the dashboard.": [
+        ""
+      ],
+      "Select the charts to which you want to apply cross-filters when interacting with this chart. You can select \"All charts\" to apply filters to all charts that use the same dataset or contain the same column name in the dashboard.": [
+        ""
+      ],
       "Select the geojson column": [""],
       "Select the number of bins for the histogram": [""],
       "Select the numeric columns to draw the histogram": [""],
@@ -3893,7 +3919,6 @@
       "Title or Slug": [""],
       "To filter on a metric, use Custom SQL tab.": [""],
       "To get a readable URL for your dashboard": [""],
-      "Too many columns to filter": [""],
       "Tools": [""],
       "Tooltip": [""],
       "Tooltip sort by metric": [""],
@@ -3961,6 +3986,8 @@
         ""
       ],
       "Unable to create chart without a query id.": [""],
+      "Unable to decode value": [""],
+      "Unable to encode value": [""],
       "Unable to find such a holiday: [%(holiday)s]": [""],
       "Unable to load columns for the selected table. Please select a different table.": [
         ""
@@ -4064,6 +4091,9 @@
       "User must select a value for this filter": [""],
       "User query": [""],
       "Username": [""],
+      "Uses Gaussian Kernel Density Estimation to visualize spatial distribution of data": [
+        ""
+      ],
       "Uses a gauge to showcase progress of a metric towards a target. The position of the dial represents the progress and the terminal value in the gauge represents the target value.": [
         ""
       ],
@@ -4540,6 +4570,7 @@
       "deck.gl Arc": [""],
       "deck.gl Geojson": [""],
       "deck.gl Grid": [""],
+      "deck.gl Heatmap": [""],
       "deck.gl Multiple Layers": [""],
       "deck.gl Path": [""],
       "deck.gl Polygon": [""],

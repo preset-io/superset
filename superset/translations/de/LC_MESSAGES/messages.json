@@ -338,6 +338,7 @@
         "Fügen Sie berechnete Zeitspalten im Dialog \"Datenquelle bearbeiten\" zum Datensatz hinzu"
       ],
       "Add cross-filter": ["Kreuzfilter hinzufügen"],
+      "Add custom scoping": [""],
       "Add delivery method": ["Übermittlungsmethode hinzufügen"],
       "Add extra connection information.": [
         "Zusätzliche Verbindungsinformationen hinzufügen"
@@ -457,6 +458,7 @@
       "All Entities": ["Alle Entitäten"],
       "All Text": ["Gesamter Texte"],
       "All charts": ["Alle Diagramme"],
+      "All charts/global scoping": [""],
       "All filters": ["Alle Filter"],
       "All filters (%(filterCount)d)": ["Alle Filter (%(filterCount)d)"],
       "All panels": ["Alle Bereiche"],
@@ -1989,22 +1991,9 @@
       "Drop a temporal column here or click": [
         "Legen Sie hier eine Spalte ab oder klicken Sie"
       ],
-      "Drop column here": [
-        "Spalte hierhin ziehen und ablegen",
-        "Spalten hierhin ziehen und ablegen"
-      ],
-      "Drop column or metric here": [
-        "Spalte oder Metrik hier ablegen",
-        "Spalten oder Metriken hier ablegen"
-      ],
-      "Drop columns here": ["Spalten hier ablegen"],
-      "Drop columns or metrics here": [
-        "Spalten oder Metriken hierhin ziehen und ablegen"
-      ],
       "Drop columns/metrics here or click": [
         "Spalten/Metriken hierhin ziehen und ablegen oder klicken"
       ],
-      "Drop temporal column here": ["Temporale Spalte hier ablegen"],
       "Duplicate": ["Duplizieren"],
       "Duplicate column name(s): %(columns)s": [
         "Doppelte Spaltenname(n): %(columns)s"
@@ -2632,6 +2621,10 @@
       ],
       "Instant filtering": ["Sofortige Filterung"],
       "Intensity": ["Intensität"],
+      "Intensity Radius is the radius at which the weight is distributed": [""],
+      "Intensity is the value multiplied by the weight to obtain the final weight": [
+        ""
+      ],
       "Interpret Datetime Format Automatically": [
         "Automatisches Interpretieren des Datumzeit-Formats"
       ],
@@ -4237,6 +4230,12 @@
       "Select the Annotation Layer you would like to use.": [
         "Wählen Sie den Anmerkungs-Layer aus, den Sie verwenden möchten."
       ],
+      "Select the charts to which you want to apply cross-filters in this dashboard. Deselecting a chart will exclude it from being filtered when applying cross-filters from any chart on the dashboard. You can select \"All charts\" to apply cross-filters to all charts that use the same dataset or contain the same column name in the dashboard.": [
+        ""
+      ],
+      "Select the charts to which you want to apply cross-filters when interacting with this chart. You can select \"All charts\" to apply filters to all charts that use the same dataset or contain the same column name in the dashboard.": [
+        ""
+      ],
       "Select the geojson column": ["Wählen Sie die GeoJSON-Spalte aus"],
       "Select the number of bins for the histogram": [
         "Wählen Sie die Anzahl der Klassen für das Histogramm aus"
@@ -5442,7 +5441,6 @@
       "To get a readable URL for your dashboard": [
         "So erhalten Sie eine sprechende URL für Ihr Dashboard"
       ],
-      "Too many columns to filter": ["Zu viele Spalten zum Filtern"],
       "Tools": ["Werkzeuge"],
       "Tooltip": ["Tooltip"],
       "Tooltip sort by metric": ["Tooltip nach Metrik sortieren"],
@@ -5523,6 +5521,8 @@
       "Unable to create chart without a query id.": [
         "Diagramm kann ohne Abfrage-ID nicht erstellt werden."
       ],
+      "Unable to decode value": [""],
+      "Unable to encode value": [""],
       "Unable to find such a holiday: [%(holiday)s]": [
         "Kann einen solchen Feiertag nicht finden: [%(holiday)s]"
       ],
@@ -5688,6 +5688,9 @@
       ],
       "User query": ["Benutzer*innen-Abfrage"],
       "Username": ["Benutzer*innenname"],
+      "Uses Gaussian Kernel Density Estimation to visualize spatial distribution of data": [
+        ""
+      ],
       "Uses a gauge to showcase progress of a metric towards a target. The position of the dial represents the progress and the terminal value in the gauge represents the target value.": [
         "Verwendet ein Tachometer, um den Fortschritt einer Metrik in Richtung eines Ziels anzuzeigen. Die Position des Zifferblatts stellt den Fortschritt und der Endwert im Tachometer den Zielwert dar."
       ],

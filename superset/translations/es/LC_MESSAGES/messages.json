@@ -198,6 +198,7 @@
       "Add calculated temporal columns to dataset in \"Edit datasource\" modal": [
         ""
       ],
+      "Add custom scoping": [""],
       "Add delivery method": ["Agregar método de entrega"],
       "Add filter": ["Añadir filtro"],
       "Add filter clauses to control the filter's source query,\n                    though only in the context of the autocomplete i.e., these conditions\n                    do not impact how the filter is applied to the dashboard. This is useful\n                    when you want to improve the query's performance by only scanning a subset\n                    of the underlying data or limit the available values displayed in the filter.": [
@@ -275,6 +276,7 @@
       "All": [""],
       "All Text": ["Todo el Texto"],
       "All charts": ["Todos los gráficos"],
+      "All charts/global scoping": [""],
       "All filters": ["Todos los filtros"],
       "All filters (%(filterCount)d)": [""],
       "All panels with this column will be affected by this filter": [""],
@@ -556,6 +558,12 @@
         ""
       ],
       "Bounds for the axis. When left empty, the bounds are dynamically defined based on the min/max of the data. Note that this feature will only expand the axis range. It won't narrow the data's extent.": [
+        ""
+      ],
+      "Bounds for the primary Y-axis. When left empty, the bounds are dynamically defined based on the min/max of the data. Note that this feature will only expand the axis range. It won't narrow the data's extent.": [
+        ""
+      ],
+      "Bounds for the secondary Y-axis. Only works when Independent Y-axis\n                bounds are enabled. When left empty, the bounds are dynamically defined\n                based on the min/max of the data. Note that this feature will only expand\n                the axis range. It won't narrow the data's extent.": [
         ""
       ],
       "Box Plot": ["Diagrama de Caja"],
@@ -1242,9 +1250,7 @@
       ],
       "Drill to detail: %s": [""],
       "Drop a temporal column here or click": [""],
-      "Drop columns here": [""],
       "Drop columns/metrics here or click": [""],
-      "Drop temporal column here": [""],
       "Duplicate column name(s): %(columns)s": [""],
       "Duplicate column/metric labels: %(labels)s. Please make sure all columns and metrics have a unique label.": [
         ""
@@ -1396,6 +1402,7 @@
       "Excel to Database configuration": [
         "Configuración de Excel a base de datos"
       ],
+      "Excluded roles": [""],
       "Executed query": ["Consulta ejecutada"],
       "Execution log": ["Registro de ejecución"],
       "Expand all": ["Expandir todo"],
@@ -1625,6 +1632,10 @@
       "Inner radius of donut hole": [""],
       "Input field supports custom rotation. e.g. 30 for 30°": [""],
       "Instant filtering": ["Filtrado Instantáneo"],
+      "Intensity Radius is the radius at which the weight is distributed": [""],
+      "Intensity is the value multiplied by the weight to obtain the final weight": [
+        ""
+      ],
       "Invalid Connection String: Expecting String of the form 'ocient://user:pass@host:port/database'.": [
         ""
       ],
@@ -2246,6 +2257,7 @@
       "Preview: `%s`": ["Previsualizar: `%s`"],
       "Previous": ["Anterior"],
       "Primary or secondary y-axis": [""],
+      "Primary y-axis Bounds": [""],
       "Primary y-axis format": [""],
       "Private Key": [""],
       "Private Key & Password": [""],
@@ -2520,6 +2532,7 @@
       "Search all filter options": ["Buscar / Filtrar"],
       "Search by query text": ["Buscar por texto"],
       "Search...": ["Buscar..."],
+      "Secondary y-axis Bounds": [""],
       "Secondary y-axis format": [""],
       "Secondary y-axis title": [""],
       "Secure Extra": [""],
@@ -2543,6 +2556,12 @@
       "Select first filter value by default": [""],
       "Select start and end date": ["Seleciona fecha de inicio y de fin"],
       "Select subject": [""],
+      "Select the charts to which you want to apply cross-filters in this dashboard. Deselecting a chart will exclude it from being filtered when applying cross-filters from any chart on the dashboard. You can select \"All charts\" to apply cross-filters to all charts that use the same dataset or contain the same column name in the dashboard.": [
+        ""
+      ],
+      "Select the charts to which you want to apply cross-filters when interacting with this chart. You can select \"All charts\" to apply filters to all charts that use the same dataset or contain the same column name in the dashboard.": [
+        ""
+      ],
       "Select the number of bins for the histogram": [""],
       "Select the numeric columns to draw the histogram": [""],
       "Select values in highlighted field(s) in the control panel. Then run the query by clicking on the %s button.": [
@@ -3363,6 +3382,8 @@
         ""
       ],
       "Unable to create chart without a query id.": [""],
+      "Unable to decode value": [""],
+      "Unable to encode value": [""],
       "Unable to load columns for the selected table. Please select a different table.": [
         ""
       ],
@@ -3475,6 +3496,9 @@
         "El usuario debe elegir un valor para este filtro"
       ],
       "User query": ["Ver consulta"],
+      "Uses Gaussian Kernel Density Estimation to visualize spatial distribution of data": [
+        ""
+      ],
       "Uses a gauge to showcase progress of a metric towards a target. The position of the dial represents the progress and the terminal value in the gauge represents the target value.": [
         ""
       ],

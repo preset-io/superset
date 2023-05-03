@@ -258,6 +258,7 @@
       "Add calculated temporal columns to dataset in \"Edit datasource\" modal": [
         "Dodaj izračunan časovni stolpec v podatkovni set v oknu \"Uredi podatkovni vir\""
       ],
+      "Add custom scoping": [""],
       "Add delivery method": ["Dodajte način dostave"],
       "Add filter": ["Dodaj filter"],
       "Add filter clauses to control the filter's source query,\n                    though only in the context of the autocomplete i.e., these conditions\n                    do not impact how the filter is applied to the dashboard. This is useful\n                    when you want to improve the query's performance by only scanning a subset\n                    of the underlying data or limit the available values displayed in the filter.": [
@@ -363,6 +364,7 @@
       "All": ["Vsi"],
       "All Text": ["Celotno besedilo"],
       "All charts": ["Vsi grafikoni"],
+      "All charts/global scoping": [""],
       "All filters": ["Vsi filtri"],
       "All filters (%(filterCount)d)": ["Vsi filtri (%(filterCount)d)"],
       "All panels": ["Vsi paneli"],
@@ -1703,12 +1705,9 @@
       "Drill to detail is disabled because this chart does not group data by dimension value.": [
         ""
       ],
-      "Drop columns here": ["Spustite stolpce sem"],
-      "Drop columns or metrics here": ["Spustite stolpce ali mere sem"],
       "Drop columns/metrics here or click": [
         "Spustite stolpce/mere sem ali kliknite"
       ],
-      "Drop temporal column here": ["Spustite časovni stolpec sem"],
       "Duplicate column name(s): %(columns)s": [
         "Podvojena imena stolpcev: %(columns)s"
       ],
@@ -2270,6 +2269,10 @@
       ],
       "Instant filtering": ["Takojšnje filtriranje"],
       "Intensity": ["Intenzivnost"],
+      "Intensity Radius is the radius at which the weight is distributed": [""],
+      "Intensity is the value multiplied by the weight to obtain the final weight": [
+        ""
+      ],
       "Interval End column": ["Stolpec konca intervala"],
       "Interval bounds": ["Meje intervalov"],
       "Interval colors": ["Barve intervalov"],
@@ -3542,6 +3545,12 @@
       "Select scheme": ["Izberite shemo"],
       "Select start and end date": ["Izberite začetni in končni datum"],
       "Select subject": ["Izberite zadevo"],
+      "Select the charts to which you want to apply cross-filters in this dashboard. Deselecting a chart will exclude it from being filtered when applying cross-filters from any chart on the dashboard. You can select \"All charts\" to apply cross-filters to all charts that use the same dataset or contain the same column name in the dashboard.": [
+        ""
+      ],
+      "Select the charts to which you want to apply cross-filters when interacting with this chart. You can select \"All charts\" to apply filters to all charts that use the same dataset or contain the same column name in the dashboard.": [
+        ""
+      ],
       "Select the geojson column": ["Izberite geojson stolpec"],
       "Select the number of bins for the histogram": [
         "Izberite število razdelkov za histogram"
@@ -4581,7 +4590,6 @@
       "To get a readable URL for your dashboard": [
         "Za pridobitev berljivega URL-ja za nadzorno ploščo"
       ],
-      "Too many columns to filter": ["Preveč stolpcev za filtriranje"],
       "Tools": ["Orodja"],
       "Tooltip": ["Opis orodja"],
       "Tooltip sort by metric": ["Mera za razvrščanje opisa orodja"],
@@ -4649,6 +4657,8 @@
         ""
       ],
       "Unable to create chart without a query id.": [""],
+      "Unable to decode value": [""],
+      "Unable to encode value": [""],
       "Unable to find such a holiday: [%(holiday)s]": [
         "Ni mogoče najti takšnega praznika: [%(holiday)s]"
       ],
@@ -4800,6 +4810,9 @@
       ],
       "User query": ["Uporabnikova poizvedba"],
       "Username": ["Uporabniško ime"],
+      "Uses Gaussian Kernel Density Estimation to visualize spatial distribution of data": [
+        ""
+      ],
       "Uses a gauge to showcase progress of a metric towards a target. The position of the dial represents the progress and the terminal value in the gauge represents the target value.": [
         "Uporablja števec za prikaz napredovanja mere k ciljni vrednosti. Položaj kazalca predstavlja napredek, končna vrednost na števcu pa ciljno vrednost."
       ],

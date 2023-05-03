@@ -322,6 +322,7 @@
       "Add calculated temporal columns to dataset in \"Edit datasource\" modal": [
         "Добавьте новые столбцы формата дата/время в датасет в настройках датасета"
       ],
+      "Add custom scoping": [""],
       "Add delivery method": ["Добавить способ оповещения"],
       "Add extra connection information.": [
         "Дополнительная информация по подключению"
@@ -438,6 +439,7 @@
       "All": ["Все"],
       "All Text": ["Весь текст"],
       "All charts": ["Все графики"],
+      "All charts/global scoping": [""],
       "All filters": ["Все фильтры"],
       "All filters (%(filterCount)d)": ["Все фильтры (%(filterCount)d)"],
       "All panels": ["Все панели"],
@@ -1856,22 +1858,7 @@
       "Drop a temporal column here or click": [
         "Перетащите столбец формата дата/время сюда"
       ],
-      "Drop column here": [
-        "Перетащите столбец сюда",
-        "Перетащите столбцы сюда",
-        "Перетащите столбцы сюда"
-      ],
-      "Drop column or metric here": [
-        "Перетащите столбец или меру сюда",
-        "Перетащите столбцы или меры сюда",
-        "Перетащите столбцы или меры сюда"
-      ],
-      "Drop columns here": ["Перетащите столбцы сюда"],
-      "Drop columns or metrics here": ["Перетащите столбцы или меры сюда"],
       "Drop columns/metrics here or click": ["Перетащите столбцы/меры сюда"],
-      "Drop temporal column here": [
-        "Перетащите столбец формата дата/время сюда"
-      ],
       "Duplicate": ["Дублировать"],
       "Duplicate column name(s): %(columns)s": [
         "Повторяющееся имя столбца(ов): %(columns)s"
@@ -2460,6 +2447,10 @@
       ],
       "Instant filtering": ["Мгновенная Фильтрация"],
       "Intensity": ["Насыщенность"],
+      "Intensity Radius is the radius at which the weight is distributed": [""],
+      "Intensity is the value multiplied by the weight to obtain the final weight": [
+        ""
+      ],
       "Interpret Datetime Format Automatically": [
         "Автоматически интерпретировать формат дата/время"
       ],
@@ -3864,6 +3855,12 @@
       "Select the Annotation Layer you would like to use.": [
         "Выбрать слой аннотации, который вы хотите использовать."
       ],
+      "Select the charts to which you want to apply cross-filters in this dashboard. Deselecting a chart will exclude it from being filtered when applying cross-filters from any chart on the dashboard. You can select \"All charts\" to apply cross-filters to all charts that use the same dataset or contain the same column name in the dashboard.": [
+        ""
+      ],
+      "Select the charts to which you want to apply cross-filters when interacting with this chart. You can select \"All charts\" to apply filters to all charts that use the same dataset or contain the same column name in the dashboard.": [
+        ""
+      ],
       "Select the geojson column": ["Выберите geojson столбец"],
       "Select the number of bins for the histogram": [
         "Выберите количество столбцов для гистограммы"
@@ -4951,7 +4948,6 @@
       "To get a readable URL for your dashboard": [
         "Для получения читаемого URL-адреса дашборда"
       ],
-      "Too many columns to filter": ["Слишком много столбцов для фильтрации"],
       "Tools": ["Инструменты"],
       "Tooltip": ["Всплывающая подсказка"],
       "Tooltip sort by metric": ["Сортировка данных подсказки по мере"],
@@ -5021,6 +5017,8 @@
         ""
       ],
       "Unable to create chart without a query id.": [""],
+      "Unable to decode value": [""],
+      "Unable to encode value": [""],
       "Unable to find such a holiday: [%(holiday)s]": [
         "Не удалось найти такой праздник: [%(holiday)s]"
       ],
@@ -5173,6 +5171,9 @@
       ],
       "User query": ["Пользовательский запрос"],
       "Username": ["Имя пользователя"],
+      "Uses Gaussian Kernel Density Estimation to visualize spatial distribution of data": [
+        ""
+      ],
       "Uses a gauge to showcase progress of a metric towards a target. The position of the dial represents the progress and the terminal value in the gauge represents the target value.": [
         "Использует индикатор для демонстрации прогресса показателя в достижении цели. Положение циферблата показывает ход выполнения, а конечное значение на индикаторе представляет целевое значение."
       ],
