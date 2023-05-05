@@ -34,7 +34,7 @@ const sampleDatasource: Dataset = {
     { column_name: 'sample_column_4' },
   ],
   metrics: [{ metric_name: 'saved_metric_2' }],
-  column_formats: {},
+  column_format: {},
   verbose_map: {},
   main_dttm_col: '',
   datasource_name: 'Sample Dataset',

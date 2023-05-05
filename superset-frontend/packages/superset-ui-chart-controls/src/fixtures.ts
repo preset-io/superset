@@ -20,7 +20,7 @@ import { DatasourceType } from '@superset-ui/core';
 import { Dataset } from './types';
 
 export const TestDataset: Dataset = {
-  column_formats: {},
+  column_format: {},
   columns: [
     {
       advanced_data_type: undefined,
