@@ -39,10 +39,8 @@ class AdvancedDataTypeSchema(Schema):
     """
 
     error_message = fields.String()
-    values = fields.List(
-        fields.String(metadata={"description": "parsed value (can be any value)"})
-    )
+    values = fields.List(fields.String(description="parsed value (can be any value)"))
     display_value = fields.String(
-        metadata={"description": "The string representation of the parsed values"}
+        description="The string representation of the parsed values"
     )
     valid_filter_operators = fields.List(fields.String())

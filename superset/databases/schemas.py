@@ -243,22 +243,18 @@ class DatabaseParametersSchemaMixin:  # pylint: disable=too-few-public-methods
     When using this mixin make sure that `sqlalchemy_uri` is not required.
     """
 
-    engine = fields.String(
-        allow_none=True, metadata={"description": "SQLAlchemy engine to use"}
-    )
-    driver = fields.String(
-        allow_none=True, metadata={"description": "SQLAlchemy driver to use"}
-    )
+    engine = fields.String(allow_none=True, description="SQLAlchemy engine to use")
+    driver = fields.String(allow_none=True, description="SQLAlchemy driver to use")
     parameters = fields.Dict(
         keys=fields.String(),
         values=fields.Raw(),
-        metadata={"description": "DB-specific parameters for configuration"},
+        description="DB-specific parameters for configuration",
     )
     configuration_method = EnumField(
         ConfigurationMethod,
         by_value=True,
-        metadata={"description": configuration_method_description},
-        load_default=ConfigurationMethod.SQLALCHEMY_FORM,
+        description=configuration_method_description,
+        missing=ConfigurationMethod.SQLALCHEMY_FORM,
     )
 
     @pre_load
@@ -345,45 +341,33 @@ class DatabaseValidateParametersSchema(Schema):
 
     rename_encrypted_extra = pre_load(rename_encrypted_extra)
 
-    id = fields.Integer(
-        allow_none=True, metadata={"description": "Database ID (for updates)"}
-    )
-    engine = fields.String(
-        required=True, metadata={"description": "SQLAlchemy engine to use"}
-    )
-    driver = fields.String(
-        allow_none=True, metadata={"description": "SQLAlchemy driver to use"}
-    )
+    id = fields.Integer(allow_none=True, description="Database ID (for updates)")
+    engine = fields.String(required=True, description="SQLAlchemy engine to use")
+    driver = fields.String(allow_none=True, description="SQLAlchemy driver to use")
     parameters = fields.Dict(
         keys=fields.String(),
         values=fields.Raw(allow_none=True),
-        metadata={"description": "DB-specific parameters for configuration"},
+        description="DB-specific parameters for configuration",
     )
     catalog = fields.Dict(
         keys=fields.String(),
         values=fields.Raw(allow_none=True),
-        metadata={
-            "description": "Gsheets specific column for managing label to sheet urls"
-        },
+        description="Gsheets specific column for managing label to sheet urls",
     )
     database_name = fields.String(
-        metadata={"description": database_name_description},
+        description=database_name_description,
         allow_none=True,
         validate=Length(1, 250),
     )
-    impersonate_user = fields.Boolean(
-        metadata={"description": impersonate_user_description}
-    )
-    extra = fields.String(
-        metadata={"description": extra_description}, validate=extra_validator
-    )
+    impersonate_user = fields.Boolean(description=impersonate_user_description)
+    extra = fields.String(description=extra_description, validate=extra_validator)
     masked_encrypted_extra = fields.String(
-        metadata={"description": encrypted_extra_description},
+        description=encrypted_extra_description,
         validate=encrypted_extra_validator,
         allow_none=True,
     )
     server_cert = fields.String(
-        metadata={"description": server_cert_description},
+        description=server_cert_description,
         allow_none=True,
         validate=server_cert_validator,
     )
@@ -391,14 +375,12 @@ class DatabaseValidateParametersSchema(Schema):
         ConfigurationMethod,
         by_value=True,
         required=True,
-        metadata={"description": configuration_method_description},
+        description=configuration_method_description,
     )
 
 
 class DatabaseSSHTunnel(Schema):
-    id = fields.Integer(
-        allow_none=True, metadata={"description": "SSH Tunnel ID (for updates)"}
-    )
+    id = fields.Integer(allow_none=True, description="SSH Tunnel ID (for updates)")
     server_address = fields.String()
     server_port = fields.Integer()
     username = fields.String()
@@ -418,51 +400,41 @@ class DatabasePostSchema(Schema, DatabaseParametersSchemaMixin):
     rename_encrypted_extra = pre_load(rename_encrypted_extra)
 
     database_name = fields.String(
-        metadata={"description": database_name_description},
+        description=database_name_description,
         required=True,
         validate=Length(1, 250),
     )
     cache_timeout = fields.Integer(
-        metadata={"description": cache_timeout_description}, allow_none=True
+        description=cache_timeout_description, allow_none=True
     )
-    expose_in_sqllab = fields.Boolean(
-        metadata={"description": expose_in_sqllab_description}
-    )
-    allow_run_async = fields.Boolean(
-        metadata={"description": allow_run_async_description}
-    )
-    allow_file_upload = fields.Boolean(
-        metadata={"description": allow_file_upload_description}
-    )
-    allow_ctas = fields.Boolean(metadata={"description": allow_ctas_description})
-    allow_cvas = fields.Boolean(metadata={"description": allow_cvas_description})
-    allow_dml = fields.Boolean(metadata={"description": allow_dml_description})
+    expose_in_sqllab = fields.Boolean(description=expose_in_sqllab_description)
+    allow_run_async = fields.Boolean(description=allow_run_async_description)
+    allow_file_upload = fields.Boolean(description=allow_file_upload_description)
+    allow_ctas = fields.Boolean(description=allow_ctas_description)
+    allow_cvas = fields.Boolean(description=allow_cvas_description)
+    allow_dml = fields.Boolean(description=allow_dml_description)
     force_ctas_schema = fields.String(
-        metadata={"description": force_ctas_schema_description},
+        description=force_ctas_schema_description,
         allow_none=True,
         validate=Length(0, 250),
     )
-    impersonate_user = fields.Boolean(
-        metadata={"description": impersonate_user_description}
-    )
+    impersonate_user = fields.Boolean(description=impersonate_user_description)
     masked_encrypted_extra = fields.String(
-        metadata={"description": encrypted_extra_description},
+        description=encrypted_extra_description,
         validate=encrypted_extra_validator,
         allow_none=True,
     )
-    extra = fields.String(
-        metadata={"description": extra_description}, validate=extra_validator
-    )
+    extra = fields.String(description=extra_description, validate=extra_validator)
     server_cert = fields.String(
-        metadata={"description": server_cert_description},
+        description=server_cert_description,
         allow_none=True,
         validate=server_cert_validator,
     )
     sqlalchemy_uri = fields.String(
-        metadata={"description": sqlalchemy_uri_description},
+        description=sqlalchemy_uri_description,
         validate=[Length(1, 1024), sqlalchemy_uri_validator],
     )
-    is_managed_externally = fields.Boolean(allow_none=True, dump_default=False)
+    is_managed_externally = fields.Boolean(allow_none=True, default=False)
     external_url = fields.String(allow_none=True)
     uuid = fields.String(required=False)
     ssh_tunnel = fields.Nested(DatabaseSSHTunnel, allow_none=True)
@@ -475,51 +447,41 @@ class DatabasePutSchema(Schema, DatabaseParametersSchemaMixin):
     rename_encrypted_extra = pre_load(rename_encrypted_extra)
 
     database_name = fields.String(
-        metadata={"description": database_name_description},
+        description=database_name_description,
         allow_none=True,
         validate=Length(1, 250),
     )
     cache_timeout = fields.Integer(
-        metadata={"description": cache_timeout_description}, allow_none=True
+        description=cache_timeout_description, allow_none=True
     )
-    expose_in_sqllab = fields.Boolean(
-        metadata={"description": expose_in_sqllab_description}
-    )
-    allow_run_async = fields.Boolean(
-        metadata={"description": allow_run_async_description}
-    )
-    allow_file_upload = fields.Boolean(
-        metadata={"description": allow_file_upload_description}
-    )
-    allow_ctas = fields.Boolean(metadata={"description": allow_ctas_description})
-    allow_cvas = fields.Boolean(metadata={"description": allow_cvas_description})
-    allow_dml = fields.Boolean(metadata={"description": allow_dml_description})
+    expose_in_sqllab = fields.Boolean(description=expose_in_sqllab_description)
+    allow_run_async = fields.Boolean(description=allow_run_async_description)
+    allow_file_upload = fields.Boolean(description=allow_file_upload_description)
+    allow_ctas = fields.Boolean(description=allow_ctas_description)
+    allow_cvas = fields.Boolean(description=allow_cvas_description)
+    allow_dml = fields.Boolean(description=allow_dml_description)
     force_ctas_schema = fields.String(
-        metadata={"description": force_ctas_schema_description},
+        description=force_ctas_schema_description,
         allow_none=True,
         validate=Length(0, 250),
     )
-    impersonate_user = fields.Boolean(
-        metadata={"description": impersonate_user_description}
-    )
+    impersonate_user = fields.Boolean(description=impersonate_user_description)
     masked_encrypted_extra = fields.String(
-        metadata={"description": encrypted_extra_description},
+        description=encrypted_extra_description,
         allow_none=True,
         validate=encrypted_extra_validator,
     )
-    extra = fields.String(
-        metadata={"description": extra_description}, validate=extra_validator
-    )
+    extra = fields.String(description=extra_description, validate=extra_validator)
     server_cert = fields.String(
-        metadata={"description": server_cert_description},
+        description=server_cert_description,
         allow_none=True,
         validate=server_cert_validator,
     )
     sqlalchemy_uri = fields.String(
-        metadata={"description": sqlalchemy_uri_description},
+        description=sqlalchemy_uri_description,
         validate=[Length(0, 1024), sqlalchemy_uri_validator],
     )
-    is_managed_externally = fields.Boolean(allow_none=True, dump_default=False)
+    is_managed_externally = fields.Boolean(allow_none=True, default=False)
     external_url = fields.String(allow_none=True)
     ssh_tunnel = fields.Nested(DatabaseSSHTunnel, allow_none=True)
     uuid = fields.String(required=False)
@@ -529,28 +491,24 @@ class DatabaseTestConnectionSchema(Schema, DatabaseParametersSchemaMixin):
     rename_encrypted_extra = pre_load(rename_encrypted_extra)
 
     database_name = fields.String(
-        metadata={"description": database_name_description},
+        description=database_name_description,
         allow_none=True,
         validate=Length(1, 250),
     )
-    impersonate_user = fields.Boolean(
-        metadata={"description": impersonate_user_description}
-    )
-    extra = fields.String(
-        metadata={"description": extra_description}, validate=extra_validator
-    )
+    impersonate_user = fields.Boolean(description=impersonate_user_description)
+    extra = fields.String(description=extra_description, validate=extra_validator)
     masked_encrypted_extra = fields.String(
-        metadata={"description": encrypted_extra_description},
+        description=encrypted_extra_description,
         validate=encrypted_extra_validator,
         allow_none=True,
     )
     server_cert = fields.String(
-        metadata={"description": server_cert_description},
+        description=server_cert_description,
         allow_none=True,
         validate=server_cert_validator,
     )
     sqlalchemy_uri = fields.String(
-        metadata={"description": sqlalchemy_uri_description},
+        description=sqlalchemy_uri_description,
         validate=[Length(1, 1024), sqlalchemy_uri_validator],
     )
 
@@ -566,27 +524,20 @@ class TableMetadataOptionsResponseSchema(Schema):
 
 
 class TableMetadataColumnsResponseSchema(Schema):
-    keys = fields.List(fields.String(), metadata={"description": ""})
-    longType = fields.String(
-        metadata={"description": "The actual backend long type for the column"}
-    )
-    name = fields.String(metadata={"description": "The column name"})
-    type = fields.String(metadata={"description": "The column type"})
+    keys = fields.List(fields.String(), description="")
+    longType = fields.String(description="The actual backend long type for the column")
+    name = fields.String(description="The column name")
+    type = fields.String(description="The column type")
     duplicates_constraint = fields.String(required=False)
 
 
 class TableMetadataForeignKeysIndexesResponseSchema(Schema):
     column_names = fields.List(
         fields.String(
-            metadata={
-                "description": "A list of column names that compose the foreign key or "
-                " index"
-            }
+            description="A list of column names that compose the foreign key or index"
         )
     )
-    name = fields.String(
-        metadata={"description": "The name of the foreign key or index"}
-    )
+    name = fields.String(description="The name of the foreign key or index")
     options = fields.Nested(TableMetadataOptionsResponseSchema)
     referred_columns = fields.List(fields.String())
     referred_schema = fields.String()
@@ -596,35 +547,30 @@ class TableMetadataForeignKeysIndexesResponseSchema(Schema):
 
 class TableMetadataPrimaryKeyResponseSchema(Schema):
     column_names = fields.List(
-        fields.String(
-            metadata={
-                "description": "A list of column names that compose the primary key"
-            }
-        )
+        fields.String(description="A list of column names that compose the primary key")
     )
-    name = fields.String(metadata={"description": "The primary key index name"})
+    name = fields.String(description="The primary key index name")
     type = fields.String()
 
 
 class TableMetadataResponseSchema(Schema):
-    name = fields.String(metadata={"description": "The name of the table"})
+    name = fields.String(description="The name of the table")
     columns = fields.List(
         fields.Nested(TableMetadataColumnsResponseSchema),
-        metadata={"description": "A list of columns and their metadata"},
+        description="A list of columns and their metadata",
     )
     foreignKeys = fields.List(
         fields.Nested(TableMetadataForeignKeysIndexesResponseSchema),
-        metadata={"description": "A list of foreign keys and their metadata"},
+        description="A list of foreign keys and their metadata",
     )
     indexes = fields.List(
         fields.Nested(TableMetadataForeignKeysIndexesResponseSchema),
-        metadata={"description": "A list of indexes and their metadata"},
+        description="A list of indexes and their metadata",
     )
     primaryKey = fields.Nested(
-        TableMetadataPrimaryKeyResponseSchema,
-        metadata={"description": "Primary keys metadata"},
+        TableMetadataPrimaryKeyResponseSchema, description="Primary keys metadata"
     )
-    selectStar = fields.String(metadata={"description": "SQL select star"})
+    selectStar = fields.String(description="SQL select star")
 
 
 class TableExtraMetadataResponseSchema(Schema):
@@ -634,27 +580,21 @@ class TableExtraMetadataResponseSchema(Schema):
 
 
 class SelectStarResponseSchema(Schema):
-    result = fields.String(metadata={"description": "SQL select star"})
+    result = fields.String(description="SQL select star")
 
 
 class SchemasResponseSchema(Schema):
-    result = fields.List(
-        fields.String(metadata={"description": "A database schema name"})
-    )
+    result = fields.List(fields.String(description="A database schema name"))
 
 
 class DatabaseTablesResponse(Schema):
-    extra = fields.Dict(
-        metadata={"description": "Extra data used to specify column metadata"}
-    )
-    type = fields.String(metadata={"description": "table or view"})
-    value = fields.String(metadata={"description": "The table or view name"})
+    extra = fields.Dict(description="Extra data used to specify column metadata")
+    type = fields.String(description="table or view")
+    value = fields.String(description="The table or view name")
 
 
 class ValidateSQLRequest(Schema):
-    sql = fields.String(
-        required=True, metadata={"description": "SQL statement to validate"}
-    )
+    sql = fields.String(required=True, description="SQL statement to validate")
     schema = fields.String(required=False, allow_none=True)
     template_params = fields.Dict(required=False, allow_none=True)
 
@@ -680,18 +620,16 @@ class DatabaseRelatedDashboard(Schema):
 
 
 class DatabaseRelatedCharts(Schema):
-    count = fields.Integer(metadata={"description": "Chart count"})
+    count = fields.Integer(description="Chart count")
     result = fields.List(
-        fields.Nested(DatabaseRelatedChart),
-        metadata={"description": "A list of dashboards"},
+        fields.Nested(DatabaseRelatedChart), description="A list of dashboards"
     )
 
 
 class DatabaseRelatedDashboards(Schema):
-    count = fields.Integer(metadata={"description": "Dashboard count"})
+    count = fields.Integer(description="Dashboard count")
     result = fields.List(
-        fields.Nested(DatabaseRelatedDashboard),
-        metadata={"description": "A list of dashboards"},
+        fields.Nested(DatabaseRelatedDashboard), description="A list of dashboards"
     )
 
 
@@ -770,7 +708,7 @@ class ImportV1DatabaseSchema(Schema):
     extra = fields.Nested(ImportV1DatabaseExtraSchema)
     uuid = fields.UUID(required=True)
     version = fields.String(required=True)
-    is_managed_externally = fields.Boolean(allow_none=True, dump_default=False)
+    is_managed_externally = fields.Boolean(allow_none=True, default=False)
     external_url = fields.String(allow_none=True)
     ssh_tunnel = fields.Nested(DatabaseSSHTunnel, allow_none=True)
 
@@ -875,8 +813,5 @@ def encrypted_field_properties(self, field: Any, **_) -> Dict[str, Any]:  # type
 class DatabaseSchemaAccessForFileUploadResponse(Schema):
     schemas = fields.List(
         fields.String(),
-        metadata={
-            "description": "The list of schemas allowed for the database to upload "
-            "information"
-        },
+        description="The list of schemas allowed for the database to upload information",
     )

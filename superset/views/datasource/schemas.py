@@ -70,7 +70,7 @@ class SamplesPayloadSchema(Schema):
     )
     extras = fields.Nested(
         ChartDataExtrasSchema,
-        metadata={"description": "Extra parameters to add to the query."},
+        description="Extra parameters to add to the query.",
         allow_none=True,
     )
 

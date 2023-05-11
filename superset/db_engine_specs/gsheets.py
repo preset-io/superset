@@ -47,10 +47,8 @@ class GSheetsParametersSchema(Schema):
     catalog = fields.Dict()
     service_account_info = EncryptedString(
         required=False,
-        metadata={
-            "description": "Contents of GSheets JSON credentials.",
-            "field_name": "service_account_info",
-        },
+        description="Contents of GSheets JSON credentials.",
+        field_name="service_account_info",
     )
 
 
