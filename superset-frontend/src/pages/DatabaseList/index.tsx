@@ -139,9 +139,8 @@ function DatabaseList({ addDangerToast, addSuccessToast }: DatabaseListProps) {
     }
   }, [query, setQuery, refreshData]);
 
-  const openDatabaseDeleteModal = (database: DatabaseObject) => {
-    setCurrentDatabase(database);
-    return SupersetClient.get({
+  const openDatabaseDeleteModal = (database: DatabaseObject) =>
+    SupersetClient.get({
       endpoint: `/api/v1/database/${database.id}/related_objects/`,
     })
       .then(({ json = {} }) => {
@@ -160,7 +159,6 @@ function DatabaseList({ addDangerToast, addSuccessToast }: DatabaseListProps) {
           ),
         ),
       );
-  };
 
   function handleDatabaseDelete({ id, database_name: dbName }: DatabaseObject) {
     SupersetClient.delete({
@@ -536,8 +534,8 @@ function DatabaseList({ addDangerToast, addSuccessToast }: DatabaseListProps) {
                   databaseCurrentlyDeleting.sqllab_tab_count,
                 )}
               </p>
-              {DatabaseDeleteRelatedExtension && currentDatabase && (
-                <DatabaseDeleteRelatedExtension database={currentDatabase} />
+              {DatabaseDeleteRelatedExtension && (
+                <DatabaseDeleteRelatedExtension database={databaseCurrentlyDeleting} />
               )}
             </>
           }

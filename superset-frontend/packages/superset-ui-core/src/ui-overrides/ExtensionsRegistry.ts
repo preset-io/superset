@@ -68,6 +68,9 @@ type RightMenuItemIconProps = {
 type DatabaseDeleteRelatedExtensionProps = {
   database: object;
 };
+type DatasetDeleteRelatedExtensionProps = {
+  dataset: object;
+};
 
 /**
  * Interface for extensions to database connections
@@ -122,6 +125,7 @@ export type Extensions = Partial<{
   'ssh_tunnel.form.switch': React.ComponentType<SwitchProps>;
   'databaseconnection.extraOption': DatabaseConnectionExtension;
   'database.delete.related': React.ComponentType<DatabaseDeleteRelatedExtensionProps>;
+  'dataset.delete.related': React.ComponentType<DatasetDeleteRelatedExtensionProps>;
 }>;
 
 /**
