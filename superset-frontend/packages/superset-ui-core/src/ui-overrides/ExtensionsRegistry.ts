@@ -66,7 +66,7 @@ type RightMenuItemIconProps = {
   menuChild: MenuObjectChildProps;
 };
 type DatabaseDeleteRelatedExtensionProps = {
-  databaseId: number;
+  database: object;
 };
 
 /**
