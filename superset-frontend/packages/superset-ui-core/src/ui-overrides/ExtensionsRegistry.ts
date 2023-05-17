@@ -65,6 +65,9 @@ type ConfigDetailsProps = {
 type RightMenuItemIconProps = {
   menuChild: MenuObjectChildProps;
 };
+type DatabaseDeleteRelatedExtensionProps = {
+  databaseId: number;
+};
 
 /**
  * Interface for extensions to database connections
@@ -118,6 +121,7 @@ export type Extensions = Partial<{
   'welcome.main.replacement': React.ComponentType;
   'ssh_tunnel.form.switch': React.ComponentType<SwitchProps>;
   'databaseconnection.extraOption': DatabaseConnectionExtension;
+  'database.delete.related': React.ComponentType<DatabaseDeleteRelatedExtensionProps>;
 }>;
 
 /**
