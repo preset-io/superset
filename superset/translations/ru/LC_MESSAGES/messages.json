@@ -202,6 +202,9 @@
       "A database with the same name already exists.": [
         "База данных с таким же именем уже существует"
       ],
+      "A dictionary with column names and their data types if you need to change the defaults. Example: {\"user_id\":\"integer\"}": [
+        ""
+      ],
       "A full URL pointing to the location of the built plugin (could be hosted on a CDN for example)": [
         "Полный URL, указывающий на местоположение плагина (например, ссылка на CDN)"
       ],
@@ -319,6 +322,7 @@
       "Add calculated temporal columns to dataset in \"Edit datasource\" modal": [
         "Добавьте новые столбцы формата дата/время в датасет в настройках датасета"
       ],
+      "Add custom scoping": [""],
       "Add delivery method": ["Добавить способ оповещения"],
       "Add extra connection information.": [
         "Дополнительная информация по подключению"
@@ -435,6 +439,7 @@
       "All": ["Все"],
       "All Text": ["Весь текст"],
       "All charts": ["Все графики"],
+      "All charts/global scoping": [""],
       "All filters": ["Все фильтры"],
       "All filters (%(filterCount)d)": ["Все фильтры (%(filterCount)d)"],
       "All panels": ["Все панели"],
@@ -1106,7 +1111,6 @@
       "Choose a source": ["Выберите источник"],
       "Choose a source and a target": ["Выберите источник и цель"],
       "Choose a target": ["Выберите цель"],
-      "Choose a unique name": [""],
       "Choose chart type": ["Выберите тип графика"],
       "Choose one of the available databases from the panel on the left.": [
         "Выберите одну из доступных баз данных из панели слева."
@@ -1164,9 +1168,6 @@
       ],
       "Click to cancel sorting": ["Нажмите для отмены сортировки"],
       "Click to edit": ["Нажмите для редактирования"],
-      "Click to edit %s in a new tab": [
-        "Нажмите для редактирования «%s» в новой вкладке"
-      ],
       "Click to edit %s.": ["Нажмите для редактирования %s."],
       "Click to edit chart.": ["Нажмите для редактирования графика."],
       "Click to edit label": ["Нажмите для редактирования метки"],
@@ -1401,6 +1402,7 @@
       "Could not load database driver: {}": [
         "Не удалось загрузить драйвер базы данных: {}"
       ],
+      "Could not resolve hostname: \"%(host)s\".": [""],
       "Count": ["Количество"],
       "Count Unique Values": ["Количество уникальных значений"],
       "Count as Fraction of Columns": ["Количество, как доля от столбцов"],
@@ -1857,22 +1859,7 @@
       "Drop a temporal column here or click": [
         "Перетащите столбец формата дата/время сюда"
       ],
-      "Drop column here": [
-        "Перетащите столбец сюда",
-        "Перетащите столбцы сюда",
-        "Перетащите столбцы сюда"
-      ],
-      "Drop column or metric here": [
-        "Перетащите столбец или меру сюда",
-        "Перетащите столбцы или меры сюда",
-        "Перетащите столбцы или меры сюда"
-      ],
-      "Drop columns here": ["Перетащите столбцы сюда"],
-      "Drop columns or metrics here": ["Перетащите столбцы или меры сюда"],
       "Drop columns/metrics here or click": ["Перетащите столбцы/меры сюда"],
-      "Drop temporal column here": [
-        "Перетащите столбец формата дата/время сюда"
-      ],
       "Duplicate": ["Дублировать"],
       "Duplicate column name(s): %(columns)s": [
         "Повторяющееся имя столбца(ов): %(columns)s"
@@ -2190,7 +2177,6 @@
       "Filter List": ["Список фильтров"],
       "Filter Settings": ["Настройки фильтра"],
       "Filter Type": ["Тип фильтра"],
-      "Filter box": ["Фильтр-виджет"],
       "Filter configuration": ["Настройки фильтра"],
       "Filter configuration for the filter box": [
         "Настройки фильтра для \"Фильтр-виджета\""
@@ -2462,6 +2448,10 @@
       ],
       "Instant filtering": ["Мгновенная Фильтрация"],
       "Intensity": ["Насыщенность"],
+      "Intensity Radius is the radius at which the weight is distributed": [""],
+      "Intensity is the value multiplied by the weight to obtain the final weight": [
+        ""
+      ],
       "Interpret Datetime Format Automatically": [
         "Автоматически интерпретировать формат дата/время"
       ],
@@ -2510,6 +2500,7 @@
         "Недопустимые настройки для %(rolling_type)s: %(options)s"
       ],
       "Invalid permalink key": [""],
+      "Invalid reference to column: \"%(column)s\"": [""],
       "Invalid result type: %(result_type)s": [
         "Недопустимый тип ответа: %(result_type)s"
       ],
@@ -2934,7 +2925,6 @@
         "Нет баз данных, удовлетворяющих вашему поиску"
       ],
       "No description available.": ["Описание отсутствует."],
-      "No dimensions available for drill by": [""],
       "No favorite charts yet, go click on stars!": [
         "Пока нет избранных графиков, для добавления в избранное нажмите на звездочку рядом с графиком"
       ],
@@ -3148,7 +3138,6 @@
       "Optional warning about use of this metric": [
         "Необязательное предупреждение об использовании этой меры"
       ],
-      "Optionally add a detailed description": [""],
       "Options": ["Опции"],
       "Or choose from a list of other databases we support:": [
         "Или выберите из списка других поддерживаемых баз данных:"
@@ -3364,6 +3353,7 @@
       "Port %(port)s on hostname \"%(hostname)s\" refused the connection.": [
         "Порт %(port)s хоста \"%(hostname)s\" отказал в подключении."
       ],
+      "Port out of range 0-65535": [""],
       "Position of child node label on tree": [
         "Расположение метки дочерней вершины на дереве"
       ],
@@ -3650,6 +3640,7 @@
       "Rows subtotal position": ["Расположение строк подытогов"],
       "Rows to Read": ["Строки для чтения"],
       "Rule": ["Правило"],
+      "Rule added": [""],
       "Run": ["Выполнить"],
       "Run a query to display query history": [
         "Выполните запрос для отображения истории"
@@ -3870,6 +3861,12 @@
       "Select subject": [""],
       "Select the Annotation Layer you would like to use.": [
         "Выбрать слой аннотации, который вы хотите использовать."
+      ],
+      "Select the charts to which you want to apply cross-filters in this dashboard. Deselecting a chart will exclude it from being filtered when applying cross-filters from any chart on the dashboard. You can select \"All charts\" to apply cross-filters to all charts that use the same dataset or contain the same column name in the dashboard.": [
+        ""
+      ],
+      "Select the charts to which you want to apply cross-filters when interacting with this chart. You can select \"All charts\" to apply filters to all charts that use the same dataset or contain the same column name in the dashboard.": [
+        ""
       ],
       "Select the geojson column": ["Выберите geojson столбец"],
       "Select the number of bins for the histogram": [
@@ -4216,6 +4213,9 @@
       "Symbol of two ends of edge line": [""],
       "Sync columns from source": ["Синхронизировать столбцы из источника"],
       "Syntax": [""],
+      "Syntax Error: %(qualifier)s input \"%(input)s\" expecting \"%(expected)s": [
+        ""
+      ],
       "TABLES": ["ТАБЛИЦЫ"],
       "THU": ["ЧТ"],
       "TUE": ["ВТ"],
@@ -4566,6 +4566,9 @@
       ],
       "The user seems to have been deleted": [
         "Пользователь, похоже, был удален"
+      ],
+      "The user/password combination is not valid (Incorrect password for user).": [
+        ""
       ],
       "The username \"%(username)s\" does not exist.": [
         "Пользователь \"%(username)s\" не существует."
@@ -4951,7 +4954,6 @@
       "To get a readable URL for your dashboard": [
         "Для получения читаемого URL-адреса дашборда"
       ],
-      "Too many columns to filter": ["Слишком много столбцов для фильтрации"],
       "Tools": ["Инструменты"],
       "Tooltip": ["Всплывающая подсказка"],
       "Tooltip sort by metric": ["Сортировка данных подсказки по мере"],
@@ -5020,6 +5022,8 @@
         ""
       ],
       "Unable to create chart without a query id.": [""],
+      "Unable to decode value": [""],
+      "Unable to encode value": [""],
       "Unable to find such a holiday: [%(holiday)s]": [
         "Не удалось найти такой праздник: [%(holiday)s]"
       ],
@@ -5172,6 +5176,9 @@
       ],
       "User query": ["Пользовательский запрос"],
       "Username": ["Имя пользователя"],
+      "Uses Gaussian Kernel Density Estimation to visualize spatial distribution of data": [
+        ""
+      ],
       "Uses a gauge to showcase progress of a metric towards a target. The position of the dial represents the progress and the terminal value in the gauge represents the target value.": [
         "Использует индикатор для демонстрации прогресса показателя в достижении цели. Положение циферблата показывает ход выполнения, а конечное значение на индикаторе представляет целевое значение."
       ],
@@ -5816,6 +5823,7 @@
         "например, столбец \"идентификатор пользователя\""
       ],
       "edit mode": ["режиме редактирования"],
+      "error dark": [""],
       "every": ["каждые"],
       "every day of the month": ["каждый день месяца"],
       "every day of the week": ["каждый день недели"],
@@ -5834,7 +5842,6 @@
       ],
       "function type icon": [""],
       "geohash (square)": [""],
-      "green": ["Зеленая"],
       "heatmap": ["тепловая карта"],
       "heatmap: values are normalized across the entire heatmap": [
         "тепловая карта: значения нормализованы внутри всей карты"
@@ -5912,7 +5919,6 @@
       "reboot": ["обновить"],
       "recent": ["недавние"],
       "recents": ["недавние(их)"],
-      "red": ["Красная"],
       "report": ["рассылка"],
       "reports": ["рассылки"],
       "restore zoom": ["восстановить масштабирование"],
@@ -5959,7 +5965,6 @@
         "y: значения нормализованы внутри каждой строки"
       ],
       "year": ["год"],
-      "yellow": ["Желтая"],
       "zoom area": [""]
     }
   }
