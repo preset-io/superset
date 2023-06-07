@@ -31,6 +31,7 @@ from typing import Any, Callable, Optional, TYPE_CHECKING
 import numpy
 import pandas as pd
 import sqlalchemy as sqla
+import sshtunnel
 from flask import g, request
 from flask_appbuilder import Model
 from sqlalchemy import (
@@ -406,7 +407,8 @@ class Database(
         with engine_context as server_context:
             if ssh_tunnel and server_context:
                 logger.info(
-                    "[SSH] Successfully create tunnel at %s: %s",
+                    "[SSH] Successfully create tunnel w/ %s timeout at %s: %s ",
+                    sshtunnel.TUNNEL_TIMEOUT,
                     server_context.local_bind_address,
                     server_context.local_bind_port,
                 )
