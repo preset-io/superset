@@ -2016,7 +2016,6 @@ class Superset(BaseSupersetView):  # pylint: disable=too-many-public-methods
     @has_access
     @expose("/sqllab_viz/", methods=("POST",))
     @event_logger.log_this
-    @deprecated(new_target="api/v1/dataset/")
     def sqllab_viz(self) -> FlaskResponse:  # pylint: disable=no-self-use
         data = json.loads(request.form["data"])
         try:
