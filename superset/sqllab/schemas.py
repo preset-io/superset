@@ -58,7 +58,8 @@ class ExecutePayloadSchema(Schema):
 
 
 class QueryResultSchema(Schema):
-    changed_on = fields.DateTime()
+    changedOn = fields.DateTime()
+    changed_on = fields.String()
     dbId = fields.Integer()
     db = fields.String()  # pylint: disable=invalid-name
     endDttm = fields.Float()
