@@ -135,6 +135,7 @@ class Query(
 
     def to_dict(self) -> dict[str, Any]:
         return {
+            "changedOn": self.changed_on,
             "changed_on": self.changed_on.isoformat(),
             "dbId": self.database_id,
             "db": self.database.database_name if self.database else None,

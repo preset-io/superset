@@ -61,7 +61,7 @@ const store = mockStore({
     queries: {
       LCly_kkIN: {
         cached: false,
-        changed_on: new Date().toISOString(),
+        changedOn: Date.now(),
         db: 'main',
         dbId: 1,
         id: 'LCly_kkIN',
@@ -71,7 +71,7 @@ const store = mockStore({
       },
       lXJa7F9_r: {
         cached: false,
-        changed_on: new Date(1559238500401).toISOString(),
+        changedOn: 1559238500401,
         db: 'main',
         dbId: 1,
         id: 'lXJa7F9_r',
@@ -80,7 +80,7 @@ const store = mockStore({
       },
       '2g2_iRFMl': {
         cached: false,
-        changed_on: new Date(1559238506925).toISOString(),
+        changedOn: 1559238506925,
         db: 'main',
         dbId: 1,
         id: '2g2_iRFMl',
@@ -89,7 +89,7 @@ const store = mockStore({
       },
       erWdqEWPm: {
         cached: false,
-        changed_on: new Date(1559238516395).toISOString(),
+        changedOn: 1559238516395,
         db: 'main',
         dbId: 1,
         id: 'erWdqEWPm',
