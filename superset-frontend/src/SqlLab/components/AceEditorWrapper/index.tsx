@@ -55,6 +55,7 @@ type AceEditorWrapperProps = {
   onBlur: (sql: string) => void;
   onChange: (sql: string) => void;
   queryEditorId: string;
+  database: any;
   extendedTables?: Array<{ name: string; columns: any[] }>;
   height: string;
   hotkeys: HotKey[];
@@ -85,6 +86,7 @@ const AceEditorWrapper = ({
   onBlur = () => {},
   onChange = () => {},
   queryEditorId,
+  database,
   extendedTables = [],
   height,
   hotkeys,
@@ -256,7 +258,9 @@ const AceEditorWrapper = ({
     const completer = {
       insertMatch: (editor: Editor, data: any) => {
         if (data.meta === 'table') {
-          dispatch(addTable(queryEditor, data.value, queryEditor.schema));
+          dispatch(
+            addTable(queryEditor, database, data.value, queryEditor.schema),
+          );
         }
 
         let { caption } = data;

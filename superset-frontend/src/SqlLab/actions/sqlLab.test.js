@@ -821,7 +821,43 @@ describe('async actions', () => {
     });
 
     describe('addTable', () => {
-      it('dispatches table state from unsaved change', () => {
+      it('updates the table schema state in the backend', () => {
+        expect.assertions(6);
+
+        const database = { disable_data_preview: true };
+        const tableName = 'table';
+        const schemaName = 'schema';
+        const store = mockStore(initialState);
+        const expectedActionTypes = [
+          actions.MERGE_TABLE, // addTable
+          actions.MERGE_TABLE, // getTableMetadata
+          actions.MERGE_TABLE, // getTableExtendedMetadata
+          actions.MERGE_TABLE, // addTable
+        ];
+        const request = actions.addTable(
+          query,
+          database,
+          tableName,
+          schemaName,
+        );
+        return request(store.dispatch, store.getState).then(() => {
+          expect(store.getActions().map(a => a.type)).toEqual(
+            expectedActionTypes,
+          );
+          expect(store.getActions()[0].prepend).toBeTruthy();
+          expect(fetchMock.calls(updateTableSchemaEndpoint)).toHaveLength(1);
+          expect(fetchMock.calls(getTableMetadataEndpoint)).toHaveLength(1);
+          expect(fetchMock.calls(getExtraTableMetadataEndpoint)).toHaveLength(
+            1,
+          );
+
+          // tab state is not updated, since no query was run
+          expect(fetchMock.calls(updateTabStateEndpoint)).toHaveLength(0);
+        });
+      });
+
+      it('fetches table schema state from unsaved change', () => {
+        const database = { disable_data_preview: true };
         const tableName = 'table';
         const schemaName = 'schema';
         const expectedDbId = 473892;
@@ -835,47 +871,31 @@ describe('async actions', () => {
             },
           },
         });
-        const request = actions.addTable(query, tableName, schemaName);
-        request(store.dispatch, store.getState);
-        expect(store.getActions()[0]).toEqual(
-          expect.objectContaining({
-            table: expect.objectContaining({
-              name: tableName,
-              schema: schemaName,
-              dbId: expectedDbId,
-            }),
-          }),
+        const request = actions.addTable(
+          query,
+          database,
+          tableName,
+          schemaName,
         );
-      });
-    });
-
-    describe('syncTable', () => {
-      it('updates the table schema state in the backend', () => {
-        expect.assertions(4);
-
-        const tableName = 'table';
-        const schemaName = 'schema';
-        const store = mockStore(initialState);
-        const expectedActionTypes = [
-          actions.MERGE_TABLE, // syncTable
-        ];
-        const request = actions.syncTable(query, tableName, schemaName);
         return request(store.dispatch, store.getState).then(() => {
-          expect(store.getActions().map(a => a.type)).toEqual(
-            expectedActionTypes,
-          );
-          expect(store.getActions()[0].prepend).toBeFalsy();
-          expect(fetchMock.calls(updateTableSchemaEndpoint)).toHaveLength(1);
+          expect(
+            fetchMock.calls(
+              `glob:**/api/v1/database/${expectedDbId}/table/*/*/`,
+            ),
+          ).toHaveLength(1);
+          expect(
+            fetchMock.calls(
+              `glob:**/api/v1/database/${expectedDbId}/table_extra/*/*/`,
+            ),
+          ).toHaveLength(1);
 
           // tab state is not updated, since no query was run
           expect(fetchMock.calls(updateTabStateEndpoint)).toHaveLength(0);
         });
       });
-    });
 
-    describe('runTablePreviewQuery', () => {
       it('updates and runs data preview query when configured', () => {
-        expect.assertions(3);
+        expect.assertions(5);
 
         const results = {
           data: mockBigNumber,
@@ -886,32 +906,34 @@ describe('async actions', () => {
           overwriteRoutes: true,
         });
 
+        const database = { disable_data_preview: false, id: 1 };
         const tableName = 'table';
         const schemaName = 'schema';
-        const store = mockStore({
-          ...initialState,
-          sqlLab: {
-            ...initialState.sqlLab,
-            databases: {
-              1: { disable_data_preview: false },
-            },
-          },
-        });
+        const store = mockStore(initialState);
         const expectedActionTypes = [
+          actions.MERGE_TABLE, // addTable
+          actions.MERGE_TABLE, // getTableMetadata
+          actions.MERGE_TABLE, // getTableExtendedMetadata
           actions.MERGE_TABLE, // addTable (data preview)
           actions.START_QUERY, // runQuery (data preview)
+          actions.MERGE_TABLE, // addTable
           actions.QUERY_SUCCESS, // querySuccess
         ];
-        const request = actions.runTablePreviewQuery({
-          dbId: 1,
-          name: tableName,
-          schema: schemaName,
-        });
+        const request = actions.addTable(
+          query,
+          database,
+          tableName,
+          schemaName,
+        );
         return request(store.dispatch, store.getState).then(() => {
           expect(store.getActions().map(a => a.type)).toEqual(
             expectedActionTypes,
           );
-          expect(fetchMock.calls(runQueryEndpoint)).toHaveLength(1);
+          expect(fetchMock.calls(updateTableSchemaEndpoint)).toHaveLength(1);
+          expect(fetchMock.calls(getTableMetadataEndpoint)).toHaveLength(1);
+          expect(fetchMock.calls(getExtraTableMetadataEndpoint)).toHaveLength(
+            1,
+          );
           // tab state is not updated, since the query is a data preview
           expect(fetchMock.calls(updateTabStateEndpoint)).toHaveLength(0);
         });

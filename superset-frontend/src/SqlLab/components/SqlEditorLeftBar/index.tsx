@@ -164,9 +164,9 @@ const SqlEditorLeftBar = ({
       return true;
     });
 
-    tablesToAdd.forEach(tableName => {
-      dispatch(addTable(queryEditor, tableName, schemaName));
-    });
+    tablesToAdd.forEach(tableName =>
+      dispatch(addTable(queryEditor, database, tableName, schemaName)),
+    );
 
     dispatch(removeTables(currentTables));
   };
