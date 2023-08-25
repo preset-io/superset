@@ -22,6 +22,7 @@ import React, {
   ReactChild,
   useState,
   useCallback,
+  useEffect,
 } from 'react';
 import {
   Link,
@@ -40,6 +41,8 @@ import {
   styled,
   t,
   useTheme,
+  SupersetClient,
+  logging,
 } from '@superset-ui/core';
 import { useSelector } from 'react-redux';
 import { Menu } from 'src/components/Menu';
@@ -58,6 +61,7 @@ import { DrillDetailMenuItems } from 'src/components/Chart/DrillDetail';
 import { LOG_ACTIONS_CHART_DOWNLOAD_AS_IMAGE } from 'src/logger/LogUtils';
 import { RootState } from 'src/dashboard/types';
 import { useCrossFiltersScopingModal } from '../nativeFilters/FilterBar/CrossFilters/ScopingModal/useCrossFiltersScopingModal';
+import { Thread, ThreadList } from '@cord-sdk/react';
 
 const MENU_KEYS = {
   DOWNLOAD_AS_IMAGE: 'download_as_image',
@@ -166,6 +170,53 @@ const dropdownIconsStyles = css`
   &&.anticon > .anticon:first-child {
     margin-right: 0;
     vertical-align: 0;
+  }
+`;
+
+// eslint-disable-next-line theme-colors/no-literal-colors
+const cordStyles = () => css`
+  position: relative;
+  .flex {
+    flex-direction: row;
+    display: flex;
+  }
+
+  cord-page-presence {
+    display: flex;
+    justify-content: flex-end;
+    .cord-facepile {
+      margin-right: 40px;
+    }
+    .cord-avatar-container {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+    }
+  }
+  cord-thread:not(.new-thread) {
+    position: absolute;
+    background-color: #ffffff;
+    right: 6px;
+    z-index: 1000;
+    border: 1px solid #ccc;
+    top: 15px;
+    &[collapsed='true'] {
+      display: none;
+    }
+    .cord-collapsed-thread {
+      height: 0;
+    }
+  }
+  cord-thread.new-thread {
+    margin: 0;
+    border: none;
+  }
+  cord-thread .cord-send-button {
+    background-color: #ee6611;
+  }
+
+  cord-thread .cord-send-button:hover {
+    background-color: #ff7722;
   }
 `;
 
@@ -373,6 +424,29 @@ const SliceHeaderControls = (props: SliceHeaderControlsPropsWithRouter) => {
     ? t('Exit fullscreen')
     : t('Enter fullscreen');
 
+  const [threadListId, setthreadListId] = useState<string | null>(null);
+  const [threadIsOpen, setThreadIsOpen] = useState<boolean>(false);
+  const [selectedThreadID, setSelectedThreadID] = useState<string | null>(null);
+  const [showNewThread, setShowNewThread] = useState<boolean>(false);
+
+  useEffect(() => {
+    // fetch or get the thread id
+    SupersetClient.post({
+      endpoint: `/api/v1/message_threads`,
+      jsonPayload: {
+        chart_id: props.slice.slice_id,
+        dashboard_id: props.dashboardId,
+      },
+    })
+      .then(r => {
+        setthreadListId(r.json?.result?.thread_id);
+      })
+      .catch(err => {
+        console.error(err);
+        return null;
+      });
+  }, []);
+
   const menu = (
     <Menu
       onClick={handleMenuClick}
@@ -529,35 +603,109 @@ const SliceHeaderControls = (props: SliceHeaderControlsPropsWithRouter) => {
     </Menu>
   );
 
+  const buttonHeight = 30;
+  const threadListHeight = 400;
+  const threadHeight = threadListHeight - buttonHeight;
+  const width = 300;
+
   return (
-    <>
-      {isFullSize && (
-        <Icons.FullscreenExitOutlined
-          style={{ fontSize: 22 }}
-          onClick={() => {
-            props.handleToggleFullSize();
-          }}
-        />
-      )}
-      <NoAnimationDropdown
-        overlay={menu}
-        trigger={['click']}
-        placement="bottomRight"
-      >
-        <span
-          css={css`
-            display: flex;
-            align-items: center;
-          `}
-          id={`slice_${slice.slice_id}-controls`}
-          role="button"
-          aria-label="More Options"
+    <div css={cordStyles}>
+      <div className="flex">
+        {isFullSize && (
+          <Icons.FullscreenExitOutlined
+            style={{ fontSize: 22 }}
+            onClick={() => {
+              props.handleToggleFullSize();
+            }}
+          />
+        )}
+        <Icons.MessageOutlined onClick={() => setThreadIsOpen(!threadIsOpen)} />
+        <NoAnimationDropdown
+          overlay={menu}
+          trigger={['click']}
+          placement="bottomRight"
         >
-          <VerticalDotsTrigger />
-        </span>
-      </NoAnimationDropdown>
-      {canEditCrossFilters && scopingModal}
-    </>
+          <span
+            css={css`
+              display: flex;
+              align-items: flex-start;
+            `}
+            id={`slice_${slice.slice_id}-controls`}
+            role="button"
+            aria-label="More Options"
+          >
+            <VerticalDotsTrigger />
+          </span>
+        </NoAnimationDropdown>
+        {canEditCrossFilters && scopingModal}
+      </div>
+      {threadListId && (
+        <div
+          style={{
+            border: '1px #ccc solid',
+            zIndex: 1000,
+            position: 'absolute',
+            display: threadIsOpen ? 'block' : 'none',
+            right: 0,
+            top: '40px',
+            backgroundColor: '#fff',
+          }}
+        >
+          {!selectedThreadID && (
+            <button type="button" onClick={() => setShowNewThread(true)}>
+              Add comment
+            </button>
+          )}
+          <div style={{ display: selectedThreadID ? 'block' : 'none' }}>
+            <button
+              type="button"
+              style={{ height: buttonHeight, width }}
+              onClick={() => {
+                setSelectedThreadID(null);
+              }}
+            >
+              back
+            </button>
+            {selectedThreadID && (
+              <Thread
+                threadId={selectedThreadID}
+                location={{ threadListId }}
+                style={{ height: threadHeight, width }}
+              />
+            )}
+          </div>
+          <ThreadList
+            onThreadClick={threadID => {
+              setSelectedThreadID(threadID);
+            }}
+            location={{ threadListId }}
+            style={{
+              display: selectedThreadID ? 'none' : 'block',
+              minHeight: '50px',
+              width,
+            }}
+          />
+          <div style={{ display: showNewThread ? 'block' : 'none' }}>
+            {/* This is a new thread */}
+            <Thread
+              threadId={crypto.randomUUID()}
+              location={{ threadListId }}
+              style={{ height: threadHeight, width }}
+              className="new-thread"
+              onThreadInfoChange={({
+                messageCount,
+              }: {
+                messageCount: number;
+              }) => {
+                if (messageCount) {
+                  setShowNewThread(false);
+                }
+              }}
+            />
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 

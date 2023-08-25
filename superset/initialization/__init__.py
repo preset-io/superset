@@ -131,6 +131,7 @@ class SupersetAppInitializer:  # pylint: disable=too-many-public-methods
             TableColumnInlineView,
             TableModelView,
         )
+        from superset.cord_auth_token.api import CordTokenRestApi
         from superset.css_templates.api import CssTemplateRestApi
         from superset.dashboards.api import DashboardRestApi
         from superset.dashboards.filter_sets.api import FilterSetRestApi
@@ -147,6 +148,7 @@ class SupersetAppInitializer:  # pylint: disable=too-many-public-methods
         from superset.explore.form_data.api import ExploreFormDataRestApi
         from superset.explore.permalink.api import ExplorePermalinkRestApi
         from superset.importexport.api import ImportExportRestApi
+        from superset.message_threads.api import MessageThreadRestApi
         from superset.queries.api import QueryRestApi
         from superset.queries.saved_queries.api import SavedQueryRestApi
         from superset.reports.api import ReportScheduleRestApi
@@ -226,6 +228,8 @@ class SupersetAppInitializer:  # pylint: disable=too-many-public-methods
         appbuilder.add_api(RLSRestApi)
         appbuilder.add_api(SavedQueryRestApi)
         appbuilder.add_api(TagRestApi)
+        appbuilder.add_api(MessageThreadRestApi)
+        appbuilder.add_api(CordTokenRestApi)
         appbuilder.add_api(SqlLabRestApi)
         #
         # Setup regular views

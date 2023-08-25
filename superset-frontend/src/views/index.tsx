@@ -16,8 +16,37 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
+import { CordProvider } from '@cord-sdk/react';
 import App from './App';
+import { makeApi } from '@superset-ui/core';
 
-ReactDOM.render(<App />, document.getElementById('app'));
+function CordApp() {
+  const [cordToken, setCordToken] = useState(undefined);
+
+  useEffect(() => {
+    async function fetchToken() {
+      try {
+        await makeApi({
+          method: 'POST',
+          endpoint: `/api/v1/cord_token`,
+        })({}).then(json => {
+          setCordToken(json.response.auth_token);
+        });
+      } catch (error) {
+        console.log('Something went wrong!: ', error);
+      }
+    }
+    fetchToken();
+  }, []);
+  // this needs to be synchronous, but there's probably a better way to do this
+  // we can't load the provider without the token, but we don't necessarily just want a blank page either
+  return cordToken ? (
+    <CordProvider clientAuthToken={cordToken}>
+      <App />
+    </CordProvider>
+  ) : null;
+}
+
+ReactDOM.render(<CordApp />, document.getElementById('app'));

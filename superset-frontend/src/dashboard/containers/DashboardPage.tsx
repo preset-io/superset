@@ -19,6 +19,7 @@
 import React, { FC, useEffect, useMemo, useRef } from 'react';
 import { Global } from '@emotion/react';
 import { useHistory } from 'react-router-dom';
+import { PagePresence, Thread } from '@cord-sdk/react';
 import {
   CategoricalColorNamespace,
   FeatureFlag,
@@ -27,6 +28,7 @@ import {
   SharedLabelColorSource,
   t,
   useTheme,
+  css,
 } from '@superset-ui/core';
 import pick from 'lodash/pick';
 import { useDispatch, useSelector } from 'react-redux';
@@ -66,6 +68,35 @@ import {
 } from '../styles';
 
 export const DashboardPageIdContext = React.createContext('');
+
+// eslint-disable-next-line theme-colors/no-literal-colors
+const cordStyles = () => css`
+  cord-page-presence {
+    display: flex;
+    justify-content: flex-end;
+    padding: 8px 0;
+    .cord-facepile {
+      margin-right: 40px;
+    }
+    .cord-avatar-container {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+    }
+  }
+  cord-thread {
+    width: 25%;
+    margin-left: 75%;
+    margin-top: 20px;
+  }
+  cord-thread .cord-send-button {
+    background-color: #ee6611;
+  }
+
+  cord-thread .cord-send-button:hover {
+    background-color: #ff7722;
+  }
+`;
 
 setupPlugins();
 const DashboardContainer = React.lazy(
@@ -293,8 +324,10 @@ export const DashboardPage: FC<PageProps> = ({ idOrSlug }: PageProps) => {
           filterCardPopoverStyle(theme),
           headerStyles(theme),
           chartContextMenuStyles(theme),
+          cordStyles(),
         ]}
       />
+      <PagePresence />
       <DashboardPageIdContext.Provider value={dashboardPageId}>
         <DashboardContainer />
       </DashboardPageIdContext.Provider>
