@@ -63,7 +63,7 @@ Create chart name and version as used by the chart label.
 
 {{- define "superset-config" }}
 import os
-from flask_caching.backends.rediscache import RedisCache
+from cachelib.redis import RedisCache
 
 def env(key, default=None):
     return os.getenv(key, default)
