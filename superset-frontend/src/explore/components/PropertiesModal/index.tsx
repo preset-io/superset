@@ -306,7 +306,7 @@ function PropertiesModal({
       title={t('Edit Chart Properties')}
       footer={
         <>
-          {!!FooterExtension && <FooterExtension chartId={slice.slice_id}/>}
+          {!!FooterExtension && <FooterExtension chartId={slice.slice_id} />}
           <Button
             data-test="properties-modal-cancel-button"
             htmlType="button"

@@ -120,7 +120,7 @@ export interface SQLFormExtensionProps {
 
 type ChartEditModalFooterProps = {
   chartId: number;
-}
+};
 
 export type Extensions = Partial<{
   'alertsreports.header.icon': React.ComponentType;
