@@ -29,6 +29,7 @@ import {
   styled,
   isFeatureEnabled,
   FeatureFlag,
+  getExtensionsRegistry,
 } from '@superset-ui/core';
 import Chart, { Slice } from 'src/types/Chart';
 import { getClientErrorObject } from 'src/utils/getClientErrorObject';
@@ -41,6 +42,8 @@ import {
   OBJECT_TYPES,
 } from 'src/features/tags/tags';
 import TagType from 'src/types/TagType';
+
+const extensionsRegistry = getExtensionsRegistry();
 
 export type PropertiesModalProps = {
   slice: Slice;
@@ -294,6 +297,8 @@ function PropertiesModal({
     setTags([]);
   };
 
+  const FooterExtension = extensionsRegistry.get('chart.edit-modal.footer');
+
   return (
     <Modal
       show={show}
@@ -301,6 +306,7 @@ function PropertiesModal({
       title={t('Edit Chart Properties')}
       footer={
         <>
+          {!!FooterExtension && <FooterExtension chartId={slice.slice_id}/>}
           <Button
             data-test="properties-modal-cancel-button"
             htmlType="button"

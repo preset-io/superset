@@ -118,8 +118,13 @@ export interface SQLFormExtensionProps {
   startQuery: (ctasArg?: any, ctas_method?: any) => void;
 }
 
+type ChartEditModalFooterProps = {
+  chartId: number;
+}
+
 export type Extensions = Partial<{
   'alertsreports.header.icon': React.ComponentType;
+  'chart.edit-modal.footer': React.ComponentType<ChartEditModalFooterProps>;
   'embedded.documentation.configuration_details': React.ComponentType<ConfigDetailsProps>;
   'embedded.documentation.description': ReturningDisplayable;
   'embedded.documentation.url': string;
