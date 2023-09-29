@@ -120,6 +120,9 @@ export interface SQLFormExtensionProps {
 
 type ChartEditModalFooterProps = {
   chartId: number;
+  onHide: () => void;
+  onSave: (chart: any) => void;
+  addSuccessToast: (msg: string) => void;
 };
 
 export type Extensions = Partial<{
