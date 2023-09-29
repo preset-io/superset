@@ -642,12 +642,12 @@ const PropertiesModal = ({
       footer={
         <>
           {!!FooterExtension && (
-              <FooterExtension
-                dashboardId={dashboardId}
-                onHide={onHide}
-                onSave={onSubmit}
-                addSuccessToast={addSuccessToast}
-              />
+            <FooterExtension
+              dashboardId={dashboardId}
+              onHide={onHide}
+              onSave={onSubmit}
+              addSuccessToast={addSuccessToast}
+            />
           )}
           <Button
             htmlType="button"

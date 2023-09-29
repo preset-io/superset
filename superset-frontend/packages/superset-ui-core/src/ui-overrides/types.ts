@@ -130,7 +130,7 @@ type DashboardEditModalFooterProps = {
   onHide: () => void;
   onSave: (dashboard: any) => void;
   addSuccessToast: (msg: string) => void;
-}
+};
 
 export type Extensions = Partial<{
   'alertsreports.header.icon': React.ComponentType;
