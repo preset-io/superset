@@ -125,9 +125,17 @@ type ChartEditModalFooterProps = {
   addSuccessToast: (msg: string) => void;
 };
 
+type DashboardEditModalFooterProps = {
+  dashboardId: number;
+  onHide: () => void;
+  onSave: (dashboard: any) => void;
+  addSuccessToast: (msg: string) => void;
+}
+
 export type Extensions = Partial<{
   'alertsreports.header.icon': React.ComponentType;
   'chart.edit-modal.footer': React.ComponentType<ChartEditModalFooterProps>;
+  'dashboard.edit-modal.footer': React.ComponentType<DashboardEditModalFooterProps>;
   'embedded.documentation.configuration_details': React.ComponentType<ConfigDetailsProps>;
   'embedded.documentation.description': ReturningDisplayable;
   'embedded.documentation.url': string;

@@ -30,6 +30,7 @@ import {
   isFeatureEnabled,
   FeatureFlag,
   getCategoricalSchemeRegistry,
+  getExtensionsRegistry,
   getSharedLabelColor,
   styled,
   SupersetClient,
@@ -51,6 +52,8 @@ import {
   OBJECT_TYPES,
 } from 'src/features/tags/tags';
 import { loadTags } from 'src/components/Tags/utils';
+
+const extensionsRegistry = getExtensionsRegistry();
 
 const StyledFormItem = styled(FormItem)`
   margin-bottom: 0;
@@ -629,6 +632,8 @@ const PropertiesModal = ({
     setTags([...uniqueTags.map(t => ({ name: t }))]);
   };
 
+  const FooterExtension = extensionsRegistry.get('dashboard.edit-modal.footer');
+
   return (
     <Modal
       show={show}
@@ -636,6 +641,14 @@ const PropertiesModal = ({
       title={t('Dashboard properties')}
       footer={
         <>
+          {!!FooterExtension && (
+              <FooterExtension
+                dashboardId={dashboardId}
+                onHide={onHide}
+                onSave={onSubmit}
+                addSuccessToast={addSuccessToast}
+              />
+          )}
           <Button
             htmlType="button"
             buttonSize="small"
