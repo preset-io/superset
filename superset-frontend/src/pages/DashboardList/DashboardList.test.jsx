@@ -116,6 +116,7 @@ describe('DashboardList', () => {
           <DashboardList {...mockedProps} user={mockUser} />
         </Provider>
       </MemoryRouter>,
+      { useRedux: true, store },
     );
 
     await waitForComponentToPaint(wrapper);
