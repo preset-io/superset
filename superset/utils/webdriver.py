@@ -15,6 +15,7 @@
 # specific language governing permissions and limitations
 # under the License.
 
+# pylint: disable=too-many-statements
 from __future__ import annotations
 
 import logging
@@ -161,10 +162,16 @@ class WebDriverPlaywright(WebDriverProxy):
                 },
                 device_scale_factor=pixel_density,
             )
+            img: bytes | None = None
             self.auth(user, context)
             page = context.new_page()
-            page.goto(url)
-            img: bytes | None = None
+            try:
+                page.goto(url, wait_until="domcontentloaded")
+                logger.info("Page loaded at url %s", url)
+            except Exception:  # pylint: disable=broad-except
+                logger.exception("Failed to load url %s", url)
+                return page.screenshot()
+
             selenium_headstart = current_app.config["SCREENSHOT_SELENIUM_HEADSTART"]
             logger.debug("Sleeping for %i seconds", selenium_headstart)
             page.wait_for_timeout(selenium_headstart * 1000)
