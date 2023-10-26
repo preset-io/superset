@@ -196,12 +196,12 @@ class WebDriverPlaywright(WebDriverProxy):
                     page.wait_for_selector(
                         ".slice_container", timeout=self._screenshot_locate_wait * 1000
                     )
-                except PlaywrightTimeout as ex:
+                except PlaywrightTimeout:
                     logger.exception(
                         "Timed out waiting for chart containers to draw at url %s",
                         url,
                     )
-                    raise ex
+                    return page.screenshot()
                 try:
                     # charts took too long to load
                     logger.debug(
