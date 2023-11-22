@@ -57,7 +57,7 @@ const defaultProps = {
 };
 
 const MapBox = (props) => {
-const { width, height, bounds } = props;
+    const { width, height, bounds } = props;
     const mercator = new ViewportMercator({
       width,
       height,
@@ -71,10 +71,10 @@ const { width, height, bounds } = props;
       });
 
     const handleViewportChangeHandler = useCallback((viewport) => {
-    setViewport(viewport);
-    const { onViewportChange } = props;
-    onViewportChange(viewport);
-  }, [viewport]);
+        setViewport(viewport);
+        const { onViewportChange } = props;
+        onViewportChange(viewport);
+      }, [viewport]);
 
     const {
       width,
