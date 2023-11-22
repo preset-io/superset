@@ -57,87 +57,87 @@ const defaultProps = {
 };
 
 const MapBox = (props) => {
-    const { width, height, bounds } = props;
-    const mercator = new ViewportMercator({
-      width,
-      height,
-    }).fitBounds(bounds);
-    const { latitude, longitude, zoom } = mercator;
+  const {
+    width,
+    height,
+    aggregatorName,
+    clusterer,
+    globalOpacity,
+    mapStyle,
+    mapboxApiKey,
+    pointRadius,
+    pointRadiusUnit,
+    renderWhileDragging,
+    rgb,
+    hasCustomMetric,
+    bounds,
+    onViewportChange,
+  } = props;
+  
+  const mercator = new ViewportMercator({
+    width,
+    height,
+  }).fitBounds(bounds);
+  
+  const { latitude, longitude, zoom } = mercator;
 
-    const [viewport, setViewport] = useState({
-        longitude,
-        latitude,
-        zoom,
-      });
+  const [viewport, setViewport] = useState({
+    longitude,
+    latitude,
+    zoom,
+  });
 
-    const handleViewportChangeHandler = useCallback((viewport) => {
-        setViewport(viewport);
-        const { onViewportChange } = props;
-        onViewportChange(viewport);
-      }, [viewport]);
+  const handleViewportChangeHandler = useCallback((viewport) => {
+    setViewport(viewport);
+    onViewportChange(viewport);
+  }, [viewport]);
+  
+  const isDragging =
+    viewport.isDragging === undefined ? false : viewport.isDragging;
 
-    const {
-      width,
-      height,
-      aggregatorName,
-      clusterer,
-      globalOpacity,
-      mapStyle,
-      mapboxApiKey,
-      pointRadius,
-      pointRadiusUnit,
-      renderWhileDragging,
-      rgb,
-      hasCustomMetric,
-      bounds,
-    } = props;
-    
-    const isDragging =
-      viewport.isDragging === undefined ? false : viewport.isDragging;
+  // Compute the clusters based on the original bounds and current zoom level. Note when zoom/pan
+  // to an area outside of the original bounds, no additional queries are made to the backend to
+  // retrieve additional data.
+  // add this variable to widen the visible area
+  const offsetHorizontal = (width * 0.5) / 100;
+  const offsetVertical = (height * 0.5) / 100;
+  const bbox = [
+    bounds[0][0] - offsetHorizontal,
+    bounds[0][1] - offsetVertical,
+    bounds[1][0] + offsetHorizontal,
+    bounds[1][1] + offsetVertical,
+  ];
+  const clusters = clusterer.getClusters(bbox, Math.round(viewport.zoom));
 
-    // Compute the clusters based on the original bounds and current zoom level. Note when zoom/pan
-    // to an area outside of the original bounds, no additional queries are made to the backend to
-    // retrieve additional data.
-    // add this variable to widen the visible area
-    const offsetHorizontal = (width * 0.5) / 100;
-    const offsetVertical = (height * 0.5) / 100;
-    const bbox = [
-      bounds[0][0] - offsetHorizontal,
-      bounds[0][1] - offsetVertical,
-      bounds[1][0] + offsetHorizontal,
-      bounds[1][1] + offsetVertical,
-    ];
-    const clusters = clusterer.getClusters(bbox, Math.round(viewport.zoom));
-
-    return (
-      <MapGL
+  return (
+    <MapGL
+      {...viewport}
+      mapStyle={mapStyle}
+      width={width}
+      height={height}
+      mapboxApiAccessToken={mapboxApiKey}
+      onViewportChange={handleViewportChangeHandler}
+      preserveDrawingBuffer
+    >
+      <ScatterPlotGlowOverlay
         {...viewport}
-        mapStyle={mapStyle}
-        width={width}
-        height={height}
-        mapboxApiAccessToken={mapboxApiKey}
-        onViewportChange={handleViewportChangeHandler}
-        preserveDrawingBuffer
-      >
-        <ScatterPlotGlowOverlay
-          {...viewport}
-          isDragging={isDragging}
-          locations={clusters}
-          dotRadius={pointRadius}
-          pointRadiusUnit={pointRadiusUnit}
-          rgb={rgb}
-          globalOpacity={globalOpacity}
-          compositeOperation="screen"
-          renderWhileDragging={renderWhileDragging}
-          aggregation={hasCustomMetric ? aggregatorName : null}
-          lngLatAccessor={location => {
-            const { coordinates } = location.geometry;
+        isDragging={isDragging}
+        locations={clusters}
+        dotRadius={pointRadius}
+        pointRadiusUnit={pointRadiusUnit}
+        rgb={rgb}
+        globalOpacity={globalOpacity}
+        compositeOperation="screen"
+        renderWhileDragging={renderWhileDragging}
+        aggregation={hasCustomMetric ? aggregatorName : null}
+        lngLatAccessor={location => {
+          const { coordinates } = location.geometry;
 
-            return [coordinates[0], coordinates[1]];
-          }}
-        />
-      </MapGL>
-    ); 
+          return [coordinates[0], coordinates[1]];
+        }}
+      />
+    </MapGL>
+  ); 
 };
 
 
