@@ -1,4 +1,3 @@
-
 /**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -23,15 +22,15 @@ import PropTypes from 'prop-types';
 import { CompactPicker } from 'react-color';
 import Button from 'src/components/Button';
 import {
-    t,
-    SupersetClient,
-    getCategoricalSchemeRegistry,
-    getChartMetadataRegistry,
-    validateNonEmpty,
-    isValidExpression,
-    styled,
-    getColumnLabel,
-    withTheme,
+  t,
+  SupersetClient,
+  getCategoricalSchemeRegistry,
+  getChartMetadataRegistry,
+  validateNonEmpty,
+  isValidExpression,
+  styled,
+  getColumnLabel,
+  withTheme,
 } from '@superset-ui/core';
 import SelectControl from 'src/explore/components/controls/SelectControl';
 import TextControl from 'src/explore/components/controls/TextControl';
@@ -41,12 +40,12 @@ import ControlHeader from 'src/explore/components/ControlHeader';
 import { EmptyStateSmall } from 'src/components/EmptyState';
 import { FILTER_OPTIONS_LIMIT } from 'src/explore/constants';
 import {
-    ANNOTATION_SOURCE_TYPES,
-    ANNOTATION_TYPES,
-    ANNOTATION_TYPES_METADATA,
-    DEFAULT_ANNOTATION_TYPE,
-    requiresQuery,
-    ANNOTATION_SOURCE_TYPES_METADATA,
+  ANNOTATION_SOURCE_TYPES,
+  ANNOTATION_TYPES,
+  ANNOTATION_TYPES_METADATA,
+  DEFAULT_ANNOTATION_TYPE,
+  requiresQuery,
+  ANNOTATION_SOURCE_TYPES_METADATA,
 } from './AnnotationTypes';
 
 const AUTOMATIC_COLOR = '';
@@ -132,45 +131,51 @@ const NotFoundContent = () => (
   </NotFoundContentWrapper>
 );
 
-const AnnotationLayer = (props) => {
-    const [annotationType, setAnnotationType] = useState(validAnnotationType);
-    const [color, setColor] = useState(color || AUTOMATIC_COLOR);
-    const [isNew, setIsNew] = useState(!name);
-    const [isLoadingOptions, setIsLoadingOptions] = useState(true);
-    const [valueOptions, setValueOptions] = useState([]);
+const AnnotationLayer = props => {
+  const [annotationType, setAnnotationType] = useState(validAnnotationType);
+  const [color, setColor] = useState(props.color || AUTOMATIC_COLOR);
+  const [isNew, setIsNew] = useState(!name);
+  const [isLoadingOptions, setIsLoadingOptions] = useState(true);
+  const [valueOptions, setValueOptions] = useState([]);
 
-    useEffect(() => {
+  useEffect(() => {
     fetchOptions(annotationType, sourceType, isLoadingOptions);
   }, [annotationType, isLoadingOptions]);
-    useEffect(() => {
+  useEffect(() => {
     if (prevState.sourceType !== sourceType) {
       fetchOptions(annotationType, sourceType, true);
     }
   }, [annotationType]);
-    const getSupportedSourceTypesHandler = useCallback((annotationType) => {
-    // Get vis types that can be source.
-    const sources = getChartMetadataRegistry()
-      .entries()
-      .filter(({ value: chartMetadata }) =>
-        chartMetadata.canBeAnnotationType(annotationType),
-      )
-      .map(({ key, value: chartMetadata }) => ({
-        value: key,
-        label: chartMetadata.name,
-      }));
-    // Prepend native source if applicable
-    if (ANNOTATION_TYPES_METADATA[annotationType]?.supportNativeSource) {
-      sources.unshift(ANNOTATION_SOURCE_TYPES_METADATA.NATIVE);
-    }
-    return sources;
-  }, [annotationType]);
-    const isValidFormulaAnnotationHandler = useCallback((expression, annotationType) => {
-    if (annotationType === ANNOTATION_TYPES.FORMULA) {
-      return isValidExpression(expression);
-    }
-    return true;
-  }, [annotationType]);
-    const isValidFormHandler = useCallback(() => {
+  const getSupportedSourceTypesHandler = useCallback(
+    annotationType => {
+      // Get vis types that can be source.
+      const sources = getChartMetadataRegistry()
+        .entries()
+        .filter(({ value: chartMetadata }) =>
+          chartMetadata.canBeAnnotationType(annotationType),
+        )
+        .map(({ key, value: chartMetadata }) => ({
+          value: key,
+          label: chartMetadata.name,
+        }));
+      // Prepend native source if applicable
+      if (ANNOTATION_TYPES_METADATA[annotationType]?.supportNativeSource) {
+        sources.unshift(ANNOTATION_SOURCE_TYPES_METADATA.NATIVE);
+      }
+      return sources;
+    },
+    [annotationType],
+  );
+  const isValidFormulaAnnotationHandler = useCallback(
+    (expression, annotationType) => {
+      if (annotationType === ANNOTATION_TYPES.FORMULA) {
+        return isValidExpression(expression);
+      }
+      return true;
+    },
+    [annotationType],
+  );
+  const isValidFormHandler = useCallback(() => {
     const errors = [
       validateNonEmpty(name),
       validateNonEmpty(annotationType),
@@ -188,28 +193,30 @@ const AnnotationLayer = (props) => {
     errors.push(!isValidFormulaAnnotationHandler(value, annotationType));
     return !errors.filter(x => x).length;
   }, [annotationType]);
-    const handleAnnotationTypeHandler = useCallback((annotationType) => {
-    setAnnotationType(annotationType)
-    setSourceType(null)
-    setValue(null);
-  }, [annotationType]);
-    const handleAnnotationSourceTypeHandler = useCallback((sourceType) => {
-
+  const handleAnnotationTypeHandler = useCallback(
+    annotationType => {
+      setAnnotationType(annotationType);
+      setSourceType(null);
+      setValue(null);
+    },
+    [annotationType],
+  );
+  const handleAnnotationSourceTypeHandler = useCallback(sourceType => {
     if (prevSourceType !== sourceType) {
-      setSourceType(sourceType)
-    setValue(null)
-    setIsLoadingOptions(true);
+      setSourceType(sourceType);
+      setValue(null);
+      setIsLoadingOptions(true);
     }
   }, []);
-    const handleValueHandler = useCallback((value) => {
-    setValue(value)
-    setDescriptionColumns([])
-    setIntervalEndColumn(null)
-    setTimeColumn(null)
-    setTitleColumn(null)
+  const handleValueHandler = useCallback(value => {
+    setValue(value);
+    setDescriptionColumns([]);
+    setIntervalEndColumn(null);
+    setTimeColumn(null);
+    setTitleColumn(null);
     setOverrides({ time_range: null });
   }, []);
-    const fetchOptions = useMemo(() => {
+  const fetchOptions = useMemo(() => {
     if (isLoadingOptions) {
       if (sourceType === ANNOTATION_SOURCE_TYPES.NATIVE) {
         const queryParams = rison.encode({
@@ -225,8 +232,8 @@ const AnnotationLayer = (props) => {
                 label: layer.name,
               }))
             : [];
-          setIsLoadingOptions(false)
-    setValueOptions(layers);
+          setIsLoadingOptions(false);
+          setValueOptions(layers);
         });
       } else if (requiresQuery(sourceType)) {
         const queryParams = rison.encode({
@@ -246,8 +253,9 @@ const AnnotationLayer = (props) => {
           endpoint: `/api/v1/chart/?q=${queryParams}`,
         }).then(({ json }) => {
           const registry = getChartMetadataRegistry();
-          setIsLoadingOptions(false)
-    setValueOptions(json.result
+          setIsLoadingOptions(false);
+          setValueOptions(
+            json.result
               .filter(x => {
                 const metadata = registry.get(x.viz_type);
                 return metadata && metadata.canBeAnnotationType(annotationType);
@@ -264,19 +272,20 @@ const AnnotationLayer = (props) => {
                     ),
                   },
                 },
-              })));
+              })),
+          );
         });
       } else {
-        setIsLoadingOptions(false)
-    setValueOptions([]);
+        setIsLoadingOptions(false);
+        setValueOptions([]);
       }
     }
   }, [isLoadingOptions, annotationType]);
-    const deleteAnnotationHandler = useCallback(() => {
+  const deleteAnnotationHandler = useCallback(() => {
     props.removeAnnotationLayer();
     props.close();
   }, []);
-    const applyAnnotationHandler = useCallback(() => {
+  const applyAnnotationHandler = useCallback(() => {
     if (isValidFormHandler()) {
       const annotationFields = [
         'name',
@@ -312,11 +321,11 @@ const AnnotationLayer = (props) => {
       setIsNew(false);
     }
   }, []);
-    const submitAnnotationHandler = useCallback(() => {
+  const submitAnnotationHandler = useCallback(() => {
     applyAnnotationHandler();
     props.close();
   }, []);
-    const renderOptionHandler = useCallback((option) => {
+  const renderOptionHandler = useCallback(option => {
     return (
       <span
         css={{
@@ -330,7 +339,7 @@ const AnnotationLayer = (props) => {
       </span>
     );
   }, []);
-    const renderValueConfigurationHandler = useCallback(() => {
+  const renderValueConfigurationHandler = useCallback(() => {
     let label = '';
     let description = '';
     if (requiresQuery(sourceType)) {
@@ -394,7 +403,7 @@ const AnnotationLayer = (props) => {
     }
     return '';
   }, [annotationType, valueOptions, isLoadingOptions]);
-    const renderSliceConfigurationHandler = useCallback(() => {
+  const renderSliceConfigurationHandler = useCallback(() => {
     const { slice } = valueOptions.find(x => x.value === value) || {};
     if (sourceType !== ANNOTATION_SOURCE_TYPES.NATIVE && slice) {
       const columns = (slice.data.groupby || [])
@@ -429,7 +438,9 @@ const AnnotationLayer = (props) => {
                 clearable={false}
                 options={timeColumnOptions}
                 value={timeColumn}
-                onChange={v => { setTimeColumn(v) }}
+                onChange={v => {
+                  setTimeColumn(v);
+                }}
               />
             )}
             {annotationType === ANNOTATION_TYPES.INTERVAL && (
@@ -444,7 +455,9 @@ const AnnotationLayer = (props) => {
                 validationErrors={!intervalEndColumn ? ['Mandatory'] : []}
                 options={columns}
                 value={intervalEndColumn}
-                onChange={value => { setIntervalEndColumn(value) }}
+                onChange={value => {
+                  setIntervalEndColumn(value);
+                }}
               />
             )}
             <SelectControl
@@ -455,7 +468,9 @@ const AnnotationLayer = (props) => {
               description={t('Pick a title for you annotation.')}
               options={[{ value: '', label: t('None') }].concat(columns)}
               value={titleColumn}
-              onChange={value => { setTitleColumn(value) }}
+              onChange={value => {
+                setTitleColumn(value);
+              }}
             />
             {annotationType !== ANNOTATION_TYPES.TIME_SERIES && (
               <SelectControl
@@ -469,7 +484,9 @@ const AnnotationLayer = (props) => {
                 multi
                 options={columns}
                 value={descriptionColumns}
-                onChange={value => { setDescriptionColumns(value) }}
+                onChange={value => {
+                  setDescriptionColumns(value);
+                }}
               />
             )}
             <div style={{ marginTop: '1rem' }}>
@@ -501,10 +518,10 @@ const AnnotationLayer = (props) => {
                   delete overrides.granularity;
                   if (v) {
                     setOverrides({
-                        ...overrides,
-                        time_grain_sqla: null,
-                        granularity: null,
-                      });
+                      ...overrides,
+                      time_grain_sqla: null,
+                      granularity: null,
+                    });
                   } else {
                     setOverrides({ ...overrides });
                   }
@@ -518,9 +535,9 @@ const AnnotationLayer = (props) => {
                   (example:  24 hours, 7 days, 56 weeks, 365 days)`)}
                 placeholder=""
                 value={overrides.time_shift}
-                onChange={v =>
-                  { setOverrides({ ...overrides, time_shift: v }) }
-                }
+                onChange={v => {
+                  setOverrides({ ...overrides, time_shift: v });
+                }}
               />
             </div>
           </PopoverSection>
@@ -529,7 +546,7 @@ const AnnotationLayer = (props) => {
     }
     return '';
   }, [valueOptions, annotationType]);
-    const renderDisplayConfiguration = useMemo(() => {
+  const renderDisplayConfiguration = useMemo(() => {
     const colorScheme = getCategoricalSchemeRegistry()
       .get(props.colorScheme)
       .colors.concat();
@@ -559,7 +576,9 @@ const AnnotationLayer = (props) => {
           ]}
           value={style}
           clearable={false}
-          onChange={v => { setStyle(v) }}
+          onChange={v => {
+            setStyle(v);
+          }}
         />
         <SelectControl
           ariaLabel={t('Annotation layer opacity')}
@@ -573,7 +592,9 @@ const AnnotationLayer = (props) => {
             { value: 'opacityHigh', label: '0.8' },
           ]}
           value={opacity}
-          onChange={value => { setOpacity(value) }}
+          onChange={value => {
+            setOpacity(value);
+          }}
         />
         <div>
           <ControlHeader label={t('Color')} />
@@ -581,13 +602,17 @@ const AnnotationLayer = (props) => {
             <CompactPicker
               color={color}
               colors={colorScheme}
-              onChangeComplete={v => { setColor(v.hex) }}
+              onChangeComplete={v => {
+                setColor(v.hex);
+              }}
             />
             <Button
               style={{ marginTop: '0.5rem', marginBottom: '0.5rem' }}
               buttonStyle={color === AUTOMATIC_COLOR ? 'success' : 'default'}
               buttonSize="xsmall"
-              onClick={() => { setColor(AUTOMATIC_COLOR) }}
+              onClick={() => {
+                setColor(AUTOMATIC_COLOR);
+              }}
             >
               {t('Automatic Color')}
             </Button>
@@ -598,7 +623,9 @@ const AnnotationLayer = (props) => {
           label={t('Line width')}
           isInt
           value={width}
-          onChange={v => { setWidth(v) }}
+          onChange={v => {
+            setWidth(v);
+          }}
         />
         {annotationType === ANNOTATION_TYPES.TIME_SERIES && (
           <CheckboxControl
@@ -607,7 +634,9 @@ const AnnotationLayer = (props) => {
             label={t('Show Markers')}
             description={t('Shows or hides markers for the time series')}
             value={showMarkers}
-            onChange={v => { setShowMarkers(v) }}
+            onChange={v => {
+              setShowMarkers(v);
+            }}
           />
         )}
         {annotationType === ANNOTATION_TYPES.TIME_SERIES && (
@@ -617,165 +646,169 @@ const AnnotationLayer = (props) => {
             label={t('Hide Line')}
             description={t('Hides the Line for the time series')}
             value={hideLine}
-            onChange={v => { setHideLine(v) }}
+            onChange={v => {
+              setHideLine(v);
+            }}
           />
         )}
       </PopoverSection>
     );
   }, [color, annotationType]);
 
-    const {
-      name,
-      annotationType,
-      sourceType,
-      color,
-      opacity,
-      style,
-      width,
-      showMarkers,
-      hideLine,
-      value,
-      overrides,
-      show,
-      showLabel,
-      titleColumn,
-      descriptionColumns,
-      timeColumn,
-      intervalEndColumn,
-      vizType,
-    } = props;
-    overrides.time_range = null;
-    delete overrides.since;
-    delete overrides.until;
-    const metadata = getChartMetadataRegistry().get(vizType);
-    const supportedAnnotationTypes = metadata?.supportedAnnotationTypes || [];
-    const validAnnotationType = supportedAnnotationTypes.includes(
-      annotationType,
-    )
-      ? annotationType
-      : supportedAnnotationTypes[0];
-    
-    submitAnnotationHandler = submitAnnotationHandler.bind(this);
-    deleteAnnotationHandler = deleteAnnotationHandler.bind(this);
-    applyAnnotationHandler = applyAnnotationHandler.bind(this);
-    fetchOptions = fetchOptions.bind(this);
-    handleAnnotationTypeHandler = handleAnnotationTypeHandler.bind(this);
-    handleAnnotationSourceTypeHandler =
-      handleAnnotationSourceTypeHandler.bind(this);
-    handleValueHandler = handleValueHandler.bind(this);
-    isValidFormHandler = isValidFormHandler.bind(this);
+  const {
+    name,
+    annotationType: annotationTypeProp,
+    sourceType,
+    opacity,
+    style,
+    width,
+    showMarkers,
+    hideLine,
+    value,
+    overrides,
+    show,
+    showLabel,
+    titleColumn,
+    descriptionColumns,
+    timeColumn,
+    intervalEndColumn,
+    vizType,
+  } = props;
+  overrides.time_range = null;
+  delete overrides.since;
+  delete overrides.until;
+  const metadata = getChartMetadataRegistry().get(vizType);
+  const supportedAnnotationTypes = metadata?.supportedAnnotationTypes || [];
+  const validAnnotationType = supportedAnnotationTypes.includes(
+    annotationTypeProp,
+  )
+    ? annotationTypeProp
+    : supportedAnnotationTypes[0];
 
-    const isValid = isValidFormHandler();
-    const metadata = getChartMetadataRegistry().get(props.vizType);
-    const supportedAnnotationTypes = metadata
-      ? metadata.supportedAnnotationTypes.map(
-          type => ANNOTATION_TYPES_METADATA[type],
-        )
-      : [];
-    const supportedSourceTypes = getSupportedSourceTypesHandler(annotationType);
+  submitAnnotationHandler = submitAnnotationHandler.bind(this);
+  deleteAnnotationHandler = deleteAnnotationHandler.bind(this);
+  applyAnnotationHandler = applyAnnotationHandler.bind(this);
+  fetchOptions = fetchOptions.bind(this);
+  handleAnnotationTypeHandler = handleAnnotationTypeHandler.bind(this);
+  handleAnnotationSourceTypeHandler =
+    handleAnnotationSourceTypeHandler.bind(this);
+  handleValueHandler = handleValueHandler.bind(this);
+  isValidFormHandler = isValidFormHandler.bind(this);
 
-    return (
-      <>
-        {props.error && (
-          <span style={{ color: props.theme.colors.error.base }}>
-            ERROR: {props.error}
-          </span>
-        )}
-        <div style={{ display: 'flex', flexDirection: 'row' }}>
-          <div style={{ marginRight: '2rem' }}>
-            <PopoverSection
-              isSelected
-              title={t('Layer configuration')}
-              info={t('Configure the basics of your Annotation Layer.')}
-            >
-              <TextControl
-                name="annotation-layer-name"
-                label={t('Name')}
-                placeholder=""
-                value={name}
-                onChange={v => { setName(v) }}
-                validationErrors={!name ? [t('Mandatory')] : []}
-              />
-              <CheckboxControl
-                name="annotation-layer-hide"
-                label={t('Hide layer')}
-                value={!show}
-                onChange={v => { setShow(!v) }}
-              />
-              <CheckboxControl
-                name="annotation-label-show"
-                label={t('Show label')}
-                value={showLabel}
-                hovered
-                description={t('Whether to always show the annotation label')}
-                onChange={v => { setShowLabel(v) }}
-              />
+  const isValid = isValidFormHandler();
+  const metadata = getChartMetadataRegistry().get(props.vizType);
+  const supportedAnnotationTypes = metadata
+    ? metadata.supportedAnnotationTypes.map(
+        type => ANNOTATION_TYPES_METADATA[type],
+      )
+    : [];
+  const supportedSourceTypes = getSupportedSourceTypesHandler(annotationType);
+
+  return (
+    <>
+      {props.error && (
+        <span style={{ color: props.theme.colors.error.base }}>
+          ERROR: {props.error}
+        </span>
+      )}
+      <div style={{ display: 'flex', flexDirection: 'row' }}>
+        <div style={{ marginRight: '2rem' }}>
+          <PopoverSection
+            isSelected
+            title={t('Layer configuration')}
+            info={t('Configure the basics of your Annotation Layer.')}
+          >
+            <TextControl
+              name="annotation-layer-name"
+              label={t('Name')}
+              placeholder=""
+              value={name}
+              onChange={v => {
+                setName(v);
+              }}
+              validationErrors={!name ? [t('Mandatory')] : []}
+            />
+            <CheckboxControl
+              name="annotation-layer-hide"
+              label={t('Hide layer')}
+              value={!show}
+              onChange={v => {
+                setShow(!v);
+              }}
+            />
+            <CheckboxControl
+              name="annotation-label-show"
+              label={t('Show label')}
+              value={showLabel}
+              hovered
+              description={t('Whether to always show the annotation label')}
+              onChange={v => {
+                setShowLabel(v);
+              }}
+            />
+            <SelectControl
+              ariaLabel={t('Annotation layer type')}
+              hovered
+              description={t('Choose the annotation layer type')}
+              label={t('Annotation layer type')}
+              name="annotation-layer-type"
+              clearable={false}
+              options={supportedAnnotationTypes}
+              value={annotationType}
+              onChange={handleAnnotationTypeHandler}
+            />
+            {supportedSourceTypes.length > 0 && (
               <SelectControl
-                ariaLabel={t('Annotation layer type')}
+                ariaLabel={t('Annotation source type')}
                 hovered
-                description={t('Choose the annotation layer type')}
-                label={t('Annotation layer type')}
-                name="annotation-layer-type"
-                clearable={false}
-                options={supportedAnnotationTypes}
-                value={annotationType}
-                onChange={handleAnnotationTypeHandler}
+                description={t('Choose the source of your annotations')}
+                label={t('Annotation source')}
+                name="annotation-source-type"
+                options={supportedSourceTypes}
+                notFoundContent={<NotFoundContent />}
+                value={sourceType}
+                onChange={handleAnnotationSourceTypeHandler}
+                validationErrors={!sourceType ? [t('Mandatory')] : []}
               />
-              {supportedSourceTypes.length > 0 && (
-                <SelectControl
-                  ariaLabel={t('Annotation source type')}
-                  hovered
-                  description={t('Choose the source of your annotations')}
-                  label={t('Annotation source')}
-                  name="annotation-source-type"
-                  options={supportedSourceTypes}
-                  notFoundContent={<NotFoundContent />}
-                  value={sourceType}
-                  onChange={handleAnnotationSourceTypeHandler}
-                  validationErrors={!sourceType ? [t('Mandatory')] : []}
-                />
-              )}
-              {renderValueConfigurationHandler()}
-            </PopoverSection>
-          </div>
-          {renderSliceConfigurationHandler()}
-          {renderDisplayConfiguration()}
+            )}
+            {renderValueConfigurationHandler()}
+          </PopoverSection>
         </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          {isNew ? (
-            <Button buttonSize="small" onClick={() => props.close()}>
-              {t('Cancel')}
-            </Button>
-          ) : (
-            <Button buttonSize="small" onClick={deleteAnnotationHandler}>
-              {t('Remove')}
-            </Button>
-          )}
-          <div>
-            <Button
-              buttonSize="small"
-              disabled={!isValid}
-              onClick={applyAnnotationHandler}
-            >
-              {t('Apply')}
-            </Button>
+        {renderSliceConfigurationHandler()}
+        {renderDisplayConfiguration()}
+      </div>
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        {isNew ? (
+          <Button buttonSize="small" onClick={() => props.close()}>
+            {t('Cancel')}
+          </Button>
+        ) : (
+          <Button buttonSize="small" onClick={deleteAnnotationHandler}>
+            {t('Remove')}
+          </Button>
+        )}
+        <div>
+          <Button
+            buttonSize="small"
+            disabled={!isValid}
+            onClick={applyAnnotationHandler}
+          >
+            {t('Apply')}
+          </Button>
 
-            <Button
-              buttonSize="small"
-              buttonStyle="primary"
-              disabled={!isValid}
-              onClick={submitAnnotationHandler}
-            >
-              {t('OK')}
-            </Button>
-          </div>
+          <Button
+            buttonSize="small"
+            buttonStyle="primary"
+            disabled={!isValid}
+            onClick={submitAnnotationHandler}
+          >
+            {t('OK')}
+          </Button>
         </div>
-      </>
-    ); 
+      </div>
+    </>
+  );
 };
-
-
-
 
 AnnotationLayer.propTypes = propTypes;
 AnnotationLayer.defaultProps = defaultProps;
