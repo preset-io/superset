@@ -298,10 +298,7 @@ class Chart extends React.PureComponent {
     }
 
     return (
-      <ErrorBoundary
-        onError={this.handleRenderContainerFailure}
-        showMessage={true}
-      >
+      <ErrorBoundary onError={this.handleRenderContainerFailure}>
         <Styles
           data-ui-anchor="chart"
           className="chart-container"
