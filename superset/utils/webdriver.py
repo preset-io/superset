@@ -231,7 +231,7 @@ class WebDriverPlaywright(WebDriverProxy):
                             url,
                             unexpected_errors,
                         )
-                img = element.screenshot()
+                img = page.screenshot(full_page=True)
             except PlaywrightTimeout:
                 # raise again for the finally block, but handled above
                 pass
