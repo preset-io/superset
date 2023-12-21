@@ -175,7 +175,7 @@ class WebDriverPlaywright(WebDriverProxy):
             try:
                 try:
                     # page didn't load
-                    logger.debug(
+                    logger.info(
                         "Wait for the presence of %s at url: %s", element_name, url
                     )
                     element = page.locator(f".{element_name}")
@@ -186,7 +186,7 @@ class WebDriverPlaywright(WebDriverProxy):
 
                 try:
                     # chart containers didn't render
-                    logger.debug("Wait for chart containers to draw at url: %s", url)
+                    logger.info("Wait for chart containers to draw at url: %s", url)
                     slice_container_locator = page.locator(".slice_container")
                     slice_container_locator.first.wait_for()
                     for slice_container_elem in slice_container_locator.all():
@@ -199,7 +199,7 @@ class WebDriverPlaywright(WebDriverProxy):
                     raise ex
                 try:
                     # charts took too long to load
-                    logger.debug(
+                    logger.info(
                         "Wait for loading element of charts to be gone at url: %s", url
                     )
                     for loading_element in page.locator(".loading").all():
@@ -213,11 +213,11 @@ class WebDriverPlaywright(WebDriverProxy):
                 selenium_animation_wait = current_app.config[
                     "SCREENSHOT_SELENIUM_ANIMATION_WAIT"
                 ]
-                logger.debug(
+                logger.info(
                     "Wait %i seconds for chart animation", selenium_animation_wait
                 )
                 page.wait_for_timeout(selenium_animation_wait * 1000)
-                logger.debug(
+                logger.info(
                     "Taking a PNG screenshot of url %s as user %s",
                     url,
                     user.username,
@@ -232,12 +232,14 @@ class WebDriverPlaywright(WebDriverProxy):
                             unexpected_errors,
                         )
                 img = page.screenshot(full_page=True)
-            except PlaywrightTimeout:
+            except PlaywrightTimeout as ex:
                 logger.exception("Timeout occurred while executing report %s", url)
-            except PlaywrightError:
+                raise ex
+            except PlaywrightError as ex:
                 logger.exception(
                     "Encountered an unexpected error when requesting url %s", url
                 )
+                raise ex
             return img
 
 
