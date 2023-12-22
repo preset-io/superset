@@ -232,7 +232,7 @@ class WebDriverPlaywright(WebDriverProxy):
                             unexpected_errors,
                         )
                 logger.info(element.inner_html())
-                img = element.screenshot(full_page=True, animations="disabled")
+                img = element.screenshot(animations="disabled")
             except PlaywrightTimeout as ex:
                 logger.exception("Timeout occurred while executing report %s", url)
                 raise ex
