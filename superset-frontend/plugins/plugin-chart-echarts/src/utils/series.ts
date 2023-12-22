@@ -25,12 +25,12 @@ import {
   DTTM_ALIAS,
   ensureIsArray,
   GenericDataType,
-  LegendState,
-  normalizeTimestamp,
   NumberFormats,
   NumberFormatter,
-  SupersetTheme,
   TimeFormatter,
+  SupersetTheme,
+  normalizeTimestamp,
+  LegendState,
   ValueFormatter,
 } from '@superset-ui/core';
 import { SortSeriesType } from '@superset-ui/chart-controls';
@@ -511,9 +511,6 @@ export function sanitizeHtml(text: string): string {
 export function getAxisType(dataType?: GenericDataType): AxisType {
   if (dataType === GenericDataType.TEMPORAL) {
     return AxisType.time;
-  }
-  if (dataType === GenericDataType.NUMERIC) {
-    return AxisType.value;
   }
   return AxisType.category;
 }

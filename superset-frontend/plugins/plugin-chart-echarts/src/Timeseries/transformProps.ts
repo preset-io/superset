@@ -20,13 +20,9 @@
 import { invert } from 'lodash';
 import {
   AnnotationLayer,
-  AxisType,
-  buildCustomFormatters,
   CategoricalColorNamespace,
-  CurrencyFormatter,
   ensureIsArray,
   GenericDataType,
-  getCustomFormatter,
   getMetricLabel,
   getNumberFormatter,
   getXAxisLabel,
@@ -38,6 +34,9 @@ import {
   isTimeseriesAnnotationLayer,
   t,
   TimeseriesChartDataResponseResult,
+  buildCustomFormatters,
+  getCustomFormatter,
+  CurrencyFormatter,
 } from '@superset-ui/core';
 import {
   extractExtraMetrics,
@@ -49,8 +48,8 @@ import { ZRLineType } from 'echarts/types/src/util/types';
 import {
   EchartsTimeseriesChartProps,
   EchartsTimeseriesFormData,
-  OrientationType,
   TimeseriesChartTransformedProps,
+  OrientationType,
 } from './types';
 import { DEFAULT_FORM_DATA } from './constants';
 import { ForecastSeriesEnum, ForecastValue, Refs } from '../types';
@@ -89,8 +88,8 @@ import {
 } from './transformers';
 import {
   StackControlsValue,
-  TIMEGRAIN_TO_TIMESTAMP,
   TIMESERIES_CONSTANTS,
+  TIMEGRAIN_TO_TIMESTAMP,
 } from '../constants';
 import { getDefaultTooltip } from '../utils/tooltip';
 import {
@@ -449,13 +448,13 @@ export default function transformProps(
       rotate: xAxisLabelRotation,
     },
     minInterval:
-      xAxisType === AxisType.time && timeGrainSqla
+      xAxisType === 'time' && timeGrainSqla
         ? TIMEGRAIN_TO_TIMESTAMP[timeGrainSqla]
         : 0,
   };
   let yAxis: any = {
     ...defaultYAxis,
-    type: logAxis ? AxisType.log : AxisType.value,
+    type: logAxis ? 'log' : 'value',
     min,
     max,
     minorTick: { show: true },

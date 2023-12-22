@@ -18,7 +18,6 @@
  */
 import { SortSeriesType } from '@superset-ui/chart-controls';
 import {
-  AxisType,
   DataRecord,
   GenericDataType,
   getNumberFormatter,
@@ -32,7 +31,6 @@ import {
   extractSeries,
   extractShowValueIndexes,
   formatSeriesName,
-  getAxisType,
   getChartPadding,
   getLegendProps,
   getOverMaxHiddenFormatter,
@@ -871,11 +869,4 @@ test('calculateLowerLogTick', () => {
   expect(calculateLowerLogTick(99)).toEqual(10);
   expect(calculateLowerLogTick(2)).toEqual(1);
   expect(calculateLowerLogTick(0.005)).toEqual(0.001);
-});
-
-test('getAxisType', () => {
-  expect(getAxisType(GenericDataType.TEMPORAL)).toEqual(AxisType.time);
-  expect(getAxisType(GenericDataType.NUMERIC)).toEqual(AxisType.value);
-  expect(getAxisType(GenericDataType.BOOLEAN)).toEqual(AxisType.category);
-  expect(getAxisType(GenericDataType.STRING)).toEqual(AxisType.category);
 });
