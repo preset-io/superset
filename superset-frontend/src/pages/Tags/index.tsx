@@ -353,7 +353,7 @@ function TagList(props: TagListProps) {
                 className="tags-list-view"
                 columns={columns}
                 count={tagCount}
-                data={tags}
+                data={tags.filter(tag => !tag.name.includes(':'))}
                 disableBulkSelect={toggleBulkSelect}
                 refreshData={refreshData}
                 emptyState={emptyState}
