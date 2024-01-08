@@ -496,6 +496,8 @@ class Header extends React.PureComponent {
     };
 
     const NavExtension = extensionsRegistry.get('dashboard.nav.right');
+    const EmbeddedModalExtension = extensionsRegistry.get('embedded.modal');
+    const EmbeddedModal = EmbeddedModalExtension || DashboardEmbedModal;
 
     return (
       <div
@@ -699,7 +701,7 @@ class Header extends React.PureComponent {
         <OverwriteConfirm />
 
         {userCanCurate && (
-          <DashboardEmbedModal
+          <EmbeddedModal
             show={this.state.showingEmbedModal}
             onHide={this.hideEmbedModal}
             dashboardId={dashboardInfo.id}

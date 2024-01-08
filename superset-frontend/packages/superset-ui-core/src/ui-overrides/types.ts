@@ -70,6 +70,12 @@ type DatasetDeleteRelatedExtensionProps = {
   dataset: object;
 };
 
+type EmbeddedModalProps = {
+  dashboardId: string;
+  onHide: () => void;
+  show: boolean;
+}
+
 /**
  * Interface for extensions to database connections
  */
@@ -140,6 +146,8 @@ export type Extensions = Partial<{
   'embedded.documentation.configuration_details': React.ComponentType<ConfigDetailsProps>;
   'embedded.documentation.description': ReturningDisplayable;
   'embedded.documentation.url': string;
+  // below extension overrides entire embedded modal, ones above only parts of it
+  'embedded.modal': React.ComponentType<EmbeddedModalProps>;
   'dashboard.nav.right': React.ComponentType;
   'navbar.right-menu.item.icon': React.ComponentType<RightMenuItemIconProps>;
   'navbar.right': React.ComponentType;
