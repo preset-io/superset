@@ -46,7 +46,7 @@
     "d3-interpolate": "^1.4.0",
     "d3-scale": "^3.0.0",
     "d3-time": "^1.0.10",
-    "d3-time-format": "^2.2.0",
+    "d3-time-format": "^4.1.0",
     "fetch-retry": "^4.0.1",
     "jed": "^1.1.1",
     "lodash": "^4.17.11",
