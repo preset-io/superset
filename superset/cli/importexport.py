@@ -128,26 +128,26 @@ if feature_flags.get("VERSIONED_EXPORT"):
             )
             sys.exit(1)
 
-    @click.command()
-    @with_appcontext
-    @click.option(
-        "--path",
-        "-p",
-        help="Path to a single ZIP file",
-    )
-    @click.option(
-        "--username",
-        "-u",
-        default=None,
-        help="Specify the user name to assign dashboards to",
-    )
-    def import_dashboards(path: str, username: Optional[str]) -> None:
-        """Import dashboards from ZIP file"""
-        # pylint: disable=import-outside-toplevel
-        from superset.commands.dashboard.importers.dispatcher import (
-            ImportDashboardsCommand,
-        )
-        from superset.commands.importers.v1.utils import get_contents_from_bundle
+
+@click.command()
+@with_appcontext
+@click.option(
+    "--path",
+    "-p",
+    required=True,
+    help="Path to a single ZIP file",
+)
+@click.option(
+    "--username",
+    "-u",
+    required=True,
+    help="Specify the user name to assign dashboards to",
+)
+def import_dashboards(path: str, username: Optional[str]) -> None:
+    """Import dashboards from ZIP file"""
+    # pylint: disable=import-outside-toplevel
+    from superset.commands.dashboard.importers.dispatcher import ImportDashboardsCommand
+    from superset.commands.importers.v1.utils import get_contents_from_bundle
 
         if username is not None:
             g.user = security_manager.find_user(username=username)
