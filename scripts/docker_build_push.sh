@@ -75,8 +75,7 @@ SAFE_BUILD_PLATFORM=$(echo "${BUILD_PLATFORM}" | sed -e 's/linux\/amd64/amd/' -e
 
 PLATFORM_SUFFIX=""
 if [[ "${BUILD_PLATFORM}" == "linux/arm64" ]]; then
-    PLATFORM_SUFFIX="-arm"
-fi
+    PLATFORM_SUFFIX="-arm" fi
 
 MAIN_UNIQUE_TAG="${REPO_NAME}:${SHA}-${TARGET}-${SAFE_BUILD_PLATFORM}-${BUILD_ARG}"
 
@@ -86,7 +85,7 @@ case "${TARGET}" in
     BUILD_TARGET="dev"
     ;;
   "lean")
-    TAG=""
+    TAG="lean"
     BUILD_TARGET="lean"
     ;;
   "lean310")
@@ -114,7 +113,16 @@ if [[ -n "$TAG" ]]; then
   TAG_SUFFIX="-$TAG"
 fi
 
-DOCKER_TAGS="-t ${MAIN_UNIQUE_TAG} -t ${REPO_NAME}:${TAG}${PLATFORM_SUFFIX} -t ${REPO_NAME}:${SHA}${TAG_SUFFIX}${PLATFORM_SUFFIX} -t ${REPO_NAME}:${REFSPEC}${TAG_SUFFIX}${PLATFORM_SUFFIX} -t ${REPO_NAME}:${LATEST_TAG}${TAG_SUFFIX}${PLATFORM_SUFFIX}"
+DOCKER_TAGS="-t ${MAIN_UNIQUE_TAG}"
+DOCKER_TAGS="${DOCKER_TAGS} -t ${REPO_NAME}:${TAG}${PLATFORM_SUFFIX}"
+DOCKER_TAGS="${DOCKER_TAGS} -t ${REPO_NAME}:${SHA}${TAG_SUFFIX}${PLATFORM_SUFFIX}"
+DOCKER_TAGS="${DOCKER_TAGS} -t ${REPO_NAME}:${REFSPEC}${TAG_SUFFIX}${PLATFORM_SUFFIX}"
+DOCKER_TAGS="${DOCKER_TAGS} -t ${REPO_NAME}:${LATEST_TAG}${TAG_SUFFIX}${PLATFORM_SUFFIX}"
+
+if [[ "${TAG}" == "lean" ]]; then
+  # add main tag based on lean
+  DOCKER_TAGS="${DOCKER_TAGS} -t ${REPO_NAME}"
+fi
 
 if [ -z "${DOCKERHUB_TOKEN}" ]; then
   # Skip if secrets aren't populated -- they're only visible for actions running in the repo (not on forks)
