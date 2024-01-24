@@ -116,10 +116,14 @@ if [[ -n "$TAG" ]]; then
 fi
 
 DOCKER_TAGS="-t ${MAIN_UNIQUE_TAG}"
-DOCKER_TAGS="${DOCKER_TAGS} -t ${REPO_NAME}:${TAG}${PLATFORM_SUFFIX}"
 DOCKER_TAGS="${DOCKER_TAGS} -t ${REPO_NAME}:${SHA}${TAG_SUFFIX}${PLATFORM_SUFFIX}"
 DOCKER_TAGS="${DOCKER_TAGS} -t ${REPO_NAME}:${REFSPEC}${TAG_SUFFIX}${PLATFORM_SUFFIX}"
 DOCKER_TAGS="${DOCKER_TAGS} -t ${REPO_NAME}:${LATEST_TAG}${TAG_SUFFIX}${PLATFORM_SUFFIX}"
+
+if [[ "${GITHUB_EVENT_NAME}" == "push" ]]; then
+  # only adding top level tags on master
+  DOCKER_TAGS="${DOCKER_TAGS} -t ${REPO_NAME}:${TAG}${PLATFORM_SUFFIX}"
+fi
 
 if [[ "${TAG}" == "lean" ]]; then
   # add main tag based on lean
