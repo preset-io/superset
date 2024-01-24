@@ -70,39 +70,46 @@ fi
 
 BUILD_ARG="3.9-slim-bookworm"
 
-# Replace '/' with '-' in BUILD_PLATFORM
-SAFE_BUILD_PLATFORM=$(echo "${BUILD_PLATFORM}" | sed 's/\//-/g')
+# Replace 'linux/amd64' with 'amd' and 'linux/arm64' with 'arm'
+SAFE_BUILD_PLATFORM=$(echo "${BUILD_PLATFORM}" | sed -e 's/linux\/amd64/amd/' -e 's/linux\/arm64/arm/')
+
+PLATFORM_SUFFIX=""
+if [[ "${BUILD_PLATFORM}" == "linux/arm64" ]]; then
+    PLATFORM_SUFFIX="-arm"
+fi
+
 MAIN_UNIQUE_TAG="${REPO_NAME}:${SHA}-${TARGET}-${SAFE_BUILD_PLATFORM}-${BUILD_ARG}"
 
 case "${TARGET}" in
   "dev")
-    DOCKER_TAGS="-t ${MAIN_UNIQUE_TAG} -t ${REPO_NAME}:${SHA}-dev -t ${REPO_NAME}:${REFSPEC}-dev -t ${DEV_TAG}"
+    TAG_SUFFIX="-dev"
     BUILD_TARGET="dev"
     ;;
   "lean")
-    DOCKER_TAGS="-t ${MAIN_UNIQUE_TAG} -t ${REPO_NAME}:${SHA} -t ${REPO_NAME}:${REFSPEC} -t ${REPO_NAME}:${LATEST_TAG}"
+    TAG_SUFFIX=""
     BUILD_TARGET="lean"
     ;;
   "lean310")
-    DOCKER_TAGS="-t ${MAIN_UNIQUE_TAG} -t ${REPO_NAME}:${SHA}-py310 -t ${REPO_NAME}:${REFSPEC}-py310 -t ${REPO_NAME}:${LATEST_TAG}-py310"
     BUILD_TARGET="lean"
+    TAG_SUFFIX="-py310"
     BUILD_ARG="3.10-slim-bookworm"
     ;;
   "websocket")
-    DOCKER_TAGS="-t ${MAIN_UNIQUE_TAG} -t ${REPO_NAME}:${SHA}-websocket -t ${REPO_NAME}:${REFSPEC}-websocket -t ${REPO_NAME}:${LATEST_TAG}-websocket"
     BUILD_TARGET=""
-	DOCKER_CONTEXT="superset-websocket"
+    TAG_SUFFIX="-websocket"
+    DOCKER_CONTEXT="superset-websocket"
     ;;
   "dockerize")
-    DOCKER_TAGS="-t ${MAIN_UNIQUE_TAG} -t ${REPO_NAME}:dockerize"
     BUILD_TARGET=""
-	DOCKER_CONTEXT="-f dockerize.Dockerfile ."
+    TAG_SUFFIX="-dockerize"
+    DOCKER_CONTEXT="-f dockerize.Dockerfile ."
     ;;
   *)
     echo "Invalid TARGET: ${TARGET}"
     exit 1
     ;;
 esac
+DOCKER_TAGS="-t ${MAIN_UNIQUE_TAG} -t ${REPO_NAME}:${TAG_SUFFIX}${PLATFORM_SUFFIX} -t ${REPO_NAME}:${SHA}${TAG_SUFFIX}${PLATFORM_SUFFIX} -t ${REPO_NAME}:${REFSPEC}${TAG_SUFFIX}${PLATFORM_SUFFIX} -t ${REPO_NAME}:${LATEST_TAG}${TAG_SUFFIX}${PLATFORM_SUFFIX}"
 
 cat<<EOF
   Rolling with tags:
