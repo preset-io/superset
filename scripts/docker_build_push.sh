@@ -75,7 +75,8 @@ SAFE_BUILD_PLATFORM=$(echo "${BUILD_PLATFORM}" | sed -e 's/linux\/amd64/amd/' -e
 
 PLATFORM_SUFFIX=""
 if [[ "${BUILD_PLATFORM}" == "linux/arm64" ]]; then
-    PLATFORM_SUFFIX="-arm" fi
+    PLATFORM_SUFFIX="-arm"
+fi
 
 MAIN_UNIQUE_TAG="${REPO_NAME}:${SHA}-${TARGET}-${SAFE_BUILD_PLATFORM}-${BUILD_ARG}"
 
@@ -108,6 +109,7 @@ case "${TARGET}" in
     exit 1
     ;;
 esac
+
 TAG_SUFFIX=""
 if [[ -n "$TAG" ]]; then
   TAG_SUFFIX="-$TAG"
