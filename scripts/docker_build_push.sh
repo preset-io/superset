@@ -82,26 +82,26 @@ MAIN_UNIQUE_TAG="${REPO_NAME}:${SHA}-${TARGET}-${SAFE_BUILD_PLATFORM}-${BUILD_AR
 
 case "${TARGET}" in
   "dev")
-    TAG_SUFFIX="-dev"
+    TAG="dev"
     BUILD_TARGET="dev"
     ;;
   "lean")
-    TAG_SUFFIX=""
+    TAG=""
     BUILD_TARGET="lean"
     ;;
   "lean310")
     BUILD_TARGET="lean"
-    TAG_SUFFIX="-py310"
+    TAG="py310"
     BUILD_ARG="3.10-slim-bookworm"
     ;;
   "websocket")
     BUILD_TARGET=""
-    TAG_SUFFIX="-websocket"
+    TAG="websocket"
     DOCKER_CONTEXT="superset-websocket"
     ;;
   "dockerize")
     BUILD_TARGET=""
-    TAG_SUFFIX="-dockerize"
+    TAG="dockerize"
     DOCKER_CONTEXT="-f dockerize.Dockerfile ."
     ;;
   *)
@@ -109,15 +109,12 @@ case "${TARGET}" in
     exit 1
     ;;
 esac
-DOCKER_TAGS="-t ${MAIN_UNIQUE_TAG} -t ${REPO_NAME}:${TAG_SUFFIX}${PLATFORM_SUFFIX} -t ${REPO_NAME}:${SHA}${TAG_SUFFIX}${PLATFORM_SUFFIX} -t ${REPO_NAME}:${REFSPEC}${TAG_SUFFIX}${PLATFORM_SUFFIX} -t ${REPO_NAME}:${LATEST_TAG}${TAG_SUFFIX}${PLATFORM_SUFFIX}"
+TAG_SUFFIX=""
+if [[ -n "$TAG" ]]; then
+  TAG_SUFFIX="-$TAG"
+fi
 
-cat<<EOF
-  Rolling with tags:
-  - $MAIN_UNIQUE_TAG
-  - ${REPO_NAME}:${SHA}
-  - ${REPO_NAME}:${REFSPEC}
-  - ${REPO_NAME}:${LATEST_TAG}
-EOF
+DOCKER_TAGS="-t ${MAIN_UNIQUE_TAG} -t ${REPO_NAME}:${TAG}${PLATFORM_SUFFIX} -t ${REPO_NAME}:${SHA}${TAG_SUFFIX}${PLATFORM_SUFFIX} -t ${REPO_NAME}:${REFSPEC}${TAG_SUFFIX}${PLATFORM_SUFFIX} -t ${REPO_NAME}:${LATEST_TAG}${TAG_SUFFIX}${PLATFORM_SUFFIX}"
 
 if [ -z "${DOCKERHUB_TOKEN}" ]; then
   # Skip if secrets aren't populated -- they're only visible for actions running in the repo (not on forks)
@@ -143,9 +140,9 @@ CACHE_REF=$(echo "${CACHE_REF}" | tr -d '.')
 docker buildx build \
   ${TARGET_ARGUMENT} \
   ${DOCKER_ARGS} \
+  ${DOCKER_TAGS} \
   --cache-from=type=registry,ref=${CACHE_REF} \
   --cache-to=type=registry,mode=max,ref=${CACHE_REF} \
-  ${DOCKER_TAGS} \
   --platform ${BUILD_PLATFORM} \
   --label "sha=${SHA}" \
   --label "built_at=$(date)" \
