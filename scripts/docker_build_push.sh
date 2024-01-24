@@ -78,7 +78,7 @@ if [[ "${BUILD_PLATFORM}" == "linux/arm64" ]]; then
     PLATFORM_SUFFIX="-arm"
 fi
 
-MAIN_UNIQUE_TAG="${REPO_NAME}:${SHA}-${TARGET}-${SAFE_BUILD_PLATFORM}-${BUILD_ARG}"
+VERBOSE_TAG="${REPO_NAME}:${SHA}-${TARGET}-${SAFE_BUILD_PLATFORM}-${BUILD_ARG}"
 
 case "${TARGET}" in
   "dev")
@@ -115,19 +115,14 @@ if [[ -n "$TAG" ]]; then
   TAG_SUFFIX="-$TAG"
 fi
 
-DOCKER_TAGS="-t ${MAIN_UNIQUE_TAG}"
+DOCKER_TAGS="-t ${VERBOSE_TAG}"
 DOCKER_TAGS="${DOCKER_TAGS} -t ${REPO_NAME}:${SHA}${TAG_SUFFIX}${PLATFORM_SUFFIX}"
 DOCKER_TAGS="${DOCKER_TAGS} -t ${REPO_NAME}:${REFSPEC}${TAG_SUFFIX}${PLATFORM_SUFFIX}"
 DOCKER_TAGS="${DOCKER_TAGS} -t ${REPO_NAME}:${LATEST_TAG}${TAG_SUFFIX}${PLATFORM_SUFFIX}"
 
-if [[ "${GITHUB_EVENT_NAME}" == "push" ]]; then
-  # only adding top level tags on master
+if [[ "${GITHUB_EVENT_NAME}" == "push" && "${GITHUB_REF}" == "refs/heads/master" && "${TAG}" == "dev" ]]; then
+  # the `apache-superset:dev` docker tag points to top of master
   DOCKER_TAGS="${DOCKER_TAGS} -t ${REPO_NAME}:${TAG}${PLATFORM_SUFFIX}"
-fi
-
-if [[ "${TAG}" == "lean" ]]; then
-  # add main tag based on lean
-  DOCKER_TAGS="${DOCKER_TAGS} -t ${REPO_NAME}"
 fi
 
 if [ -z "${DOCKERHUB_TOKEN}" ]; then
