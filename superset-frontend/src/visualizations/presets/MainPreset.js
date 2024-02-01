@@ -78,8 +78,8 @@ import {
 } from 'src/filters/components';
 import { PivotTableChartPlugin as PivotTableChartPluginV2 } from '@superset-ui/plugin-chart-pivot-table';
 import { HandlebarsChartPlugin } from '@superset-ui/plugin-chart-handlebars';
-import FilterBoxChartPlugin from '../FilterBox/FilterBoxChartPlugin';
 import { PopKPIPlugin } from '@superset-ui/plugin-chart-period-over-period-kpi';
+import FilterBoxChartPlugin from '../FilterBox/FilterBoxChartPlugin';
 import TimeTableChartPlugin from '../TimeTable';
 
 export default class MainPreset extends Preset {
@@ -173,7 +173,7 @@ export default class MainPreset extends Preset {
         new HandlebarsChartPlugin().configure({ key: 'handlebars' }),
         new EchartsBubbleChartPlugin().configure({ key: 'bubble_v2' }),
         ...experimentalplugins,
-	...experimentalChartPlugins,
+        ...experimentalChartPlugins,
       ],
     });
   }
