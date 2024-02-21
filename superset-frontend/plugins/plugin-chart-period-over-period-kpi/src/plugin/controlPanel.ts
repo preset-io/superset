@@ -26,6 +26,7 @@ import {
   ControlPanelConfig,
   ControlPanelState,
   ControlState,
+  getStandardizedControls,
   sharedControls,
 } from '@superset-ui/chart-controls';
 
@@ -35,17 +36,7 @@ const config: ControlPanelConfig = {
       label: t('Query'),
       expanded: true,
       controlSetRows: [
-        [
-          {
-            name: 'metrics',
-            config: {
-              ...sharedControls.metrics,
-              // it's possible to add validators to controls if
-              // certain selections/types need to be enforced
-              validators: [validateNonEmpty],
-            },
-          },
-        ],
+        ['metric'],
         ['adhoc_filters'],
         [
           {
@@ -206,6 +197,10 @@ const config: ControlPanelConfig = {
       label: t('Number format'),
     },
   },
+  formDataOverrides: formData => ({
+    ...formData,
+    metric: getStandardizedControls().shiftMetric(),
+  }),
 };
 
 export default config;
