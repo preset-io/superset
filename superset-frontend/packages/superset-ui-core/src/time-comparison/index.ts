@@ -17,7 +17,7 @@
  * under the License.
  */
 
-declare module '*.png' {
-  const value: any;
-  export default value;
-}
+export * from './types';
+
+export { default as getComparisonInfo } from './getComparisonInfo';
+export { default as getComparisonFilters } from './getComparisonFilters';
