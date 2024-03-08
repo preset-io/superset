@@ -23,6 +23,7 @@ import {
   getValueFormatter,
   getNumberFormatter,
   formatTimeRange,
+  formatTimeRange,
 } from '@superset-ui/core';
 import { getComparisonFontSize, getHeaderFontSize } from './utils';
 
