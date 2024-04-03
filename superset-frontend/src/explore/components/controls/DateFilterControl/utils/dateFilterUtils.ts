@@ -16,7 +16,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 import { NO_TIME_RANGE, JsonObject } from '@superset-ui/core';
 import { useSelector } from 'react-redux';
 import {
@@ -40,29 +39,6 @@ export const guessFrame = (timeRange: string): FrameType => {
     return 'Custom';
   }
   return 'Advanced';
-};
-
-export const fetchTimeRange = async (
-  timeRange: string,
-  columnPlaceholder = 'col',
-) => {
-  const query = rison.encode_uri(timeRange);
-  const endpoint = `/api/v1/time_range/?q=${query}`;
-  try {
-    const response = await SupersetClient.get({ endpoint });
-    const timeRangeString = buildTimeRangeString(
-      response?.json?.result[0]?.since || '',
-      response?.json?.result[0]?.until || '',
-    );
-    return {
-      value: formatTimeRange(timeRangeString, columnPlaceholder),
-    };
-  } catch (response) {
-    const clientError = await getClientErrorObject(response);
-    return {
-      error: clientError.message || clientError.error || response.statusText,
-    };
-  }
 };
 
 export function useDefaultTimeFilter() {
