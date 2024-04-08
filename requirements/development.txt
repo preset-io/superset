@@ -308,3 +308,4 @@ zope-interface==5.4.0
 # The following packages are considered to be unsafe in a requirements file:
 # pip
 # setuptools
+holidays>=0.45 # not directly required, pinned by Snyk to avoid a vulnerability
