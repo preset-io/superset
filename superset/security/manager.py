@@ -406,7 +406,9 @@ class SupersetSecurityManager(  # pylint: disable=too-many-public-methods
         :returns: Whether the user can access all the datasources
         """
 
-        return self.can_access("all_datasource_access", "all_datasource_access")
+        return self.can_access_all_databases() or self.can_access(
+            "all_datasource_access", "all_datasource_access"
+        )
 
     def can_access_all_databases(self) -> bool:
         """
@@ -414,7 +416,6 @@ class SupersetSecurityManager(  # pylint: disable=too-many-public-methods
 
         :returns: Whether the user can access all the databases
         """
-
         return self.can_access("all_database_access", "all_database_access")
 
     def can_access_database(self, database: "Database") -> bool:
@@ -2427,7 +2428,6 @@ class SupersetSecurityManager(  # pylint: disable=too-many-public-methods
 
         if self.is_admin():
             return
-
         orig_resource = db.session.query(resource.__class__).get(resource.id)
         owners = orig_resource.owners if hasattr(orig_resource, "owners") else []
 
