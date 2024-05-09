@@ -17,6 +17,14 @@
  * under the License.
  */
 import React from 'react';
+import {
+  CategoricalD3,
+  CategoricalModernSunset,
+  CategoricalScheme,
+  ColorSchemeGroup,
+  getCategoricalSchemeRegistry,
+} from '@superset-ui/core';
+import userEvent from '@testing-library/user-event';
 import { render, screen, waitFor } from 'spec/helpers/testing-library';
 import ColorSchemeControl, { ColorSchemes } from '.';
 
@@ -27,13 +35,19 @@ const defaultProps = () => ({
   name: 'color',
   value: 'supersetDefault',
   clearable: true,
-  choices: [],
-  schemes: () => ({}) as ColorSchemes,
+  choices: getCategoricalSchemeRegistry()
+    .keys()
+    .map(s => [s, s]),
+  schemes: getCategoricalSchemeRegistry().getMap() as ColorSchemes,
   isLinear: false,
-};
+});
+
+afterAll(() => {
+  getCategoricalSchemeRegistry().clear();
+});
 
 const setup = (overrides?: Record<string, any>) =>
-  render(<ColorSchemeControl {...defaultProps} {...overrides} />);
+  render(<ColorSchemeControl {...defaultProps()} {...overrides} />);
 
 test('should render', async () => {
   const { container } = setup();
