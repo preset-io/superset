@@ -66,3 +66,59 @@ test('should display an alert icon if hasCustomLabelColors=true', async () => {
     ).toBeInTheDocument();
   });
 });
+
+test('displays color scheme options when only "other" group is registered', async () => {
+  [...CategoricalD3].forEach(scheme =>
+    getCategoricalSchemeRegistry().registerValue(scheme.id, scheme),
+  );
+  setup();
+  userEvent.click(
+    screen.getByLabelText('Select color scheme', { selector: 'input' }),
+  );
+  await waitFor(() => {
+    expect(screen.getByText('D3 Category 10')).toBeInTheDocument();
+    expect(screen.getByText('D3 Category 20')).toBeInTheDocument();
+    expect(screen.getByText('D3 Category 20b')).toBeInTheDocument();
+  });
+  expect(screen.queryByText('Other color palettes')).not.toBeInTheDocument();
+  expect(screen.queryByText('Featured color palettes')).not.toBeInTheDocument();
+  expect(screen.queryByText('Custom color palettes')).not.toBeInTheDocument();
+});
+
+test('displays color scheme options', async () => {
+  [
+    ...CategoricalD3,
+    ...CategoricalModernSunset,
+    {
+      id: 'customScheme',
+      label: 'Custom scheme',
+      group: ColorSchemeGroup.Custom,
+      colors: ['#0080F6', '#254081'],
+    } as CategoricalScheme,
+  ].forEach(scheme =>
+    getCategoricalSchemeRegistry().registerValue(scheme.id, scheme),
+  );
+  setup();
+  userEvent.click(
+    screen.getByLabelText('Select color scheme', { selector: 'input' }),
+  );
+  await waitFor(() => {
+    expect(screen.getByText('D3 Category 10')).toBeInTheDocument();
+    expect(screen.getByText('D3 Category 20')).toBeInTheDocument();
+    expect(screen.getByText('D3 Category 20b')).toBeInTheDocument();
+    expect(screen.getByText('Modern sunset')).toBeInTheDocument();
+    expect(screen.getByText('Custom scheme')).toBeInTheDocument();
+
+    expect(screen.getByText('Custom color palettes')).toBeInTheDocument();
+    expect(screen.getByText('Featured color palettes')).toBeInTheDocument();
+    expect(screen.getByText('Other color palettes')).toBeInTheDocument();
+  });
+});
+
+test('Renders control with dashboard id', () => {
+  setup({ dashboardId: 1 });
+  expect(screen.getByText('Dashboard scheme')).toBeInTheDocument();
+  expect(
+    screen.getByLabelText('Select color scheme', { selector: 'input' }),
+  ).toBeDisabled();
+});
