@@ -48,6 +48,7 @@ from superset.reports.notifications.exceptions import (
 )
 from superset.utils.core import get_email_address_list
 from superset.utils.decorators import statsd_gauge
+from superset.utils.slack import get_slack_client
 
 logger = logging.getLogger(__name__)
 
@@ -62,7 +63,7 @@ class SlackNotification(BaseNotification):  # pylint: disable=too-few-public-met
 
     type = ReportRecipientType.SLACK
 
-    def _get_channels(self, client: WebClient) -> List[str]:
+    def _get_channels(self, client: WebClient) -> list[str]:
         """
         Get the recipient's channel(s).
         :returns: A list of channel ids: "EID676L"
@@ -70,7 +71,7 @@ class SlackNotification(BaseNotification):  # pylint: disable=too-few-public-met
         """
         recipient_str = json.loads(self._recipient.recipient_config_json)["target"]
 
-        channel_recipients: List[str] = get_email_address_list(recipient_str)
+        channel_recipients: list[str] = get_email_address_list(recipient_str)
 
         conversations_list_response = client.conversations_list(
             types="public_channel,private_channel"
