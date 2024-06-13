@@ -204,15 +204,15 @@ ALERT_MINIMUM_INTERVAL = int(timedelta(minutes=10).total_seconds())
 REPORT_MINIMUM_INTERVAL = int(timedelta(minutes=5).total_seconds())
 ```
 
-### Custom Dockerfile
-
-It's also possible to specify a minimum interval between each report's execution through the config file:
+Alternatively, you can assign a function to `ALERT_MINIMUM_INTERVAL` and/or `REPORT_MINIMUM_INTERVAL`. This is useful to dynamically retrieve a value as needed:
 
 ``` python
-# Set a minimum interval threshold between executions (for each Alert/Report)
-# Value should be an integer
-ALERT_MINIMUM_INTERVAL = int(timedelta(minutes=10).total_seconds())
-REPORT_MINIMUM_INTERVAL = int(timedelta(minutes=5).total_seconds())
+def alert_dynamic_minimal_interval(**kwargs) -> int:
+    """
+    Define logic here to retrieve the value dynamically
+    """
+
+ALERT_MINIMUM_INTERVAL = alert_dynamic_minimal_interval
 ```
 
 ### Custom Dockerfile
