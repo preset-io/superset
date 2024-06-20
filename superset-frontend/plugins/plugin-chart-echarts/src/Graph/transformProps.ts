@@ -289,7 +289,7 @@ export default function transformProps(
       type: 'graph',
       categories: categoryList.map(c => ({
         name: c,
-        itemStyle: { color: colorFn(c, sliceId) },
+        itemStyle: { color: colorFn(c, sliceId, colorScheme) },
       })),
       layout,
       force: {

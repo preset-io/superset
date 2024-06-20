@@ -30,7 +30,7 @@ export interface ColorSchemes {
 }
 
 export interface ColorSchemeControlProps {
-  hasCustomLabelColors: boolean;
+  hasCustomLabelsColor: boolean;
   dashboardId?: number;
   label: string;
   name: string;
@@ -59,14 +59,14 @@ const DASHBOARD_ALERT = t(
 
 const Label = ({
   label,
-  hasCustomLabelColors,
+  hasCustomLabelsColor,
   dashboardId,
 }: Pick<
   ColorSchemeControlProps,
-  'label' | 'hasCustomLabelColors' | 'dashboardId'
+  'label' | 'hasCustomLabelsColor' | 'dashboardId'
 >) => {
-  if (hasCustomLabelColors || dashboardId) {
-    const alertTitle = hasCustomLabelColors
+  if (hasCustomLabelsColor || dashboardId) {
+    const alertTitle = hasCustomLabelsColor
       ? CUSTOM_LABEL_ALERT
       : DASHBOARD_ALERT;
     return (
@@ -82,7 +82,7 @@ const Label = ({
 };
 
 const ColorSchemeControl = ({
-  hasCustomLabelColors = false,
+  hasCustomLabelsColor = false,
   dashboardId,
   label = t('Color scheme'),
   name,
@@ -157,28 +157,48 @@ const ColorSchemeControl = ({
   const handleOnChange = (value: string) => onChange(value);
 
   return (
-    <Select
-      header={
-        <ControlHeader
-          {...rest}
-          label={
-            <Label
-              label={label}
-              hasCustomLabelColors={hasCustomLabelColors}
-              dashboardId={dashboardId}
-            />
+    <>
+      <ControlHeader
+        {...rest}
+        label={
+          <Label
+            label={label}
+            hasCustomLabelsColor={hasCustomLabelsColor}
+            dashboardId={dashboardId}
+          />
+        }
+      />
+      <StyledSelect
+        css={css`
+          width: 100%;
+          & .ant-select-item.ant-select-item-group {
+            padding-left: ${theme.gridUnit}px;
+            font-size: ${theme.typography.sizes.m}px;
           }
-        />
-      }
-      ariaLabel={t('Select color scheme')}
-      allowClear={clearable}
-      disabled={!!dashboardId}
-      name={`select-${name}`}
-      onChange={handleOnChange}
-      options={options}
-      placeholder={t('Select scheme')}
-      value={currentScheme}
-    />
+          & .ant-select-item-option-grouped {
+            padding-left: ${theme.gridUnit * 3}px;
+          }
+        `}
+        aria-label={t('Select color scheme')}
+        allowClear={clearable}
+        disabled={!!dashboardId}
+        onChange={handleOnChange}
+        placeholder={t('Select scheme')}
+        value={currentScheme}
+        getPopupContainer={triggerNode => triggerNode.parentNode}
+        showSearch
+        filterOption={(search, option) =>
+          handleFilterOptionHelper(
+            search,
+            option as OptionData,
+            ['label', 'value'],
+            true,
+          )
+        }
+      >
+        {options}
+      </StyledSelect>
+    </>
   );
 };
 
