@@ -44,7 +44,7 @@ cattrs==23.2.3
     # via requests-cache
 celery==5.4.0
     # via apache-superset
-certifi==2024.2.2
+certifi==2024.7.4
     # via requests
 cffi==1.16.0
     # via
