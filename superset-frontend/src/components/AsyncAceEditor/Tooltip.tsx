@@ -16,24 +16,19 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { ReactNode, FC } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { Tag } from 'src/components';
 
 type Props = {
   title: string;
-  icon?: React.ReactNode;
-  body?: React.ReactNode;
+  icon?: ReactNode;
+  body?: ReactNode;
   meta?: string;
-  footer?: React.ReactNode;
+  footer?: ReactNode;
 };
 
-export const Tooltip: React.FC<Props> = ({
-  title,
-  icon,
-  body,
-  meta,
-  footer,
-}) => (
+export const Tooltip: FC<Props> = ({ title, icon, body, meta, footer }) => (
   <div className="tooltip-detail">
     <div className="tooltip-detail-head">
       <div className="tooltip-detail-title">
