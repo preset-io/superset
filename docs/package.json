@@ -20,9 +20,9 @@
     "@algolia/client-search": "^5.12.0",
     "@ant-design/icons": "^5.4.0",
     "@docsearch/react": "^3.6.3",
-    "@docusaurus/core": "^3.5.2",
+    "@docusaurus/core": "^3.6.0",
     "@docusaurus/plugin-client-redirects": "^3.5.2",
-    "@docusaurus/preset-classic": "^3.5.2",
+    "@docusaurus/preset-classic": "^3.6.0",
     "@emotion/core": "^10.1.1",
     "@emotion/styled": "^10.0.27",
     "@mdx-js/react": "^3.1.0",
@@ -42,7 +42,7 @@
     "react-github-btn": "^1.4.0",
     "react-svg-pan-zoom": "^3.13.1",
     "stream": "^0.0.3",
-    "swagger-ui-react": "^5.17.14",
+    "swagger-ui-react": "^5.18.0",
     "url-loader": "^4.1.1"
   },
   "devDependencies": {
