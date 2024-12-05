@@ -204,7 +204,9 @@ SQLALCHEMY_DATABASE_URI = (
 # `SQLALCHEMY_ENGINE_OPTIONS = {"isolation_level": "READ COMMITTED"}`
 # Also note that we recommend READ COMMITTED for regular operation.
 # Find out more here https://flask-sqlalchemy.palletsprojects.com/en/3.1.x/config/
-SQLALCHEMY_ENGINE_OPTIONS = {}
+from sqlalchemy.pool import NullPool
+
+SQLALCHEMY_ENGINE_OPTIONS = {"poolclass": NullPool}
 
 # In order to hook up a custom password store for all SQLALCHEMY connections
 # implement a function that takes a single argument of type 'sqla.engine.url',

@@ -95,6 +95,17 @@ if TYPE_CHECKING:
 DB_CONNECTION_MUTATOR = config["DB_CONNECTION_MUTATOR"]
 
 
+def print_connection_status():
+    logger.info("Pinging database")
+    logger.info(f"STATUS: {db.session.connection().closed}")
+
+    try:
+        db.session.execute("SELECT 1")
+        logger.info("success")
+    except Exception:
+        logger.error("connection failed as expected")
+
+
 @contextmanager
 def temporarily_disconnect_metadata_db():  # type: ignore
     """
@@ -108,20 +119,28 @@ def temporarily_disconnect_metadata_db():  # type: ignore
     Only has an effect if feature flag DISABLE_METADATA_DB_DURING_ANALYTICS is on
     """
     do_it = is_feature_enabled("DISABLE_METADATA_DB_DURING_ANALYTICS")
-    print("YO: temporarily_disconnect_metadata_db")
+    connection = db.session.connection()
     try:
         if do_it:
-            print("YO: Disconnecting")
+            logger.info("Disconnecting metadata database temporarily")
             db.session.close()
+            print_connection_status()
+            connection.close()
+            logger.info(f"STATUS: {connection.closed}")
         yield None
     finally:
         if do_it:
-            print("YO: Reconnecting to metadata database")
-            conn = db.engine.connect()
-            print(f"YO: conn: {conn.closed}")
-            print(conn)
-            conn.open()
-            db.session = db._make_scoped_session()
+            logger.info("Reconnecting to metadata database")
+            logger.info("BEFORE")
+            print_connection_status()
+
+            # NOTE: Interface changes in flask-sqlalchemy 3.0
+
+            db.session.connection()
+            db.session = db.create_scoped_session()
+
+            logger.info("AFTER")
+            print_connection_status()
 
 
 class KeyValue(Model):  # pylint: disable=too-few-public-methods
