@@ -566,7 +566,9 @@ DEFAULT_FEATURE_FLAGS: dict[str, bool] = {
     # If on, you'll want to add "https://avatars.slack-edge.com" to the list of allowed
     # domains in your TALISMAN_CONFIG
     "SLACK_ENABLE_AVATARS": False,
-    "DISABLE_METADATA_DB_DURING_ANALYTICS": True,
+    # This feature flag works only in combination with NullPool, and disconnects the metadata db
+    # connection temporarily during the execution of analytics queries, avoiding bottlenecks
+    "DISABLE_METADATA_DB_DURING_ANALYTICS": False,
 }
 
 # ------------------------------
