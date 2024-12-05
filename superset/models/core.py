@@ -95,52 +95,43 @@ if TYPE_CHECKING:
 DB_CONNECTION_MUTATOR = config["DB_CONNECTION_MUTATOR"]
 
 
-def print_connection_status():
-    logger.info("Pinging database")
-    logger.info(f"STATUS: {db.session.connection().closed}")
-
-    try:
-        db.session.execute("SELECT 1")
-        logger.info("success")
-    except Exception:
-        logger.error("connection failed as expected")
-
-
 @contextmanager
-def temporarily_disconnect_metadata_db():  # type: ignore
+def temporarily_disconnect_db():  # type: ignore
     """
-    Temporary disconnects the metadata database session during analytics query.
+    Temporary disconnects the metadata database session.
+
+    This is meant to be used during long, blocking operations, so that we can release
+    the database connection for the duration of, for example, a potentially long running
+    query against an analytics database.
+
     The goal here is to lower the number of concurrent connections to the metadata database,
     given that Superset has no control over the duration of the analytics query.
 
-    If using a connection pool, the connn is release during the period. If not, the conn is closed
-    and has to be re-established.
-
-    Only has an effect if feature flag DISABLE_METADATA_DB_DURING_ANALYTICS is on
+    NOTE: only has an effect if feature flag DISABLE_METADATA_DB_DURING_ANALYTICS
+    and using NullPool
     """
-    do_it = is_feature_enabled("DISABLE_METADATA_DB_DURING_ANALYTICS")
-    connection = db.session.connection()
+    pool_type = db.engine.pool.__class__.__name__
+    # Currently only tested/available when used with NullPool
+    do_it = (
+        is_feature_enabled("DISABLE_METADATA_DB_DURING_ANALYTICS")
+        and pool_type == "NullPool"
+    )
+    conn = db.session.connection()
     try:
         if do_it:
             logger.info("Disconnecting metadata database temporarily")
+            # Closing the session
             db.session.close()
-            print_connection_status()
-            connection.close()
-            logger.info(f"STATUS: {connection.closed}")
+            # Closing the connection
+            conn.close()
         yield None
     finally:
         if do_it:
             logger.info("Reconnecting to metadata database")
-            logger.info("BEFORE")
-            print_connection_status()
-
-            # NOTE: Interface changes in flask-sqlalchemy 3.0
-
-            db.session.connection()
+            conn = db.session.connection()
+            # Creating a new scoped session
+            # NOTE: Interface changes in flask-sqlalchemy ~3.0
             db.session = db.create_scoped_session()
-
-            logger.info("AFTER")
-            print_connection_status()
 
 
 class KeyValue(Model):  # pylint: disable=too-few-public-methods
@@ -739,7 +730,7 @@ class Database(Model, AuditMixinNullable, ImportExportMixin):  # pylint: disable
         with self.get_raw_connection(catalog=catalog, schema=schema) as conn:
             cursor = conn.cursor()
             df = None
-            with temporarily_disconnect_metadata_db():
+            with temporarily_disconnect_db():
                 for i, sql_ in enumerate(sqls):
                     sql_ = self.mutate_sql_based_on_config(sql_, is_split=True)
                     _log_query(sql_)
