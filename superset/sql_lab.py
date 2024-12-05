@@ -50,7 +50,7 @@ from superset.exceptions import (
     SupersetParseError,
 )
 from superset.extensions import celery_app, event_logger
-from superset.models.core import Database
+from superset.models.core import Database, temporarily_disconnect_metadata_db
 from superset.models.sql_lab import Query
 from superset.result_set import SupersetResultSet
 from superset.sql.parse import SQLStatement, Table
@@ -304,7 +304,8 @@ def execute_sql_statement(  # pylint: disable=too-many-statements, too-many-loca
             object_ref=__name__,
         ):
             with stats_timing("sqllab.query.time_executing_query", stats_logger):
-                db_engine_spec.execute_with_cursor(cursor, sql, query)
+                with temporarily_disconnect_metadata_db():
+                    db_engine_spec.execute_with_cursor(cursor, sql, query)
 
             with stats_timing("sqllab.query.time_fetching_results", stats_logger):
                 logger.debug(

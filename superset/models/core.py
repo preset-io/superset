@@ -95,6 +95,35 @@ if TYPE_CHECKING:
 DB_CONNECTION_MUTATOR = config["DB_CONNECTION_MUTATOR"]
 
 
+@contextmanager
+def temporarily_disconnect_metadata_db():  # type: ignore
+    """
+    Temporary disconnects the metadata database session during analytics query.
+    The goal here is to lower the number of concurrent connections to the metadata database,
+    given that Superset has no control over the duration of the analytics query.
+
+    If using a connection pool, the connn is release during the period. If not, the conn is closed
+    and has to be re-established.
+
+    Only has an effect if feature flag DISABLE_METADATA_DB_DURING_ANALYTICS is on
+    """
+    do_it = is_feature_enabled("DISABLE_METADATA_DB_DURING_ANALYTICS")
+    print("YO: temporarily_disconnect_metadata_db")
+    try:
+        if do_it:
+            print("YO: Disconnecting")
+            db.session.close()
+        yield None
+    finally:
+        if do_it:
+            print("YO: Reconnecting to metadata database")
+            conn = db.engine.connect()
+            print(f"YO: conn: {conn.closed}")
+            print(conn)
+            conn.open()
+            db.session = db._make_scoped_session()
+
+
 class KeyValue(Model):  # pylint: disable=too-few-public-methods
     """Used for any type of key-value store"""
 
@@ -691,27 +720,28 @@ class Database(Model, AuditMixinNullable, ImportExportMixin):  # pylint: disable
         with self.get_raw_connection(catalog=catalog, schema=schema) as conn:
             cursor = conn.cursor()
             df = None
-            for i, sql_ in enumerate(sqls):
-                sql_ = self.mutate_sql_based_on_config(sql_, is_split=True)
-                _log_query(sql_)
-                with event_logger.log_context(
-                    action="execute_sql",
-                    database=self,
-                    object_ref=__name__,
-                ):
-                    self.db_engine_spec.execute(cursor, sql_, self)
-                    if i < len(sqls) - 1:
-                        # If it's not the last, we don't keep the results
-                        cursor.fetchall()
-                    else:
-                        # Last query, fetch and process the results
-                        data = self.db_engine_spec.fetch_data(cursor)
-                        result_set = SupersetResultSet(
-                            data, cursor.description, self.db_engine_spec
-                        )
-                        df = result_set.to_pandas_df()
-            if mutator:
-                df = mutator(df)
+            with temporarily_disconnect_metadata_db():
+                for i, sql_ in enumerate(sqls):
+                    sql_ = self.mutate_sql_based_on_config(sql_, is_split=True)
+                    _log_query(sql_)
+                    with event_logger.log_context(
+                        action="execute_sql",
+                        database=self,
+                        object_ref=__name__,
+                    ):
+                        self.db_engine_spec.execute(cursor, sql_, self)
+                        if i < len(sqls) - 1:
+                            # If it's not the last, we don't keep the results
+                            cursor.fetchall()
+                        else:
+                            # Last query, fetch and process the results
+                            data = self.db_engine_spec.fetch_data(cursor)
+                            result_set = SupersetResultSet(
+                                data, cursor.description, self.db_engine_spec
+                            )
+                            df = result_set.to_pandas_df()
+                if mutator:
+                    df = mutator(df)
 
             return self.post_process_df(df)
 

@@ -563,6 +563,7 @@ DEFAULT_FEATURE_FLAGS: dict[str, bool] = {
     # If on, you'll want to add "https://avatars.slack-edge.com" to the list of allowed
     # domains in your TALISMAN_CONFIG
     "SLACK_ENABLE_AVATARS": False,
+    "DISABLE_METADATA_DB_DURING_ANALYTICS": True,
 }
 
 # ------------------------------
