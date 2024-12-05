@@ -207,6 +207,7 @@ SQLALCHEMY_DATABASE_URI = (
 # for example, if you don't want to use a connection pool, uncomment those next 2 lines
 # from sqlalchemy.pool import NullPool
 # SQLALCHEMY_ENGINE_OPTIONS = {"poolclass": NullPool}
+SQLALCHEMY_ENGINE_OPTIONS = {}
 
 
 # In order to hook up a custom password store for all SQLALCHEMY connections

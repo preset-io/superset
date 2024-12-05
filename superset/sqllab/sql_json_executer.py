@@ -102,7 +102,6 @@ class SynchronousSqlJsonExecutor(SqlJsonExecutorBase):
             raise
         except Exception as ex:
             logger.exception("Query %i failed unexpectedly", query_id)
-            logger.error(ex)
             raise SupersetGenericDBErrorException(
                 utils.error_msg_from_exception(ex)
             ) from ex
