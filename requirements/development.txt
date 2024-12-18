@@ -201,3 +201,4 @@ zope-interface==5.4.0
 # The following packages are considered to be unsafe in a requirements file:
 # pip
 # setuptools
+werkzeug>=3.0.6 # not directly required, pinned by Snyk to avoid a vulnerability
