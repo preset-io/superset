@@ -44,7 +44,6 @@ from superset.db_engine_specs.mssql import MssqlEngineSpec
 from superset.exceptions import SupersetException
 from superset.extensions import async_query_manager_factory, cache_manager
 from superset.models import core as models
-from superset.models.cache import CacheKey
 from superset.models.dashboard import Dashboard
 from superset.models.slice import Slice
 from superset.models.sql_lab import Query
@@ -54,7 +53,6 @@ from superset.utils import core as utils, json
 from superset.utils.core import backend
 from superset.utils.database import get_example_database
 from superset.views.database.views import DatabaseView
-from tests.integration_tests.conftest import with_feature_flags
 from tests.integration_tests.constants import ADMIN_USERNAME, GAMMA_USERNAME
 from tests.integration_tests.fixtures.birth_names_dashboard import (
     load_birth_names_dashboard_with_slices,  # noqa: F401
@@ -395,47 +393,6 @@ class TestCore(SupersetTestCase):
                     "viz_status": None,
                 }
             ]
-
-    @pytest.mark.usefixtures("load_birth_names_dashboard_with_slices")
-    def test_cache_logging(self):
-        self.login(ADMIN_USERNAME)
-        store_cache_keys = app.config["STORE_CACHE_KEYS_IN_METADATA_DB"]
-        app.config["STORE_CACHE_KEYS_IN_METADATA_DB"] = True
-        slc = self.get_slice("Top 10 Girl Name Share")
-        self.get_json_resp(f"/superset/warm_up_cache?slice_id={slc.id}")
-        ck = db.session.query(CacheKey).order_by(CacheKey.id.desc()).first()
-        assert ck.datasource_uid == f"{slc.table.id}__table"
-        db.session.delete(ck)
-        app.config["STORE_CACHE_KEYS_IN_METADATA_DB"] = store_cache_keys
-
-    @with_feature_flags(KV_STORE=False)
-    def test_kv_disabled(self):
-        self.login(ADMIN_USERNAME)
-
-        resp = self.client.get("/kv/10001/")
-        assert 404 == resp.status_code
-
-        value = json.dumps({"data": "this is a test"})
-        resp = self.client.post("/kv/store/", data=dict(data=value))  # noqa: C408
-        assert resp.status_code == 404
-
-    @with_feature_flags(KV_STORE=True)
-    def test_kv_enabled(self):
-        self.login(ADMIN_USERNAME)
-
-        resp = self.client.get("/kv/10001/")
-        assert 404 == resp.status_code
-
-        value = json.dumps({"data": "this is a test"})
-        resp = self.client.post("/kv/store/", data=dict(data=value))  # noqa: C408
-        assert resp.status_code == 200
-        kv = db.session.query(models.KeyValue).first()
-        kv_value = kv.value
-        assert json.loads(value) == json.loads(kv_value)
-
-        resp = self.client.get(f"/kv/{kv.id}/")
-        assert resp.status_code == 200
-        assert json.loads(value) == json.loads(resp.data.decode("utf-8"))
 
     def test_gamma(self):
         self.login(GAMMA_USERNAME)
