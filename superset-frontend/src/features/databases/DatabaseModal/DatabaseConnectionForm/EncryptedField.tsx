@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { SupersetTheme, t } from '@superset-ui/core';
 import { Button, AntdSelect } from 'src/components';
 import InfoTooltip from 'src/components/InfoTooltip';
@@ -46,6 +46,7 @@ export const EncryptedField = ({
   db,
   editNewDb,
 }: FieldPropTypes) => {
+  const selectedFileInputRef = useRef<HTMLInputElement | null>(null);
   const [uploadOption, setUploadOption] = useState<number>(
     CredentialInfoOptions.JsonUpload.valueOf(),
   );
@@ -145,9 +146,7 @@ export const EncryptedField = ({
             {!fileToUpload && (
               <Button
                 className="input-upload-btn"
-                onClick={() =>
-                  document?.getElementById('selectedFile')?.click()
-                }
+                onClick={() => selectedFileInputRef.current?.click()}
               >
                 {t('Choose File')}
               </Button>
@@ -171,6 +170,7 @@ export const EncryptedField = ({
             )}
 
             <input
+              ref={selectedFileInputRef}
               id="selectedFile"
               accept=".json"
               className="input-upload"
@@ -189,9 +189,9 @@ export const EncryptedField = ({
                     checked: false,
                   },
                 });
-                (
-                  document.getElementById('selectedFile') as HTMLInputElement
-                ).value = null as any;
+                if (selectedFileInputRef.current) {
+                  selectedFileInputRef.current.value = null as any;
+                }
               }}
             />
           </div>

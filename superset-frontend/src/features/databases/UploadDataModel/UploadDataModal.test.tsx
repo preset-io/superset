@@ -613,7 +613,7 @@ test('CSV, form post', async () => {
 
   // Select a file from the file dialog
   const file = new File(['test'], 'test.csv', { type: 'text' });
-  const inputElement = document.querySelector('input[type="file"]');
+  const inputElement = screen.getByTestId('model-file-input');
 
   if (inputElement) {
     userEvent.upload(inputElement as HTMLElement, file);
@@ -670,7 +670,7 @@ test('Excel, form post', async () => {
 
   // Select a file from the file dialog
   const file = new File(['test'], 'test.xls', { type: 'text' });
-  const inputElement = document.querySelector('input[type="file"]');
+  const inputElement = screen.getByTestId('model-file-input');
 
   if (inputElement) {
     userEvent.upload(inputElement as HTMLElement, file);
@@ -731,7 +731,7 @@ test('Columnar, form post', async () => {
 
   // Select a file from the file dialog
   const file = new File(['test'], 'test.parquet', { type: 'text' });
-  const inputElement = document.querySelector('input[type="file"]');
+  const inputElement = screen.getByTestId('model-file-input');
 
   if (inputElement) {
     userEvent.upload(inputElement as HTMLElement, file);
