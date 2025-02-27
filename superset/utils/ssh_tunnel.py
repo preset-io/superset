@@ -15,10 +15,19 @@
 #  specific language governing permissions and limitations
 #  under the License.
 
+from __future__ import annotations
+
 from typing import Any
 
 from superset.constants import PASSWORD_MASK
 from superset.databases.ssh_tunnel.models import SSHTunnel
+
+DEFAULT_PORTS: dict[str, int] = {
+    "postgresql": 5432,
+    "mysql": 3306,
+    "oracle": 1521,
+    "mssql": 1433,
+}
 
 
 def mask_password_info(ssh_tunnel: dict[str, Any]) -> dict[str, Any]:
@@ -41,3 +50,10 @@ def unmask_password_info(
     if ssh_tunnel.get("private_key_password") == PASSWORD_MASK:
         ssh_tunnel["private_key_password"] = model.private_key_password
     return ssh_tunnel
+
+
+def get_default_port(backend: str) -> int | None:
+    """
+    Get the default port for the given backend.
+    """
+    return DEFAULT_PORTS.get(backend)
