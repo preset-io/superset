@@ -888,7 +888,7 @@ class TestImportDatabasesCommand(SupersetTestCase):
 
 
 class TestTestConnectionDatabaseCommand(SupersetTestCase):
-    @patch("superset.daos.database.Database._get_sqla_engine")
+    @patch("superset.models.core.Database._get_sqla_engine")
     @patch("superset.commands.database.test_connection.event_logger.log_with_context")
     @patch("superset.utils.core.g")
     def test_connection_db_exception(
@@ -909,7 +909,7 @@ class TestTestConnectionDatabaseCommand(SupersetTestCase):
             )
         mock_event_logger.assert_called()
 
-    @patch("superset.daos.database.Database._get_sqla_engine")
+    @patch("superset.models.core.Database._get_sqla_engine")
     @patch("superset.commands.database.test_connection.event_logger.log_with_context")
     @patch("superset.utils.core.g")
     def test_connection_do_ping_exception(
@@ -932,7 +932,7 @@ class TestTestConnectionDatabaseCommand(SupersetTestCase):
             == SupersetErrorType.GENERIC_DB_ENGINE_ERROR
         )
 
-    @patch("superset.commands.database.test_connection.func_timeout")
+    @patch("superset.commands.database.utils.timeout")
     @patch("superset.commands.database.test_connection.event_logger.log_with_context")
     @patch("superset.utils.core.g")
     def test_connection_do_ping_timeout(
@@ -954,7 +954,7 @@ class TestTestConnectionDatabaseCommand(SupersetTestCase):
             == SupersetErrorType.CONNECTION_DATABASE_TIMEOUT
         )
 
-    @patch("superset.daos.database.Database._get_sqla_engine")
+    @patch("superset.models.core.Database._get_sqla_engine")
     @patch("superset.commands.database.test_connection.event_logger.log_with_context")
     @patch("superset.utils.core.g")
     def test_connection_superset_security_connection(
@@ -977,7 +977,7 @@ class TestTestConnectionDatabaseCommand(SupersetTestCase):
 
         mock_event_logger.assert_called()
 
-    @patch("superset.daos.database.Database._get_sqla_engine")
+    @patch("superset.models.core.Database._get_sqla_engine")
     @patch("superset.commands.database.test_connection.event_logger.log_with_context")
     @patch("superset.utils.core.g")
     def test_connection_db_api_exc(
