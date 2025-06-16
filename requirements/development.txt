@@ -207,7 +207,7 @@ flask-compress==1.17
     # via
     #   -c requirements/base.txt
     #   apache-superset
-flask-cors==4.0.2
+flask-cors==6.0.0
     # via apache-superset
 flask-jwt-extended==4.7.1
     # via
@@ -698,7 +698,7 @@ referencing==0.36.2
     #   jsonschema
     #   jsonschema-path
     #   jsonschema-specifications
-requests==2.32.3
+requests==2.32.4
     # via
     #   -c requirements/base.txt
     #   docker
