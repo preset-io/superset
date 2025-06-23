@@ -1,6 +1,6 @@
 {
   "name": "@superset-ui/plugin-chart-cartodiagram",
-  "version": "0.0.1",
+  "version": "5.0.0",
   "description": "An OpenLayers map that displays charts for single features.",
   "sideEffects": false,
   "main": "lib/index.js",
