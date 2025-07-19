@@ -120,7 +120,7 @@ flask-caching==2.3.1
     # via apache-superset (pyproject.toml)
 flask-compress==1.17
     # via apache-superset (pyproject.toml)
-flask-cors==4.0.2
+flask-cors==6.0.0
     # via apache-superset (pyproject.toml)
 flask-jwt-extended==4.7.1
     # via flask-appbuilder
@@ -448,3 +448,4 @@ xlsxwriter==3.0.9
     #   pandas
 zstandard==0.23.0
     # via flask-compress
+zipp>=3.19.1 # not directly required, pinned by Snyk to avoid a vulnerability
