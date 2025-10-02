@@ -501,6 +501,7 @@ export const tooltipTemplate = {
   config: {
     type: TooltipTemplateControl,
     label: t('Customize tooltips template'),
+    renderTrigger: true,
     debounceDelay: 30,
     default: '',
     description: '',
