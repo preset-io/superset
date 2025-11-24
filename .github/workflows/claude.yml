@@ -35,30 +35,30 @@ jobs:
             echo "❌ User $COMMENTER is not allowed to use Claude"
           fi
 
-  # deny-access:
-  #   needs: check-permissions
-  #   if: needs.check-permissions.outputs.allowed == 'false'
-  #   runs-on: ubuntu-latest
-  #   permissions:
-  #     issues: write
-  #     pull-requests: write
-  #   steps:
-  #     - name: Comment access denied
-  #       uses: actions/github-script@v8
-  #       with:
-  #         script: |
-  #           const message = `👋 Hi @${{ github.event.comment.user.login || github.event.review.user.login || github.event.issue.user.login }}!
+  deny-access:
+    needs: check-permissions
+    if: needs.check-permissions.outputs.allowed == 'false'
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Comment access denied
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const message = `👋 Hi @${{ github.event.comment.user.login || github.event.review.user.login || github.event.issue.user.login }}!
 
-  #           Thanks for trying to use Claude Code, but currently only certain team members have access to this feature.
+            Thanks for trying to use Claude Code, but currently only certain team members have access to this feature.
 
-  #           If you believe you should have access, please contact a project maintainer.`;
+            If you believe you should have access, please contact a project maintainer.`;
 
-  #           await github.rest.issues.createComment({
-  #             owner: context.repo.owner,
-  #             repo: context.repo.repo,
-  #             issue_number: context.issue.number,
-  #             body: message
-  #           });
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: message
+            });
 
   claude-code-action:
     needs: check-permissions
