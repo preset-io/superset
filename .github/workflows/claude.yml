@@ -1,82 +1,73 @@
-name: Claude PR Assistant
+name: Claude Code
 
 on:
   issue_comment:
     types: [created]
   pull_request_review_comment:
     types: [created]
+  issues:
+    types: [opened, assigned]
+  pull_request_review:
+    types: [submitted]
 
 jobs:
-  check-permissions:
+  claude:
     if: |
       (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@claude')) ||
-      (github.event_name == 'pull_request_review_comment' && contains(github.event.comment.body, '@claude'))
-    runs-on: ubuntu-latest
-    outputs:
-      allowed: ${{ steps.check.outputs.allowed }}
-    steps:
-      - name: Check if user is allowed
-        id: check
-        run: |
-          # List of allowed users
-          ALLOWED_USERS="mistercrunch,rusackas"
-
-          # Get the commenter's username
-          COMMENTER="${{ github.event.comment.user.login }}"
-
-          echo "Checking permissions for user: $COMMENTER"
-
-          # Check if user is in allowed list
-          if [[ ",$ALLOWED_USERS," == *",$COMMENTER,"* ]]; then
-            echo "allowed=true" >> $GITHUB_OUTPUT
-            echo "✅ User $COMMENTER is allowed to use Claude"
-          else
-            echo "allowed=false" >> $GITHUB_OUTPUT
-            echo "❌ User $COMMENTER is not allowed to use Claude"
-          fi
-
-  deny-access:
-    needs: check-permissions
-    if: needs.check-permissions.outputs.allowed == 'false'
+      (github.event_name == 'pull_request_review_comment' && contains(github.event.comment.body, '@claude')) ||
+      (github.event_name == 'pull_request_review' && contains(github.event.review.body, '@claude')) ||
+      (github.event_name == 'issues' && (contains(github.event.issue.body, '@claude') || contains(github.event.issue.title, '@claude')))
     runs-on: ubuntu-latest
     permissions:
-      issues: write
-      pull-requests: write
-    steps:
-      - name: Comment access denied
-        uses: actions/github-script@v8
-        with:
-          script: |
-            const message = `👋 Hi @${{ github.event.comment.user.login || github.event.review.user.login || github.event.issue.user.login }}!
-
-            Thanks for trying to use Claude Code, but currently only certain team members have access to this feature.
-
-            If you believe you should have access, please contact a project maintainer.`;
-
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-              body: message
-            });
-
-  claude-code-action:
-    needs: check-permissions
-    if: needs.check-permissions.outputs.allowed == 'true'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
-      issues: write
+      contents: read
+      pull-requests: read
+      issues: read
       id-token: write
+      actions: read # Required for Claude to read CI results on PRs
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v5
-      with:
-        fetch-depth: 1
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
 
-    - name: Run Claude PR Action
-      uses: anthropics/claude-code-action@beta
-      with:
-        anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
-        timeout_minutes: "60"
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.BEDROCK_ACCOUNT }}:role/github-actions-bedrock-role
+          role-session-name: github-actions-pr-review
+          aws-region: us-west-2
+
+      - name: Run Claude
+        id: claude
+        uses: anthropics/claude-code-action
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          use_bedrock: "true"
+          model: us.anthropic.claude-sonnet-4-5-20250929-v1:0
+
+          # This is an optional setting that allows Claude to read CI results on PRs
+          #additional_permissions: |
+          #  actions: read
+
+          # Optional: Specify model (defaults to Claude Sonnet 4, uncomment for Claude Opus 4)
+          # model: "claude-opus-4-20250514"
+
+          # Optional: Customize the trigger phrase (default: @claude)
+          # trigger_phrase: "/claude"
+
+          # Optional: Trigger when specific user is assigned to an issue
+          # assignee_trigger: "claude-bot"
+
+          # Optional: Allow Claude to run specific commands
+          # allowed_tools: "Bash(npm install),Bash(npm run build),Bash(npm run test:*),Bash(npm run lint:*)"
+
+          # Optional: Add custom instructions for Claude to customize its behavior for your project
+          # custom_instructions: |
+          #   Follow our coding standards
+          #   Ensure all new code has tests
+          #   Use TypeScript for new files
+
+          # Optional: Custom environment variables for Claude
+          # claude_env: |
+          #   NODE_ENV: test
+
