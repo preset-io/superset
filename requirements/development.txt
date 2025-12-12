@@ -792,7 +792,7 @@ python-geohash==0.8.5
     # via
     #   -c requirements/base-constraint.txt
     #   apache-superset
-python-ldap==3.4.4
+python-ldap==3.4.5
     # via apache-superset
 python-multipart==0.0.20
     # via mcp
