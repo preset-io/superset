@@ -312,7 +312,7 @@ flask-wtf==1.2.2
     #   -c requirements/base-constraint.txt
     #   apache-superset
     #   flask-appbuilder
-fonttools==4.55.0
+fonttools==4.61.0
     # via matplotlib
 freezegun==1.5.1
     # via apache-superset
