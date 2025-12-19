@@ -75,8 +75,17 @@ jobs:
       with:
         fetch-depth: 1
 
-    - name: Run Claude PR Action
-      uses: anthropics/claude-code-action@beta
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v4
       with:
-        anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+        role-to-assume: arn:aws:iam::${{ secrets.BEDROCK_ACCOUNT }}:role/github-actions-bedrock-role
+        role-session-name: github-actions-pr-review
+        aws-region: us-west-2
+
+    - name: Run Claude PR Action
+      uses: anthropics/claude-code-action
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        use_bedrock: "true"
+        model: us.anthropic.claude-sonnet-4-5-20250929-v1:0
         timeout_minutes: "60"
