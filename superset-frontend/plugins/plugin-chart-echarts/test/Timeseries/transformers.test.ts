@@ -349,6 +349,12 @@ test('should provide a defined formatter when showMaxLabel is true to prevent ra
   // The max tick (last data point) must format as a year, not a raw timestamp
   const maxTimestamp = new Date('2023-01-01').getTime();
   expect(xAxis.axisLabel.formatter!(maxTimestamp)).toBe('2023');
+
+  // ECharts adds sub-second padding to bar chart axis extents, so the forced
+  // max tick may have millisecond precision (e.g. .862ms). The formatter must
+  // floor it to the nearest second to avoid ".862ms" labels.
+  const noisyMax = new Date('2023-01-01T00:00:00.862Z').getTime();
+  expect(xAxis.axisLabel.formatter!(noisyMax)).toBe('2023');
 });
 
 test('should format max label using explicit xAxisTimeFormat when showMaxLabel is true', () => {

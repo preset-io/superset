@@ -592,4 +592,8 @@ test('BigNumberWithTrendline should provide a defined formatter when showXAxisMi
   // The max tick must format as a year, not a raw timestamp
   const maxTimestamp = new Date('2023-01-01').getTime();
   expect(xAxis.axisLabel.formatter!(maxTimestamp)).toBe('2023');
+
+  // Sub-second axis padding must be floored, not formatted as ".862ms"
+  const noisyMax = new Date('2023-01-01T00:00:00.862Z').getTime();
+  expect(xAxis.axisLabel.formatter!(noisyMax)).toBe('2023');
 });
