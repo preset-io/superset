@@ -51,16 +51,33 @@ test('getXAxisFormatter should format numeric epoch input the same as Date input
   expect(formatter(epoch)).toBe('2023');
 });
 
-test('getXAxisFormatter should floor sub-second timestamps to prevent ".862ms" labels', () => {
-  const formatter = getXAxisFormatter(SMART_DATE_ID);
-  // ECharts adds sub-second padding to axis extents for bar charts,
-  // causing the forced max label to have millisecond precision.
-  // Without flooring, the smart date formatter detects milliseconds
-  // and produces ".862ms" instead of the expected year format.
-  expect(formatter(new Date('2023-01-01T00:00:00.862Z'))).toBe('2023');
-  expect(formatter(new Date('2023-01-01T00:00:00.862Z').getTime())).toBe(
+test('getXAxisFormatter with Year grain should floor sub-grain noise to year boundary', () => {
+  const formatter = getXAxisFormatter(SMART_DATE_ID, 'P1Y');
+  // ECharts adds padding to axis extents for bar charts, introducing
+  // seconds-level noise (e.g., 24s past the year boundary).
+  // Without grain-aware flooring, the smart date formatter detects
+  // the non-zero seconds and produces ":24s" instead of "2023".
+  expect(formatter(new Date('2023-01-01T00:00:24.862Z'))).toBe('2023');
+  expect(formatter(new Date('2023-01-01T00:00:24.862Z').getTime())).toBe(
     '2023',
   );
+});
+
+test('getXAxisFormatter with Month grain should floor to month boundary', () => {
+  const formatter = getXAxisFormatter(SMART_DATE_ID, 'P1M');
+  // Noise at the day/hour level should be floored to the month start
+  expect(formatter(new Date('2023-06-01T00:05:24.862Z'))).toBe('June');
+});
+
+test('getXAxisFormatter with Day grain should floor to day boundary', () => {
+  const formatter = getXAxisFormatter(SMART_DATE_ID, 'P1D');
+  expect(formatter(new Date('2023-06-15T00:02:30.000Z'))).toBe('Thu 15');
+});
+
+test('getXAxisFormatter without grain should floor to nearest second', () => {
+  const formatter = getXAxisFormatter(SMART_DATE_ID);
+  // Sub-second noise is still floored (backward compatible)
+  expect(formatter(new Date('2023-01-01T00:00:00.862Z'))).toBe('2023');
 });
 
 test('getXAxisFormatter should handle extra ECharts callback args without breaking', () => {

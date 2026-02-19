@@ -309,6 +309,7 @@ test('should provide a defined formatter when showMaxLabel is true to prevent ra
     granularity_sqla: 'ds',
     metric: 'sum__num',
     viz_type: 'my_viz',
+    time_grain_sqla: 'P1Y',
   };
   const queriesData = [
     {
@@ -350,10 +351,10 @@ test('should provide a defined formatter when showMaxLabel is true to prevent ra
   const maxTimestamp = new Date('2023-01-01').getTime();
   expect(xAxis.axisLabel.formatter!(maxTimestamp)).toBe('2023');
 
-  // ECharts adds sub-second padding to bar chart axis extents, so the forced
-  // max tick may have millisecond precision (e.g. .862ms). The formatter must
-  // floor it to the nearest second to avoid ".862ms" labels.
-  const noisyMax = new Date('2023-01-01T00:00:00.862Z').getTime();
+  // ECharts adds seconds+milliseconds padding to bar chart axis extents.
+  // With Year grain, the formatter must floor to the year boundary to avoid
+  // labels like ":24s" or ".862ms".
+  const noisyMax = new Date('2023-01-01T00:00:24.862Z').getTime();
   expect(xAxis.axisLabel.formatter!(noisyMax)).toBe('2023');
 });
 

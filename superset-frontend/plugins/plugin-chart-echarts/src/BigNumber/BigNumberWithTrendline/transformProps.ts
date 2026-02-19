@@ -272,7 +272,7 @@ export default function transformProps(
     currencyCodeColumn,
     detectedCurrency,
   );
-  const xAxisFormatter = getXAxisFormatter(timeFormat);
+  const xAxisFormatter = getXAxisFormatter(timeFormat, granularity);
   const yAxisFormatter =
     metricColtype === GenericDataType.Temporal ||
     metricColtype === GenericDataType.String ||

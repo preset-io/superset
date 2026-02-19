@@ -593,7 +593,8 @@ test('BigNumberWithTrendline should provide a defined formatter when showXAxisMi
   const maxTimestamp = new Date('2023-01-01').getTime();
   expect(xAxis.axisLabel.formatter!(maxTimestamp)).toBe('2023');
 
-  // Sub-second axis padding must be floored, not formatted as ".862ms"
-  const noisyMax = new Date('2023-01-01T00:00:00.862Z').getTime();
+  // ECharts adds seconds+milliseconds padding to bar chart axis extents.
+  // The formatter must floor to the grain boundary to avoid ":24s" or ".862ms".
+  const noisyMax = new Date('2023-01-01T00:00:24.862Z').getTime();
   expect(xAxis.axisLabel.formatter!(noisyMax)).toBe('2023');
 });

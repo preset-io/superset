@@ -86,8 +86,54 @@ export function getTooltipTimeFormatter(
   return String;
 }
 
+/**
+ * Floor a UTC timestamp to the boundary of the given time grain so that
+ * sub-grain noise from ECharts axis-extent padding does not confuse the
+ * smart-date formatter's multi-level precision detection.
+ */
+function floorToGrain(ts: number, grain?: string): Date {
+  if (grain) {
+    const d = new Date(ts);
+    if (grain === 'P1Y') {
+      return new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+    }
+    if (grain === 'P3M' || grain === 'P1M') {
+      return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), 1));
+    }
+    if (grain === 'P1D' || grain === 'date' || grain.includes('W')) {
+      return new Date(
+        Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()),
+      );
+    }
+    if (grain === 'PT1H') {
+      return new Date(
+        Date.UTC(
+          d.getUTCFullYear(),
+          d.getUTCMonth(),
+          d.getUTCDate(),
+          d.getUTCHours(),
+        ),
+      );
+    }
+    if (grain.startsWith('PT') && grain.endsWith('M')) {
+      return new Date(
+        Date.UTC(
+          d.getUTCFullYear(),
+          d.getUTCMonth(),
+          d.getUTCDate(),
+          d.getUTCHours(),
+          d.getUTCMinutes(),
+        ),
+      );
+    }
+  }
+  // Default (PT1S or unknown): floor to nearest second
+  return new Date(Math.floor(ts / 1000) * 1000);
+}
+
 export function getXAxisFormatter(
   format?: string,
+  timeGrain?: string,
 ): (value: number | Date) => string {
   const baseFormatter =
     format === SMART_DATE_ID || !format
@@ -96,10 +142,7 @@ export function getXAxisFormatter(
 
   return (value: number | Date) => {
     const ts = value instanceof Date ? value.getTime() : Number(value);
-    // Floor to the nearest second so that sub-second noise introduced by
-    // ECharts axis-extent padding does not trigger the smart-date
-    // formatter's millisecond format (which produces labels like ".862ms").
-    const floored = new Date(Math.floor(ts / 1000) * 1000);
+    const floored = floorToGrain(ts, timeGrain);
     return baseFormatter(floored);
   };
 }
