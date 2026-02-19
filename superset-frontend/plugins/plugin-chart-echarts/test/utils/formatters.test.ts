@@ -63,6 +63,13 @@ test('getXAxisFormatter should floor sub-second timestamps to prevent ".862ms" l
   );
 });
 
+test('getXAxisFormatter should handle extra ECharts callback args without breaking', () => {
+  const formatter = getXAxisFormatter(SMART_DATE_ID);
+  const epoch = new Date('2023-01-01T00:00:00Z').getTime();
+  // ECharts calls formatter(value, index, {level}) — extra args must not throw
+  expect((formatter as Function)(epoch, 0, { level: 0 })).toBe('2023');
+});
+
 test('getXAxisFormatter should return a time formatter for explicit time formats', () => {
   const formatter = getXAxisFormatter('%Y-%m-%d');
   expect(formatter).toBeDefined();
