@@ -88,12 +88,18 @@ export function getTooltipTimeFormatter(
 
 export function getXAxisFormatter(
   format?: string,
-): TimeFormatter | StringConstructor | undefined {
-  if (format === SMART_DATE_ID || !format) {
-    return undefined;
-  }
-  if (format) {
-    return getTimeFormatter(format);
-  }
-  return String;
+): (value: number | Date) => string {
+  const baseFormatter =
+    format === SMART_DATE_ID || !format
+      ? getTimeFormatter(SMART_DATE_ID)
+      : getTimeFormatter(format);
+
+  return (value: number | Date) => {
+    const ts = value instanceof Date ? value.getTime() : Number(value);
+    // Floor to the nearest second so that sub-second noise introduced by
+    // ECharts axis-extent padding does not trigger the smart-date
+    // formatter's millisecond format (which produces labels like ".862ms").
+    const floored = new Date(Math.floor(ts / 1000) * 1000);
+    return baseFormatter(floored);
+  };
 }

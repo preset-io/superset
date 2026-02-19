@@ -16,7 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { DatasourceType, TimeGranularity, VizType } from '@superset-ui/core';
+import {
+  createSmartDateFormatter,
+  DatasourceType,
+  getTimeFormatterRegistry,
+  SMART_DATE_ID,
+  TimeGranularity,
+  VizType,
+} from '@superset-ui/core';
 import { supersetTheme } from '@apache-superset/core/ui';
 import transformProps from '../../src/BigNumber/BigNumberWithTrendline/transformProps';
 import {
@@ -25,6 +32,13 @@ import {
   BigNumberWithTrendlineFormData,
 } from '../../src/BigNumber/types';
 import { TIMESERIES_CONSTANTS } from '../../src/constants';
+
+beforeAll(() => {
+  getTimeFormatterRegistry().registerValue(
+    SMART_DATE_ID,
+    createSmartDateFormatter(),
+  );
+});
 
 const formData = {
   metric: 'value',
@@ -550,4 +564,32 @@ test('BigNumberWithTrendline should preserve static currency format', () => {
   const transformed = transformProps(props);
   // Static mode should always show £
   expect(transformed.headerFormatter(1000)).toContain('£');
+});
+
+test('BigNumberWithTrendline should provide a defined formatter when showXAxisMinMaxLabels is true', () => {
+  const props = generateProps(
+    [
+      { __timestamp: new Date('2020-01-01').getTime(), value: 100 },
+      { __timestamp: new Date('2021-01-01').getTime(), value: 200 },
+      { __timestamp: new Date('2022-01-01').getTime(), value: 300 },
+      { __timestamp: new Date('2023-01-01').getTime(), value: 400 },
+    ],
+    { showTrendLine: true, showXAxisMinMaxLabels: true },
+  );
+
+  const transformed = transformProps(props);
+  const xAxis = transformed.echartOptions?.xAxis as {
+    axisLabel: {
+      showMaxLabel?: boolean;
+      formatter?: (...args: unknown[]) => string;
+    };
+  };
+
+  expect(xAxis.axisLabel.showMaxLabel).toBe(true);
+  expect(xAxis.axisLabel.formatter).toBeDefined();
+  expect(typeof xAxis.axisLabel.formatter).toBe('function');
+
+  // The max tick must format as a year, not a raw timestamp
+  const maxTimestamp = new Date('2023-01-01').getTime();
+  expect(xAxis.axisLabel.formatter!(maxTimestamp)).toBe('2023');
 });

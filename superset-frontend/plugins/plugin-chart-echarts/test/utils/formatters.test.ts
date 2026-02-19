@@ -16,8 +16,59 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { NumberFormats } from '@superset-ui/core';
-import { getPercentFormatter } from '../../src/utils/formatters';
+import {
+  createSmartDateFormatter,
+  getTimeFormatterRegistry,
+  NumberFormats,
+  SMART_DATE_ID,
+} from '@superset-ui/core';
+import {
+  getPercentFormatter,
+  getXAxisFormatter,
+} from '../../src/utils/formatters';
+
+// Register the smart date formatter so tests use real formatting logic
+beforeAll(() => {
+  getTimeFormatterRegistry().registerValue(
+    SMART_DATE_ID,
+    createSmartDateFormatter(),
+  );
+});
+
+test('getXAxisFormatter should format a year-boundary date as a four-digit year', () => {
+  const formatter = getXAxisFormatter(SMART_DATE_ID);
+  expect(formatter(new Date('2023-01-01T00:00:00Z'))).toBe('2023');
+});
+
+test('getXAxisFormatter should use smart date when no format is specified', () => {
+  const formatter = getXAxisFormatter();
+  expect(formatter(new Date('2023-01-01T00:00:00Z'))).toBe('2023');
+});
+
+test('getXAxisFormatter should format numeric epoch input the same as Date input', () => {
+  const formatter = getXAxisFormatter(SMART_DATE_ID);
+  const epoch = new Date('2023-01-01T00:00:00Z').getTime();
+  expect(formatter(epoch)).toBe('2023');
+});
+
+test('getXAxisFormatter should floor sub-second timestamps to prevent ".862ms" labels', () => {
+  const formatter = getXAxisFormatter(SMART_DATE_ID);
+  // ECharts adds sub-second padding to axis extents for bar charts,
+  // causing the forced max label to have millisecond precision.
+  // Without flooring, the smart date formatter detects milliseconds
+  // and produces ".862ms" instead of the expected year format.
+  expect(formatter(new Date('2023-01-01T00:00:00.862Z'))).toBe('2023');
+  expect(formatter(new Date('2023-01-01T00:00:00.862Z').getTime())).toBe(
+    '2023',
+  );
+});
+
+test('getXAxisFormatter should return a time formatter for explicit time formats', () => {
+  const formatter = getXAxisFormatter('%Y-%m-%d');
+  expect(formatter).toBeDefined();
+  const date = new Date('2023-06-15T00:00:00Z');
+  expect(formatter(date)).toBe('2023-06-15');
+});
 
 describe('getPercentFormatter', () => {
   const value = 0.6;

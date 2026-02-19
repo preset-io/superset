@@ -16,7 +16,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { CategoricalColorScale, ChartProps } from '@superset-ui/core';
+import {
+  CategoricalColorScale,
+  ChartProps,
+  createSmartDateFormatter,
+  getTimeFormatterRegistry,
+  SMART_DATE_ID,
+} from '@superset-ui/core';
 import { GenericDataType } from '@apache-superset/core/api/core';
 import { supersetTheme } from '@apache-superset/core/ui';
 import type { SeriesOption } from 'echarts';
@@ -33,6 +39,13 @@ import {
 } from '../../src/Timeseries/transformers';
 import transformProps from '../../src/Timeseries/transformProps';
 import * as seriesUtils from '../../src/utils/series';
+
+beforeAll(() => {
+  getTimeFormatterRegistry().registerValue(
+    SMART_DATE_ID,
+    createSmartDateFormatter(),
+  );
+});
 
 // Mock the colorScale function to return different colors based on key
 const mockColorScale = jest.fn((key: string) => {
@@ -287,6 +300,99 @@ test('should configure time axis labels to show max label for last month visibil
       }),
     }),
   );
+});
+
+test('should provide a defined formatter when showMaxLabel is true to prevent raw timestamp display', () => {
+  const formData = {
+    colorScheme: 'bnbColors',
+    datasource: '3__table',
+    granularity_sqla: 'ds',
+    metric: 'sum__num',
+    viz_type: 'my_viz',
+  };
+  const queriesData = [
+    {
+      data: [
+        { sum__num: 100, __timestamp: new Date('2020-01-01').getTime() },
+        { sum__num: 200, __timestamp: new Date('2021-01-01').getTime() },
+        { sum__num: 300, __timestamp: new Date('2022-01-01').getTime() },
+        { sum__num: 400, __timestamp: new Date('2023-01-01').getTime() },
+      ],
+      colnames: ['sum__num', '__timestamp'],
+      coltypes: [GenericDataType.Numeric, GenericDataType.Temporal],
+    },
+  ];
+  const chartProps = new ChartProps({
+    formData,
+    width: 800,
+    height: 600,
+    queriesData,
+    theme: supersetTheme,
+  });
+
+  const result = transformProps(
+    chartProps as unknown as EchartsTimeseriesChartProps,
+  );
+
+  const xAxis = result.echartOptions.xAxis as {
+    axisLabel: {
+      showMaxLabel?: boolean;
+      formatter?: (...args: unknown[]) => string;
+    };
+  };
+  // showMaxLabel must be true and formatter must be defined so ECharts
+  // formats the forced max label consistently with other labels
+  expect(xAxis.axisLabel.showMaxLabel).toBe(true);
+  expect(xAxis.axisLabel.formatter).toBeDefined();
+  expect(typeof xAxis.axisLabel.formatter).toBe('function');
+
+  // The max tick (last data point) must format as a year, not a raw timestamp
+  const maxTimestamp = new Date('2023-01-01').getTime();
+  expect(xAxis.axisLabel.formatter!(maxTimestamp)).toBe('2023');
+});
+
+test('should format max label using explicit xAxisTimeFormat when showMaxLabel is true', () => {
+  const formData = {
+    colorScheme: 'bnbColors',
+    datasource: '3__table',
+    granularity_sqla: 'ds',
+    metric: 'sum__num',
+    viz_type: 'my_viz',
+    x_axis_time_format: '%Y-%m-%d',
+  };
+  const queriesData = [
+    {
+      data: [
+        { sum__num: 100, __timestamp: new Date('2022-06-15').getTime() },
+        { sum__num: 200, __timestamp: new Date('2023-03-20').getTime() },
+      ],
+      colnames: ['sum__num', '__timestamp'],
+      coltypes: [GenericDataType.Numeric, GenericDataType.Temporal],
+    },
+  ];
+  const chartProps = new ChartProps({
+    formData,
+    width: 800,
+    height: 600,
+    queriesData,
+    theme: supersetTheme,
+  });
+
+  const result = transformProps(
+    chartProps as unknown as EchartsTimeseriesChartProps,
+  );
+
+  const xAxis = result.echartOptions.xAxis as {
+    axisLabel: {
+      showMaxLabel?: boolean;
+      formatter?: (...args: unknown[]) => string;
+    };
+  };
+  expect(xAxis.axisLabel.showMaxLabel).toBe(true);
+  expect(xAxis.axisLabel.formatter).toBeDefined();
+
+  const maxTimestamp = new Date('2023-03-20').getTime();
+  expect(xAxis.axisLabel.formatter!(maxTimestamp)).toBe('2023-03-20');
 });
 
 function setupGetChartPaddingMock(): jest.SpyInstance {
