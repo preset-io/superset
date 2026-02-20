@@ -208,7 +208,7 @@ class DatabendParametersSchema(Schema):
         allow_none=True, metadata={"description": __("Database name")}
     )
     encryption = fields.Boolean(
-        default=True,
+        dump_default=True,
         metadata={"description": __("Use an encrypted connection to the database")},
     )
     query = fields.Dict(
