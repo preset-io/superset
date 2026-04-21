@@ -710,7 +710,7 @@ psycopg2-binary==2.9.9
     # via apache-superset
 py-key-value-aio==0.4.4
     # via fastmcp
-pyarrow==16.1.0
+pyarrow==20.0.0
     # via
     #   -c requirements/base-constraint.txt
     #   apache-superset
@@ -778,7 +778,7 @@ pynacl==1.6.2
     # via
     #   -c requirements/base-constraint.txt
     #   paramiko
-pyopenssl==25.3.0
+pyopenssl==26.0.0
     # via
     #   -c requirements/base-constraint.txt
     #   shillelagh
@@ -865,7 +865,7 @@ referencing==0.36.2
     #   jsonschema
     #   jsonschema-path
     #   jsonschema-specifications
-requests==2.32.4
+requests==2.33.0
     # via
     #   -c requirements/base-constraint.txt
     #   docker
@@ -918,7 +918,7 @@ selenium==4.32.0
     #   apache-superset
 semver==3.0.4
     # via apache-superset-extensions-cli
-setuptools==80.9.0
+setuptools==80.10.1
     # via
     #   -c requirements/base-constraint.txt
     #   nodeenv

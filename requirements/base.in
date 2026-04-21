@@ -25,6 +25,14 @@ filelock>=3.20.3,<4.0.0
 # Security: decompression bomb fix (required by aiohttp 3.13.3)
 brotli>=1.2.0,<2.0.0
 numexpr>=2.9.0
+# Security: CVE-2024-52338 (CRITICAL) - Deserialization of untrusted data in IPC/Parquet readers
+pyarrow>=20.0.0
+# Security: CVE-2026-27459 - pyopenssl certificate validation
+pyopenssl>=26.0.0
+# Security: CVE-2026-25645 (MEDIUM) - Insecure Temporary File
+requests>=2.33.0
+# Security: CVE-2026-23949 (HIGH) - Zip Slip path traversal via jaraco.context
+setuptools>=80.10.1,<81
 
 # 5.0.0 has a sensitive deprecation used in other libs
 # -> https://github.com/aio-libs/async-timeout/blob/master/CHANGES.rst#500-2024-10-31
@@ -47,4 +55,4 @@ openapi-schema-validator>=0.6.3
 # pkg_resources is deprecated and will be removed in setuptools 81+ (around 2025-11-30)
 # Known affected packages: Preset's 'clients' package
 # See docs/docs/contributing/pkg-resources-migration.md for details
-setuptools<81
+# (minimum version pinned above for CVE-2026-23949)
