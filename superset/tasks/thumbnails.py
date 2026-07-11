@@ -37,7 +37,7 @@ from superset.utils.webdriver import WindowSize
 logger = logging.getLogger(__name__)
 
 
-@celery_app.task(name="cache_chart_thumbnail", soft_time_limit=300)
+@celery_app.task(name="cache_chart_thumbnail", time_limit=120, soft_time_limit=90)
 def cache_chart_thumbnail(
     current_user: Optional[str],
     chart_id: str,
@@ -74,7 +74,7 @@ def cache_chart_thumbnail(
     return None
 
 
-@celery_app.task(name="cache_dashboard_thumbnail", soft_time_limit=300)
+@celery_app.task(name="cache_dashboard_thumbnail", time_limit=120, soft_time_limit=90)
 def cache_dashboard_thumbnail(
     current_user: Optional[str],
     dashboard_id: int,

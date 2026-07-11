@@ -513,6 +513,7 @@ class TrinoEngineSpec(PrestoBaseEngineSpec):
         user_agent = get_user_agent(database, source)
 
         connect_args.setdefault("source", user_agent)
+        connect_args.setdefault("request_timeout", 60)
 
         if database.server_cert:
             connect_args["http_scheme"] = "https"

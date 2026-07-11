@@ -82,7 +82,17 @@ def _assert_columns_equal(actual_cols, expected_cols) -> None:
 @pytest.mark.parametrize(
     "extra,expected",
     [
-        ({}, {"engine_params": {"connect_args": {"source": "Apache Superset"}}}),
+        (
+            {},
+            {
+                "engine_params": {
+                    "connect_args": {
+                        "source": "Apache Superset",
+                        "request_timeout": 60,
+                    }
+                }
+            },
+        ),
         (
             {
                 "first": 1,
@@ -95,7 +105,11 @@ def _assert_columns_equal(actual_cols, expected_cols) -> None:
                 "first": 1,
                 "engine_params": {
                     "second": "two",
-                    "connect_args": {"source": "foobar", "third": "three"},
+                    "connect_args": {
+                        "source": "foobar",
+                        "third": "three",
+                        "request_timeout": 60,
+                    },
                 },
             },
         ),

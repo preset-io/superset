@@ -808,6 +808,9 @@ WHERE datistemplate = false;
         """
         For Postgres, the path to a SSL certificate is placed in `connect_args`.
 
+        Also sets conservative connect and statement timeouts by default, so a
+        slow or unresponsive database can't hold a connection indefinitely.
+
         :param database: database instance from which to extract extras
         :raises CertificateException: If certificate is not valid/unparseable
         :raises SupersetException: If database extra json payload is unparseable
@@ -817,14 +820,20 @@ WHERE datistemplate = false;
         except json.JSONDecodeError as ex:
             raise SupersetException("Unable to parse database extras") from ex
 
+        engine_params = extra.get("engine_params", {})
+        connect_args = engine_params.get("connect_args", {})
+        connect_args.setdefault("connect_timeout", 10)
+        options = connect_args.get("options", "")
+        if "statement_timeout" not in options:
+            connect_args["options"] = f"{options} -c statement_timeout=60000".strip()
+
         if database.server_cert:
-            engine_params = extra.get("engine_params", {})
-            connect_args = engine_params.get("connect_args", {})
             connect_args["sslmode"] = connect_args.get("sslmode", "verify-full")
             path = utils.create_ssl_cert_file(database.server_cert)
             connect_args["sslrootcert"] = path
-            engine_params["connect_args"] = connect_args
-            extra["engine_params"] = engine_params
+
+        engine_params["connect_args"] = connect_args
+        extra["engine_params"] = engine_params
         return extra
 
     @classmethod

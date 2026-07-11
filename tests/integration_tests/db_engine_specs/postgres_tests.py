@@ -123,7 +123,9 @@ class TestPostgresDbEngineSpec(SupersetTestCase):
         database.extra = default_db_extra
         database.server_cert = None
         extras = PostgresEngineSpec.get_extra_params(database)
-        assert "connect_args" not in extras["engine_params"]
+        connect_args = extras["engine_params"]["connect_args"]
+        assert connect_args["connect_timeout"] == 10
+        assert connect_args["options"] == "-c statement_timeout=60000"
 
     def test_extras_with_ssl_default(self):
         database = mock.Mock()
