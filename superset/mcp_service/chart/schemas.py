@@ -2321,6 +2321,22 @@ class ChartData(BaseModel):
     # Data insights
     row_count: int = Field(description="Rows returned")
     total_rows: int | None = Field(description="Total available rows")
+
+    @field_validator("total_rows", mode="before")
+    @classmethod
+    def _coerce_total_rows(cls, v: Any) -> int | None:
+        # query_result["rowcount"] can arrive as a float (e.g. numpy.float64
+        # or a plain Python float from certain DB drivers).  pydantic_core's
+        # to_json serializer is strict about int fields and raises
+        # PydanticSerializationError if it finds a float stored there, so we
+        # force the conversion here before the value is stored.
+        if v is None:
+            return None
+        try:
+            return int(v)
+        except (TypeError, ValueError):
+            return None
+
     data_freshness: datetime | None = Field(description="When data was last updated")
 
     # LLM-friendly summaries

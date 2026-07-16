@@ -227,9 +227,9 @@ class TestBigNumberChartFallback:
                 "viz_type": viz_type,
             }
             metrics, _ = _extract_metrics_and_groupby(form_data)
-            assert metrics == [{"label": "plural_metric"}], (
-                f"{viz_type} should use plural metrics"
-            )
+            assert metrics == [
+                {"label": "plural_metric"}
+            ], f"{viz_type} should use plural metrics"
 
     def test_pop_kpi_uses_singular_metric(self):
         """Test that pop_kpi (BigNumberPeriodOverPeriod) uses singular metric."""
@@ -1258,9 +1258,9 @@ class TestChartLookupEagerLoading:
             call = mock_find.call_args
             assert call.args == (42,)
             query_options = call.kwargs.get("query_options")
-            assert query_options is not None, (
-                "Chart lookup must pass query_options for eager-loading."
-            )
+            assert (
+                query_options is not None
+            ), "Chart lookup must pass query_options for eager-loading."
             assert len(query_options) == 1
             load_path = _extract_metrics_load_path(query_options[0])
             assert load_path == [
@@ -1291,9 +1291,9 @@ class TestChartLookupEagerLoading:
             assert call.args == (uuid,)
             assert call.kwargs.get("id_column") == "uuid"
             query_options = call.kwargs.get("query_options")
-            assert query_options is not None, (
-                "UUID chart lookup must pass query_options for eager-loading."
-            )
+            assert (
+                query_options is not None
+            ), "UUID chart lookup must pass query_options for eager-loading."
             load_path = _extract_metrics_load_path(query_options[0])
             assert load_path == [
                 "table",
@@ -1471,3 +1471,65 @@ def test_bool_isinstance_check_before_int():
 def test_coerce_row_limit(value: Any, default: int, expected: int) -> None:
     """_coerce_row_limit tolerates str/None row_limits from chart.params."""
     assert _coerce_row_limit(value, default) == expected
+
+
+def _make_chart_data(**overrides: Any) -> ChartData:
+    """Build a minimal valid ChartData for testing."""
+    from superset.mcp_service.common.cache_schemas import CacheStatus
+
+    defaults: dict[str, Any] = {
+        "chart_id": 1,
+        "chart_name": "Test Chart",
+        "chart_type": "table",
+        "columns": [],
+        "data": [{"metric": 3.5}],
+        "row_count": 1,
+        "total_rows": 1,
+        "data_freshness": None,
+        "summary": "summary",
+        "insights": [],
+        "data_quality": {},
+        "recommended_visualizations": [],
+        "performance": PerformanceMetadata(
+            query_duration_ms=42,
+            cache_status="fresh_query",
+        ),
+        "cache_status": CacheStatus(cache_hit=False),
+    }
+    defaults.update(overrides)
+    return ChartData(**defaults)
+
+
+class TestChartDataTotalRowsCoercion:
+    """Regression tests for SC-113647: float total_rows causes PydanticSerializationError."""
+
+    def test_float_total_rows_is_coerced_to_int(self) -> None:
+        """total_rows from query_result['rowcount'] can be a float; must store as int."""
+        chart_data = _make_chart_data(total_rows=5.0)
+        assert chart_data.total_rows == 5
+        assert isinstance(chart_data.total_rows, int)
+
+    def test_float_total_rows_serializes_without_error(self) -> None:
+        """pydantic_core.to_json must not raise when total_rows was originally a float."""
+        import pydantic_core
+
+        chart_data = _make_chart_data(total_rows=5.0)
+        # This is the exact call fastmcp makes in default_serializer; it raised
+        # PydanticSerializationError before the fix.
+        result = pydantic_core.to_json(chart_data, fallback=str).decode()
+        assert '"total_rows":5' in result
+
+    def test_none_total_rows_passes_through(self) -> None:
+        chart_data = _make_chart_data(total_rows=None)
+        assert chart_data.total_rows is None
+
+    def test_int_total_rows_unchanged(self) -> None:
+        chart_data = _make_chart_data(total_rows=42)
+        assert chart_data.total_rows == 42
+        assert isinstance(chart_data.total_rows, int)
+
+    def test_non_integer_float_total_rows_is_truncated(self) -> None:
+        """A non-integer float (e.g. 5.9) is coerced via int(), truncating toward zero."""
+        chart_data = _make_chart_data(total_rows=5.9)
+        assert chart_data.total_rows == 5
+        assert isinstance(chart_data.total_rows, int)
