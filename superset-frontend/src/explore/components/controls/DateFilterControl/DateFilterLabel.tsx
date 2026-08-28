@@ -346,7 +346,6 @@ export default function DateFilterLabel(props: DateFilterControlProps) {
 
   const popoverContent = (
     <ControlPopover
-      autoAdjustOverflow={false}
       trigger="click"
       placement="right"
       content={overlayContent}
@@ -359,7 +358,7 @@ export default function DateFilterLabel(props: DateFilterControlProps) {
       defaultOpen={show}
       open={show}
       onOpenChange={toggleOverlay}
-      overlayStyle={{ width: '600px' }}
+      overlayStyle={{ width: 'min(600px, calc(100% - 32px))' }}
       destroyOnHidden
       getPopupContainer={nodeTrigger =>
         isOverflowingFilterBar
