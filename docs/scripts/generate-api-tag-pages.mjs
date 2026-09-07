@@ -161,7 +161,7 @@ function main() {
     let table = '| Method | Endpoint | Path |\n';
     table += '|--------|----------|------|\n';
     for (const ep of endpoints) {
-      table += `| \`${ep.method}\` | [${ep.summary}](./${ep.slug}) | \`${ep.path}\` |\n`;
+      table += `| \`${ep.method}\` | [${ep.summary}](./${ep.slug}.api.mdx) | \`${ep.path}\` |\n`;
     }
 
     // Generate the new MDX content
