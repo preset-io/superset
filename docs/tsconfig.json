@@ -40,7 +40,8 @@
       // Using /ui path matches the established pattern used throughout the Superset codebase
       "@apache-superset/core/components": ["./src/types/apache-superset-core"],
       "@site/*": ["./*"],
-      "*": ["./src/*", "./node_modules/*"]
+      // Let package imports use normal resolution, including @types fallbacks.
+      "*": ["./src/*"]
     }
   },
   "include": ["./src/**/*.ts", "./src/**/*.tsx", "./src/**/*.d.ts"],
