@@ -412,3 +412,74 @@ def test_set_and_log_cache_set_failure_logs(mocker: MockerFixture) -> None:
 
     mock_logger.warning.assert_called_once_with("Could not cache key %s", "my_key")
     mock_logger.exception.assert_called_once_with(boom)
+
+
+def test_oversized_data_cache_value_disabled_no_serialization(
+    mocker: MockerFixture,
+) -> None:
+    """When the cap is None (default), the guard never blocks and never pickles."""
+    from superset.utils.cache import oversized_data_cache_value
+
+    config = _patch_config(mocker, DATA_CACHE_MAX_VALUE_SIZE=None)
+    mock_dumps = mocker.patch("superset.utils.cache.pickle.dumps")
+
+    assert oversized_data_cache_value("k", {"rows": [1, 2, 3]}) is False
+    mock_dumps.assert_not_called()
+    assert (
+        mocker.call("skip_cache_value_too_large")
+        not in config["STATS_LOGGER"].incr.mock_calls
+    )
+
+
+def test_oversized_data_cache_value_under_threshold(mocker: MockerFixture) -> None:
+    """A value under the cap is allowed (guard returns False)."""
+    from superset.utils.cache import oversized_data_cache_value
+
+    _patch_config(mocker, DATA_CACHE_MAX_VALUE_SIZE=10 * 1024 * 1024)
+
+    assert oversized_data_cache_value("k", {"rows": [1, 2, 3]}) is False
+
+
+def test_oversized_data_cache_value_over_threshold(mocker: MockerFixture) -> None:
+    """A value over the cap is blocked and the skip stat is incremented.
+
+    This is the guard raw DATA-cache writers (SQL executor, datasource column
+    values, compatible metrics/dimensions) share, so an oversized payload can't
+    be written on those paths either.
+    """
+    from superset.utils.cache import oversized_data_cache_value
+
+    config = _patch_config(mocker, DATA_CACHE_MAX_VALUE_SIZE=10)
+
+    assert oversized_data_cache_value("k", {"rows": ["x" * 1000]}) is True
+    config["STATS_LOGGER"].incr.assert_called_once_with("skip_cache_value_too_large")
+
+
+def test_set_data_cache_if_within_size_persists_small_value(
+    mocker: MockerFixture,
+) -> None:
+    """The raw-writer wrapper stores small values without altering their shape."""
+    from superset.utils.cache import set_data_cache_if_within_size
+
+    _patch_config(mocker, DATA_CACHE_MAX_VALUE_SIZE=10 * 1024 * 1024)
+    cm = mocker.patch("superset.utils.cache.cache_manager")
+    cm.data_cache.set.return_value = True
+    data_cache = cm.data_cache
+
+    payload = [{"a": 1}, {"a": 2}]
+    assert set_data_cache_if_within_size("k", payload, timeout=300) is True
+    data_cache.set.assert_called_once_with("k", payload, timeout=300)
+
+
+def test_set_data_cache_if_within_size_skips_oversized_value(
+    mocker: MockerFixture,
+) -> None:
+    """The wrapper skips the backend write when the value exceeds the cap."""
+    from superset.utils.cache import set_data_cache_if_within_size
+
+    config = _patch_config(mocker, DATA_CACHE_MAX_VALUE_SIZE=10)
+    data_cache = mocker.patch("superset.utils.cache.cache_manager").data_cache
+
+    assert set_data_cache_if_within_size("k", {"rows": ["x" * 1000]}) is False
+    data_cache.set.assert_not_called()
+    config["STATS_LOGGER"].incr.assert_called_once_with("skip_cache_value_too_large")
