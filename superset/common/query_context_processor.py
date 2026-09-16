@@ -59,7 +59,6 @@ from superset.utils.core import (
     get_column_name,
     get_column_names_from_columns,
     get_column_names_from_metrics,
-    get_user_id,
     is_adhoc_column,
     is_adhoc_metric,
 )
@@ -410,7 +409,7 @@ class QueryContextProcessor:
         extra_cache_keys = datasource.get_extra_cache_keys(query_obj.to_dict())
 
         # Annotation data is cached on the same entry as the dataframe, so the
-        # key must also bind the annotation sources' security context.
+        # key must also bind the annotation sources' security scope.
         if query_obj and query_obj.annotation_layers:
             kwargs["annotation_context"] = self._annotation_cache_context(query_obj)
 
@@ -429,29 +428,90 @@ class QueryContextProcessor:
 
     def _annotation_cache_context(self, query_obj: QueryObject) -> dict[str, Any]:
         """
-        Cache-key material binding cached annotation data to its security
-        context.
+        Cache-key material binding cached annotation data to the *security
+        scope* that produced it, rather than to the individual requesting user.
 
-        Annotation payloads are fetched per requesting user and stored on the
-        same cache entry as the dataframe, so the key also binds the requesting
-        user and, for chart-backed layers, the RLS clauses of the referenced
-        chart's datasource.
+        Annotation payloads are fetched under the requesting user's security
+        context and stored on the same cache entry as the dataframe. Binding the
+        raw user id fanned the same (potentially large) result out to one cache
+        copy per user. Instead bind only the inputs that actually determine
+        which annotation data a user can see, so users who share that scope
+        share a cache entry while users with a different scope -- or no access
+        -- never read each other's data:
+
+        * NATIVE layers expose global annotation records gated solely by the
+          ``can_read`` permission on ``Annotation``; a single access flag
+          captures the only user-dependent dimension.
+        * Chart-backed (``line``/``table``) layers run a query against the
+          referenced chart's datasource. Bind both whether the user can access
+          that datasource (its access check otherwise only runs on a cache miss,
+          not on a hit) and the annotation chart's own data cache key, which
+          already folds in the datasource's RLS clauses and any per-user
+          Jinja/virtual-dataset RLS predicates.
         """
-        source_rls: dict[str, list[str] | None] = {}
+        context: dict[str, Any] = {}
+
+        if any(
+            layer.get("sourceType") == "NATIVE" for layer in query_obj.annotation_layers
+        ):
+            context["annotation_read"] = security_manager.can_access(
+                "can_read", "Annotation"
+            )
+
+        source_scope: dict[str, Any] = {}
         for layer in query_obj.annotation_layers:
             if layer.get("sourceType") not in ("line", "table"):
                 continue
             layer_value = layer.get("value")
-            chart = (
-                ChartDAO.find_by_id(layer_value) if layer_value is not None else None
+            source_scope[str(layer_value)] = self._annotation_source_scope(layer_value)
+        if source_scope:
+            context["source_scope"] = source_scope
+
+        return context
+
+    def _annotation_source_scope(self, layer_value: Any) -> dict[str, Any]:
+        """
+        Access and data-identity cache-key material for one chart-backed
+        annotation layer.
+
+        ``access`` distinguishes users who may fetch the referenced chart's data
+        from those who may not, so a denied user never reads an authorized
+        user's cached annotation payload. ``data_key`` is the annotation chart's
+        own query cache key, which captures the datasource version, RLS clauses,
+        and any per-user Jinja/virtual-dataset RLS material -- everything that
+        makes the fetched annotation data differ between users. Users who match
+        on both dedupe onto a single cache entry.
+        """
+        chart = ChartDAO.find_by_id(layer_value) if layer_value is not None else None
+        datasource = chart.datasource if chart else None
+        if chart is None or datasource is None:
+            return {"access": None, "data_key": None}
+
+        scope: dict[str, Any] = {
+            "access": security_manager.can_access_datasource(datasource),
+            # Fall back to the RLS-clause identity when the referenced chart's
+            # own cache key cannot be derived (e.g. it has no saved query
+            # context), so a scope change is never silently dropped. In that
+            # case the annotation fetch itself fails and nothing is persisted,
+            # but the fallback keeps the key correct regardless.
+            "data_key": security_manager.get_rls_cache_key(datasource),
+        }
+        try:
+            if annotation_query_context := chart.get_query_context():
+                scope["data_key"] = [
+                    annotation_query_context.query_cache_key(query_object)
+                    for query_object in annotation_query_context.queries
+                ]
+        except Exception:  # pylint: disable=broad-except  # noqa: BLE001
+            # A malformed annotation chart must not break the primary query's
+            # cache key; the RLS-clause fallback above still binds scope.
+            logger.warning(
+                "Could not derive annotation cache key for chart %s; "
+                "falling back to RLS-clause identity",
+                layer_value,
+                exc_info=True,
             )
-            annotation_datasource = chart.datasource if chart else None
-            source_rls[str(layer.get("value"))] = (
-                security_manager.get_rls_cache_key(annotation_datasource)
-                if annotation_datasource
-                else None
-            )
-        return {"user_id": get_user_id(), "source_rls": source_rls}
+        return scope
 
     def get_query_result(self, query_object: QueryObject) -> QueryResult:
         """
