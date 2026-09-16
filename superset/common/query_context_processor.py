@@ -487,31 +487,41 @@ class QueryContextProcessor:
         if chart is None or datasource is None:
             return {"access": None, "data_key": None}
 
-        scope: dict[str, Any] = {
-            "access": security_manager.can_access_datasource(datasource),
-            # Fall back to the RLS-clause identity when the referenced chart's
-            # own cache key cannot be derived (e.g. it has no saved query
-            # context), so a scope change is never silently dropped. In that
-            # case the annotation fetch itself fails and nothing is persisted,
-            # but the fallback keeps the key correct regardless.
-            "data_key": security_manager.get_rls_cache_key(datasource),
-        }
         try:
-            if annotation_query_context := chart.get_query_context():
-                scope["data_key"] = [
+            access = security_manager.can_access_datasource(datasource)
+            # The annotation chart's own query cache key already captures the
+            # datasource version, RLS clauses, and any per-user Jinja /
+            # virtual-dataset RLS material. Fall back to the RLS-clause identity
+            # only when the chart has no saved query context to key on.
+            annotation_query_context = chart.get_query_context()
+            data_key: Any = (
+                [
                     annotation_query_context.query_cache_key(query_object)
                     for query_object in annotation_query_context.queries
                 ]
-        except Exception:  # pylint: disable=broad-except  # noqa: BLE001
-            # A malformed annotation chart must not break the primary query's
-            # cache key; the RLS-clause fallback above still binds scope.
+                if annotation_query_context is not None
+                else security_manager.get_rls_cache_key(datasource)
+            )
+        except SupersetException:
+            # Only the annotation fetch's own failure mode is swallowed here:
+            # ``get_viz_annotation_data`` surfaces exactly these
+            # ``SupersetException``-family errors (access, RLS, query build) and
+            # marks the result FAILED so nothing is persisted. Because key
+            # derivation fails on the same inputs, a fallback key is never used
+            # to store real data; it only needs to avoid silently deduping this
+            # scope onto a successfully-derived one, so it fails closed. Any
+            # other (unexpected) error propagates rather than weakening the key.
             logger.warning(
                 "Could not derive annotation cache key for chart %s; "
-                "falling back to RLS-clause identity",
+                "falling back to a fail-closed scope",
                 layer_value,
                 exc_info=True,
             )
-        return scope
+            return {
+                "access": False,
+                "data_key": security_manager.get_rls_cache_key(datasource),
+            }
+        return {"access": access, "data_key": data_key}
 
     def get_query_result(self, query_object: QueryObject) -> QueryResult:
         """

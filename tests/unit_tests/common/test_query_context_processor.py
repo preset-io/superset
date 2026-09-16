@@ -193,6 +193,11 @@ def test_annotation_cache_key_separates_chart_layer_by_rls(processor):
         processor.query_cache_key(query_obj)
         processor.query_cache_key(query_obj)
     contexts = _annotation_contexts(query_obj)
+    # Assert the concrete scope so this fails on the pre-fix key shape (which has
+    # no ``source_scope``) rather than passing merely because two MagicMock RLS
+    # objects happen to differ.
+    assert contexts[0]["source_scope"]["7"] == {"access": True, "data_key": ["ak1"]}
+    assert contexts[1]["source_scope"]["7"] == {"access": True, "data_key": ["ak2"]}
     assert contexts[0] != contexts[1]
 
 
@@ -215,6 +220,10 @@ def test_annotation_cache_key_separates_chart_layer_by_access(processor):
         processor.query_cache_key(query_obj)
         processor.query_cache_key(query_obj)
     contexts = _annotation_contexts(query_obj)
+    # Assert the concrete scope so this fails on the pre-fix key shape (which has
+    # no ``source_scope``) and genuinely guards the access dimension.
+    assert contexts[0]["source_scope"]["7"] == {"access": True, "data_key": ["ak"]}
+    assert contexts[1]["source_scope"]["7"] == {"access": False, "data_key": ["ak"]}
     assert contexts[0] != contexts[1]
 
 
