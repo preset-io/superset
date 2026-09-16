@@ -397,6 +397,41 @@ def test_set_and_log_cache_under_threshold_metadata_db(mocker: MockerFixture) ->
     mock_session.add.assert_called_once_with(mock_cache_key.return_value)
 
 
+def test_data_cache_max_value_size_default_is_protective() -> None:
+    """The shipped default caps oversized data-cache entries out of the box.
+
+    Regression guard: the oversized-value skip is only effective when
+    ``DATA_CACHE_MAX_VALUE_SIZE`` has a value; a ``None`` default (its original
+    state) silently disables the guard and lets a heavy tail of multi-tens-of-MB
+    results accumulate in Redis until it hits its memory limit. This asserts the
+    default is a sane, positive cap that still exceeds ordinary chart/query
+    payloads. Operators can raise it or set it to ``None`` explicitly.
+    """
+    import superset.config as config
+
+    assert config.DATA_CACHE_MAX_VALUE_SIZE is not None
+    assert isinstance(config.DATA_CACHE_MAX_VALUE_SIZE, int)
+    # Comfortably above typical payloads, well below the multi-tens-of-MB outliers.
+    assert 1024 * 1024 <= config.DATA_CACHE_MAX_VALUE_SIZE <= 20 * 1024 * 1024
+
+
+def test_set_and_log_cache_applies_default_timeout(mocker: MockerFixture) -> None:
+    """Every persisted value carries a TTL: an unset timeout falls back to
+    ``CACHE_DEFAULT_TIMEOUT`` and is passed atomically to ``cache.set`` (SETEX),
+    never written TTL-less. Guards against a code path that could leave a data-cache
+    key with no expiry, which would let it linger in Redis indefinitely."""
+    from superset.utils.cache import set_and_log_cache
+
+    _patch_config(mocker)  # CACHE_DEFAULT_TIMEOUT == 100, no explicit timeout
+    cache_instance = _make_cache_instance(mocker)
+
+    set_and_log_cache(cache_instance, "my_key", {"df": "small"})
+
+    cache_instance.set.assert_called_once()
+    _, kwargs = cache_instance.set.call_args
+    assert kwargs["timeout"] == 100
+
+
 def test_set_and_log_cache_set_failure_logs(mocker: MockerFixture) -> None:
     """A failure inside the try block is caught and logged as 'Could not cache key'."""
     from superset.utils.cache import set_and_log_cache

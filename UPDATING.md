@@ -24,6 +24,19 @@ assists people when migrating to a new version.
 
 ## Next
 
+### `DATA_CACHE_MAX_VALUE_SIZE` now defaults to 5 MB
+
+The upper bound on the serialized size of a single value written to the data
+cache (chart and SQL query results) now defaults to `5 * 1024 * 1024` (5 MB)
+instead of `None`. Results whose serialized size exceeds the limit are no longer
+written to the data cache — the chart still renders, but the next load re-queries
+the datasource instead of getting a cache hit. Each skip emits a WARNING log
+naming the key and byte size and increments the `skip_cache_value_too_large`
+statsd counter. This protects the cache backend (e.g. Redis) from being driven
+toward its memory limit by a heavy tail of very large results. To restore the
+previous unbounded behavior, set `DATA_CACHE_MAX_VALUE_SIZE = None`; to allow
+larger cached results, raise the limit (e.g. `10 * 1024 * 1024`).
+
 - `superset deletion-retention force-purge` now exits **1** when the target is
   blocked by a deletion rule or is not found (the messages are unchanged), so a
   scripted compliance erasure cannot mistake a refusal for a completed purge.
