@@ -91,6 +91,19 @@ error notice. This does not authorize replay of data-bearing notifications.
 
 - The Databricks extra requires databricks-sqlalchemy 2.x (at least 2.0.1). The 1.x dialect requires SQLAlchemy below 2.
 
+### `DATA_CACHE_MAX_VALUE_SIZE` now defaults to 10 MB
+
+The upper bound on the serialized size of a single value written to the data
+cache (chart and SQL query results) now defaults to `10 * 1024 * 1024` (10 MB)
+instead of `None`. Results whose serialized size exceeds the limit are no longer
+written to the data cache — the chart still renders, but the next load re-queries
+the datasource instead of getting a cache hit. Each skip emits a WARNING log
+naming the key and byte size and increments the `skip_cache_value_too_large`
+statsd counter. This protects the cache backend (e.g. Redis) from being driven
+toward its memory limit by a heavy tail of very large results. To restore the
+previous unbounded behavior, set `DATA_CACHE_MAX_VALUE_SIZE = None`; to allow
+larger cached results, raise the limit further.
+
 - `superset deletion-retention force-purge` now exits **1** when the target is
   blocked by a deletion rule or is not found (the messages are unchanged), so a
   scripted compliance erasure cannot mistake a refusal for a completed purge.

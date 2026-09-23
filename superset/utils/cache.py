@@ -91,8 +91,9 @@ def set_and_log_cache(
         # Skip caching results that are too large to protect the cache backend
         # (e.g. Redis/Memcached) from being flooded by huge result sets. The chart
         # still renders; the value is simply not cached, causing a re-query on the
-        # next load instead of a cache hit. Disabled when DATA_CACHE_MAX_VALUE_SIZE
-        # is None (the default), in which case no serialization overhead is incurred.
+        # next load instead of a cache hit. Skipped entirely when
+        # DATA_CACHE_MAX_VALUE_SIZE is None, in which case no serialization overhead
+        # is incurred.
         max_value_size = app.config.get("DATA_CACHE_MAX_VALUE_SIZE")
         if max_value_size is not None:
             value_size = len(pickle.dumps(value, protocol=pickle.HIGHEST_PROTOCOL))
