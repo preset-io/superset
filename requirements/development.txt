@@ -603,7 +603,7 @@ matplotlib==3.9.0
     # via prophet
 mccabe==0.7.0
     # via pylint
-mcp==1.29.1
+mcp==1.30.0
     # via
     #   apache-superset
     #   fastmcp-slim
