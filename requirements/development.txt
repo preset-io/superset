@@ -563,7 +563,7 @@ lz4==4.4.5
     # via
     #   clickhouse-connect
     #   trino
-mako==1.4.1
+mako==1.4.2
     # via
     #   -c requirements/base-constraint.txt
     #   alembic
@@ -623,7 +623,7 @@ msgspec==0.19.0
     # via
     #   -c requirements/base-constraint.txt
     #   flask-session
-multidict==6.7.1
+multidict==6.9.1
     # via
     #   aiohttp
     #   yarl
