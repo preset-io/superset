@@ -657,7 +657,7 @@ numpy==2.4.6
     #   pandas
     #   pandas-gbq
     #   prophet
-oauthlib==3.2.2
+oauthlib==4.0.0
     # via requests-oauthlib
 odfpy==1.4.1
     # via
@@ -1223,7 +1223,7 @@ vine==5.1.0
     #   amqp
     #   celery
     #   kombu
-virtualenv==20.36.1
+virtualenv==21.7.13
     # via pre-commit
 watchdog==6.0.0
     # via
