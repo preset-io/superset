@@ -114,7 +114,7 @@ rpds-py==2026.9.1
 send2trash==2.1.0
 shapely==2.1.1
 six==1.17.0
-soupsieve==2.10
+soupsieve==4.0.1
 stack-data==0.6.3
 terminado==0.18.1
 tinycss2==1.5.1
