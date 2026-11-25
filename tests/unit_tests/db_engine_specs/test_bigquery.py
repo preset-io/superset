@@ -434,6 +434,25 @@ def test_get_default_catalog(mocker: MockerFixture) -> None:
     assert BigQueryEngineSpec.get_default_catalog(database) == "project"
 
 
+def test_get_catalog_names_quota_exceeded(mocker: MockerFixture) -> None:
+    """
+    A quota/rate-limit refusal from the BigQuery API (e.g. during a
+    best-effort permission sync on import) must not propagate -- catalog
+    listing degrades to an empty result, like the missing-credentials case.
+    """
+    from google.api_core.exceptions import Forbidden
+
+    from superset.db_engine_specs.bigquery import BigQueryEngineSpec
+    from superset.models.core import Database
+
+    mocker.patch.object(Database, "get_sqla_engine")
+    client = mocker.patch.object(BigQueryEngineSpec, "_get_client").return_value
+    client.list_projects.side_effect = Forbidden("Quota exceeded")
+
+    database = Database(database_name="my_db", sqlalchemy_uri="bigquery://project")
+    assert BigQueryEngineSpec.get_catalog_names(database, mock.Mock()) == set()
+
+
 @pytest.mark.parametrize(
     ("sqlalchemy_uri", "schema", "expected_project"),
     [

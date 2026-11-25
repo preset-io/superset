@@ -851,6 +851,8 @@ class BigQueryEngineSpec(BaseEngineSpec):  # pylint: disable=too-many-public-met
 
         In BigQuery, a catalog is called a "project".
         """
+        from google.api_core.exceptions import GoogleAPICallError
+
         engine: Engine
         with database.get_sqla_engine() as engine:
             try:
@@ -864,7 +866,16 @@ class BigQueryEngineSpec(BaseEngineSpec):  # pylint: disable=too-many-public-met
                 # return {} here, since it will be repopulated when creds are added
                 return set()
 
-            projects = client.list_projects()
+            try:
+                projects = client.list_projects()
+            except GoogleAPICallError as ex:
+                # e.g. a quota/rate-limit refusal (403) on the BigQuery API
+                # itself, distinct from a missing-credentials connection
+                # failure above. Catalog listing is best-effort permission
+                # sync, so a transient API refusal must not fail the caller
+                # (e.g. a dashboard import).
+                logger.warning("Could not list BigQuery projects: %s", ex)
+                return set()
 
         return {project.project_id for project in projects}
 
